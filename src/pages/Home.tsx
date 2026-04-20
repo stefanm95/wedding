@@ -11,13 +11,14 @@ function Home() {
   return (
     <>
       {/* HERO — dark cinematic entry */}
-      <Hero />
-
+      <div className="relative min-h-screen w-full overflow-hidden bg-primary">
+        <Hero />
+      </div>
       {/* COUNTDOWN — still dark, keep immersion */}
       <Countdown />
 
       {/* TRANSITION → move into light emotional space */}
-      <SectionTransition from='dark' to='light' />
+      <SectionTransition from="dark" to="light" />
 
       {/* STORY — beige, intimate */}
       <Story />
@@ -26,13 +27,13 @@ function Home() {
       <Timeline />
 
       {/* TRANSITION → back to dark for contrast */}
-      <SectionTransition from='light' to='dark' />
+      <SectionTransition from="light" to="dark" />
 
       {/* DETAILS — minimal, grounded */}
       <Details />
 
       {/* TRANSITION → back to light for UX */}
-      <SectionTransition from='dark' to='light' />
+      <SectionTransition from="dark" to="light" />
 
       {/* RSVP — important interaction, keep it clean */}
       <RSVP />
