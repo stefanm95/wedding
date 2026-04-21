@@ -42,7 +42,7 @@ export default {
       },
 
       fontFamily: {
-        display: ["Cormorant Garamond", "da-mi teCanela", "serif"],
+        display: ["Cormorant Garamond", "Canela", "serif"],
         body: ["Inter", "sans-serif"],
       },
     },

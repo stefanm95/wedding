@@ -11,7 +11,7 @@ export default function Hero() {
       <HeroVideo opened={opened} />
 
       {/* Layer 2: Intro + Curtains */}
-      <HeroIntro opened={opened} onOpen={() => setOpened(true)} />
+      <HeroIntro onOpen={() => setOpened(true)} />
     </div>
   )
 }
