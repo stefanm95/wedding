@@ -1,7 +1,6 @@
 import { motion, useAnimation } from "framer-motion";
 import { useState } from "react";
 import PaperPeelCanvas from "./PaperPeelCanvas";
-import "../../styles/hero.css";
 
 type Props = {
   onOpen: () => void;
