@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import PaperPeelCanvas from "./PaperPeelCanvas";
 import LightProbeCanvas from "./LightProbeCanvas";
@@ -8,12 +9,14 @@ type Props = {
   setProgress: (v: number) => void;
 };
 
-export default function HeroIntro({
-  onOpen,
-  progress,
-  setProgress,
-}: Props) {
+export default function HeroIntro({ onOpen, progress, setProgress }: Props) {
+  const [started, setStarted] = useState(false);
+
   const handleClick = () => {
+    if (started) return;
+
+    setStarted(true);
+
     let time = 0;
 
     const interval = setInterval(() => {
@@ -39,7 +42,7 @@ export default function HeroIntro({
   const fadeEnd = 1.2;
 
   const crestProgress = Math.min(progress, 1); // crest rămâne 0–1
-  const peelProgress = Math.min(progress, 1);  // ribbon la fel
+  const peelProgress = Math.min(progress, 1); // ribbon la fel
 
   // 🔥 FADE DOAR DUPĂ LOCK
   const opacity =
@@ -50,24 +53,23 @@ export default function HeroIntro({
   // 🔥 IMPACT LIGHT (lock window)
   const impact =
     progress > lockStart && progress < lockEnd
-      ? Math.sin(
-          ((progress - lockStart) / (lockEnd - lockStart)) * Math.PI
-        ) * 0.35
+      ? Math.sin(((progress - lockStart) / (lockEnd - lockStart)) * Math.PI) *
+        0.35
       : 0;
 
   return (
     <div
       onClick={handleClick}
       className="absolute inset-0 z-20 cursor-pointer"
+      style={{
+        pointerEvents: started ? "none" : "auto",
+      }}
     >
       {/* 🔥 light probe */}
       <LightProbeCanvas />
 
       {/* 🎬 peel UI */}
-      <motion.div
-        className="absolute inset-0 z-[2]"
-        style={{ opacity }}
-      >
+      <motion.div className="absolute inset-0 z-[2]" style={{ opacity }}>
         <PaperPeelCanvas
           crestProgress={crestProgress}
           peelProgress={peelProgress}
