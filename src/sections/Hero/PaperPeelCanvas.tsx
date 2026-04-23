@@ -1,11 +1,33 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
 import * as THREE from "three";
+import { getImpact } from "../../utils/animation";
 
 type Props = {
   crestProgress: number;
   peelProgress: number;
 };
+
+function LightProbe({ progress }: { progress: number }) {
+  const lightPos = new THREE.Vector3(2.5, 1.5, 2);
+
+  useFrame(() => {
+    const normal = new THREE.Vector3(0, 0, 1);
+    const dir = lightPos.clone().normalize();
+
+    const base = Math.max(normal.dot(dir), 0);
+
+    // 🔥 SAME SIGNAL AS UI
+    const impact = getImpact(progress);
+
+    const intensity = base + impact * 0.8;
+
+    // @ts-ignore
+    window.__heroLight = intensity;
+  });
+
+  return null;
+}
 
 function Scene({ crestProgress, peelProgress }: Props) {
   const crestRef = useRef<THREE.Mesh>(null!);
@@ -124,7 +146,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
           map={ribbonTex}
           roughness={0.85}
           metalness={0.15}
-          color="#c8b08a"
+          color='#c8b08a'
         />
       </mesh>
 
@@ -135,7 +157,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
           map={ribbonTex}
           roughness={0.85}
           metalness={0.15}
-          color="#c8b08a"
+          color='#c8b08a'
         />
       </mesh>
 
@@ -154,7 +176,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
         <planeGeometry args={[2, 2]} />
         <meshBasicMaterial transparent opacity={0.15} depthWrite={false}>
           <canvasTexture
-            attach="map"
+            attach='map'
             image={(() => {
               const size = 256;
               const canvas = document.createElement("canvas");
@@ -191,7 +213,7 @@ export default function PaperPeelCanvas({
 }: Props) {
   return (
     <Canvas
-      gl={{ alpha: true }}
+      gl={{ preserveDrawingBuffer: true }}
       camera={{ position: [0, 0, 5], fov: 50 }}
       style={{ position: "absolute", inset: 0 }}
       onCreated={({ gl }) => {
@@ -200,13 +222,11 @@ export default function PaperPeelCanvas({
     >
       {/* 🎬 cinematic lighting */}
       <ambientLight intensity={0.45} />
-
       <directionalLight position={[3, 3, 5]} intensity={1.2} />
       <directionalLight position={[-3, -2, 3]} intensity={0.6} />
-
       {/* rim light subtil */}
       <directionalLight position={[0, 0, 5]} intensity={0.4} />
-
+      <LightProbe progress={crestProgress} />
       <Scene crestProgress={crestProgress} peelProgress={peelProgress} />
     </Canvas>
   );

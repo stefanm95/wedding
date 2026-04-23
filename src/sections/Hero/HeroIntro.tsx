@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import PaperPeelCanvas from "./PaperPeelCanvas";
-import LightProbeCanvas from "./LightProbeCanvas";
+import { getImpact } from "../../utils/animation";
 
 type Props = {
   onOpen: () => void;
@@ -12,32 +12,70 @@ type Props = {
 export default function HeroIntro({ onOpen, progress, setProgress }: Props) {
   const [started, setStarted] = useState(false);
 
+  function cinematicEase(t: number) {
+    // clamp safety
+    if (t <= 0) return 0;
+
+    // 🎯 Phase split
+    const holdEnd = 0.15; // slow intro
+    const accelEnd = 0.75; // main motion
+    const overshootEnd = 1.05; // slight push beyond 1
+
+    // 🧊 1. HOLD (barely moves)
+    if (t < holdEnd) {
+      const p = t / holdEnd;
+      return p * p * 0.05; // very subtle movement
+    }
+
+    // 🚀 2. ACCELERATION (cubic out)
+    if (t < accelEnd) {
+      const p = (t - holdEnd) / (accelEnd - holdEnd);
+      const eased = 1 - Math.pow(1 - p, 3);
+      return 0.05 + eased * 0.85;
+    }
+
+    // 💥 3. OVERSHOOT (go past 1)
+    if (t < overshootEnd) {
+      const p = (t - accelEnd) / (overshootEnd - accelEnd);
+      return 0.9 + Math.sin(p * Math.PI * 0.5) * 0.25;
+    }
+
+    // 🪶 4. SETTLE (ease back to 1)
+    const p = (t - overshootEnd) / (1.2 - overshootEnd);
+    const settle = 1 + (1 - p) * 0.05; // slight bounce back
+    return Math.min(settle, 1.2);
+  }
+
   const handleClick = () => {
     if (started) return;
 
     setStarted(true);
 
-    let time = 0;
+    let rafId: number;
+    const duration = 1200; // total animation time in ms (≈ your 1.2)
+    const start = performance.now();
 
-    const interval = setInterval(() => {
-      time += 0.006;
+    const animate = (now: number) => {
+      const elapsed = now - start;
+      const rawT = elapsed / duration; // 0 → ~1.2 range
 
-      // 🔥 NU mai limităm la 1 — avem nevoie de zona de lock
-      setProgress(time);
+      const eased = cinematicEase(rawT);
+      setProgress(eased);
 
-      if (time >= 1.2) {
-        clearInterval(interval);
+      if (rawT < 1.2) {
+        rafId = requestAnimationFrame(animate);
+      } else {
+        cancelAnimationFrame(rafId);
 
         setTimeout(() => {
           onOpen();
-        }, 200); // 🔥 mai rapid după lock
+        }, 200); // keep your lock → reveal timing
       }
-    }, 16);
+    };
+
+    rafId = requestAnimationFrame(animate);
   };
 
-  // 🎯 PHASES
-  const lockStart = 0.92;
-  const lockEnd = 1.05;
   const fadeStart = 1.08;
   const fadeEnd = 1.2;
 
@@ -51,25 +89,20 @@ export default function HeroIntro({ onOpen, progress, setProgress }: Props) {
       : Math.max(0, 1 - (progress - fadeStart) / (fadeEnd - fadeStart));
 
   // 🔥 IMPACT LIGHT (lock window)
-  const impact =
-    progress > lockStart && progress < lockEnd
-      ? Math.sin(((progress - lockStart) / (lockEnd - lockStart)) * Math.PI) *
-        0.35
-      : 0;
+  const rawImpact = getImpact(progress);
+  const impact = rawImpact * 0.35;
 
   return (
     <div
       onClick={handleClick}
-      className="absolute inset-0 z-20 cursor-pointer"
+      className='absolute inset-0 z-20 cursor-pointer'
       style={{
         pointerEvents: started ? "none" : "auto",
+        position: "absolute",
       }}
     >
-      {/* 🔥 light probe */}
-      <LightProbeCanvas />
-
       {/* 🎬 peel UI */}
-      <motion.div className="absolute inset-0 z-[2]" style={{ opacity }}>
+      <motion.div className='absolute inset-0 z-[2]' style={{ opacity }}>
         <PaperPeelCanvas
           crestProgress={crestProgress}
           peelProgress={peelProgress}
@@ -78,7 +111,7 @@ export default function HeroIntro({ onOpen, progress, setProgress }: Props) {
 
       {/* 💡 impact (LOCK MOMENT REAL) */}
       <motion.div
-        className="absolute inset-0 pointer-events-none z-[3]"
+        className='absolute inset-0 pointer-events-none z-[3]'
         style={{
           background:
             "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18), transparent 60%)",

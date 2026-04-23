@@ -9,13 +9,12 @@ import Questionnaire from "../sections/Questionnaire/Questionnaire";
 import PaperSection from "../sections/PaperSection/PaperSection";
 import { useCountdown } from "../hooks/useCountdown";
 
-
 function Home() {
-  const time = useCountdown(new Date("2026-08-20T00:00:00"));
+  const time = useCountdown(new Date("2026-08-22T00:00:00"));
   return (
     <>
       {/* HERO — dark cinematic entry */}
-      <div className="relative min-h-screen w-full overflow-hidden bg-primary">
+      <div className='relative min-h-screen w-full overflow-hidden bg-primary'>
         <Hero />
       </div>
 
@@ -26,13 +25,13 @@ function Home() {
       </PaperSection>
 
       {/* TRANSITION → back to dark for contrast */}
-      <SectionTransition from="light" to="dark" />
+      <SectionTransition from='light' to='dark' />
 
       {/* DETAILS — minimal, grounded */}
       <Details />
 
       {/* TRANSITION → back to light for UX */}
-      <SectionTransition from="dark" to="light" />
+      <SectionTransition from='dark' to='light' />
 
       {/* RSVP — important interaction, keep it clean */}
       <RSVP />
