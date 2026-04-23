@@ -52,7 +52,7 @@ export default function HeroIntro({ onOpen }: Props) {
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
         style={{
-          filter: "blur(20px) brightness(0.5)",
+          filter: "blur(18px) brightness(0.5)",
           transform: "scale(1.1)", // 🔥 evită margini după blur
         }}
       >
