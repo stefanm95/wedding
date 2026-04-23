@@ -191,8 +191,12 @@ export default function PaperPeelCanvas({
 }: Props) {
   return (
     <Canvas
+      gl={{ alpha: true }}
       camera={{ position: [0, 0, 5], fov: 50 }}
       style={{ position: "absolute", inset: 0 }}
+      onCreated={({ gl }) => {
+        gl.setClearColor(0x000000, 0); // 🔥 transparent real
+      }}
     >
       {/* 🎬 cinematic lighting */}
       <ambientLight intensity={0.45} />
