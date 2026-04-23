@@ -1,11 +1,11 @@
-import Hero from "../components/Hero/Hero";
-import Story from "../components/Story/Story";
-import Timeline from "../components/Timeline/Timeline";
-import Details from "../components/Details/Details";
-import RSVP from "../components/RSVP/RSVP";
-import Countdown from "../components/Countdown/Countdown";
+import Hero from "../sections/Hero/Hero";
+import Story from "../sections/Countdown/Story/Story";
+import Timeline from "../sections/Timeline/Timeline";
+import Details from "../sections/Details/Details";
+import RSVP from "../sections/RSVP/RSVP";
+import Countdown from "../sections/Countdown/Countdown";
 import SectionTransition from "../components/Transition/SectionTransition";
-import Questionnaire from "../components/Questionnaire/Questionnaire";
+import Questionnaire from "../sections/Questionnaire/Questionnaire";
 
 function Home() {
   return (
