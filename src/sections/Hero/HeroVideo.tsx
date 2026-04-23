@@ -41,7 +41,7 @@ export default function HeroVideo({ opened }: Props) {
         >
           {/* SCRIPT */}
           <motion.p
-            className="script-castlegar text-8xl tracking-[0.6em] text-white/90 mb-12"
+            className="script-castlegar text-8xl tracking-[0.08em] text-white/90 mb-12"
             variants={{
               hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
               show: {
