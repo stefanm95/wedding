@@ -29,4 +29,98 @@
   }
 }
 
+/* 🔤 FONT IMPORT */
+@font-face {
+  font-family: "Castlegar";
+  src: url("/assets/fonts/castlegar/Castlegar.otf") format("opentype");
+  font-display: swap;
+}
 
+@font-face {
+  font-family: "Cormorant";
+  src: url("/assets/fonts/cormorant/CormorantGaramond-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("/assets/fonts/cormorant/CormorantGaramond-SemiBold.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ========================= */
+/* TYPOGRAPHY SYSTEM */
+/* ========================= */
+@layer components {
+  .heading-xl {
+    @apply font-serif text-5xl md:text-6xl tracking-wide text-ink-dark;
+  }
+
+  .heading-lg {
+    @apply font-serif text-3xl md:text-4xl text-ink-dark;
+  }
+
+  .heading-md {
+    @apply font-serif text-2xl text-ink-dark;
+  }
+
+  .body-lg {
+    @apply font-sans text-lg text-ink-muted leading-relaxed;
+  }
+
+  .body-md {
+    @apply font-sans text-base text-ink-muted;
+  }
+
+  .accent-script {
+    font-family: "Playfair Display", serif;
+    letter-spacing: 0.1em;
+    @apply text-gold;
+  }
+
+  /* ✨ CASTLEGAR (IMPORTANT) */
+  .script-castlegar {
+    font-family: "Castlegar", serif;
+
+    font-size: 14px;
+    letter-spacing: 0.5em;
+    text-transform: lowercase;
+
+    color: rgba(255, 255, 255, 0.7);
+
+    transform: translateY(2px);
+
+    text-shadow:
+      0 0 4px rgba(255, 255, 255, 0.1),
+      0 4px 20px rgba(0, 0, 0, 0.6);
+  }
+  /* ✨ CORMORANT DISPLAY (headlines) */
+  .script-cormorant-display {
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+
+    letter-spacing: 0.4em;
+
+    color: white;
+
+    text-shadow:
+      0 2px 10px rgba(0, 0, 0, 0.4),
+      0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ✨ CORMORANT BODY (subtext elegant) */
+  .script-cormorant-body {
+    font-family: "Cormorant", serif;
+    font-weight: 400;
+
+    letter-spacing: 0.2em;
+
+    color: rgba(255, 255, 255, 0.85);
+  }
+}

@@ -2,12 +2,7 @@
 /* imports */
 @import "./styles/typography.css";
 @import "./styles/backgrounds.css";
-@import "./styles/hero/hero-container.css";
-@import "./styles/hero/hero-textures.css";
-@import "./styles/hero/hero-canvas.css";
-@import "./styles/hero/hero-ribbon.css";
-@import "./styles/hero/hero-crest.css";
-@import "./styles/hero/hero-card.css";
+
 
 @tailwind base;
 @tailwind components;
