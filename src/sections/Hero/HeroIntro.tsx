@@ -7,52 +7,58 @@ type Props = {
 };
 
 export default function HeroIntro({ onOpen }: Props) {
-  const [crestProgress, setCrestProgress] = useState(0);
-  const [peelProgress, setPeelProgress] = useState(0);
+  const [t, setT] = useState(0); // 🔥 timeline real
 
   const handleClick = () => {
-    let t = 0;
+    let time = 0;
 
     const interval = setInterval(() => {
-      t += 0.006;
+      time += 0.006; // 🔥 viteză globală
 
-      const crest = Math.min(t, 1);
-      setCrestProgress(crest);
+      setT(time);
 
-      const rotation = crest * 360;
-
-      // 🔥 perfect sync
-      const peelStart = 90;
-      const peelEnd = 360;
-
-      if (rotation > peelStart) {
-        const peelT = (rotation - peelStart) / (peelEnd - peelStart);
-        setPeelProgress(Math.min(peelT, 1));
-      }
-
-      if (t >= 1.2) {
+      if (time >= 1.3) {
         clearInterval(interval);
-
-        setTimeout(onOpen, 600);
+        setTimeout(onOpen, 400);
       }
     }, 16);
   };
+
+  // 🎯 PHASES
+  const crestProgress = Math.min(t, 1);
+
+  const peelStart = 0;
+  const peelProgress =
+    crestProgress < peelStart
+      ? 0
+      : (crestProgress - peelStart) / (1 - peelStart);
+
+  // 🧠 HOLD + FADE
+  let opacity = 1;
+
+  if (t > 1.05) {
+    // 🔥 începe DUPĂ ce totul s-a terminat
+    opacity = 1 - (t - 1.05) / (1.3 - 1.05);
+  }
+
+  opacity = Math.pow(opacity, 1.6);
 
   return (
     <motion.div
       onClick={handleClick}
       className="absolute inset-0 z-20 cursor-pointer"
+      animate={{ opacity }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       style={{
         backgroundImage: `
-          linear-gradient(rgba(20,25,18,0.7), rgba(20,25,18,0.85)),
+          linear-gradient(rgba(20,25,18,0.7), rgba(20,25,18,0.8)),
           url('/assets/paperboard-texture.jpg')
         `,
-        backgroundSize: "cover",
       }}
     >
       <PaperPeelCanvas
         crestProgress={crestProgress}
-        peelProgress={peelProgress}
+        peelProgress={Math.min(peelProgress, 1)}
       />
     </motion.div>
   );

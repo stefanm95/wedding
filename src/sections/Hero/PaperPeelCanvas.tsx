@@ -14,7 +14,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
 
   const { gl } = useThree();
 
-  // 🎀 NO REPEAT
+  // 🎀 ribbon texture (NO repeat)
   const ribbonTex = useMemo(() => {
     const tex = new THREE.TextureLoader().load(
       "/assets/ribbon/ribbon-vintage.png"
@@ -23,6 +23,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
     return tex;
   }, [gl]);
 
+  // 🔴 crest texture
   const crestTex = useMemo(() => {
     const tex = new THREE.TextureLoader().load(
       "/assets/crest/logo-crest-vintage.png"
@@ -38,16 +39,18 @@ function Scene({ crestProgress, peelProgress }: Props) {
     if (crestRef.current) {
       crestRef.current.rotation.z = -rot;
 
-      // fade după final
+      // subtle tilt (premium feel)
+      crestRef.current.rotation.y = Math.sin(rot * 0.5) * 0.2;
+
+      // cinematic fade la final
       if (crestProgress > 0.92) {
         const fade = 1 - (crestProgress - 0.92) / 0.08;
         (crestRef.current.material as any).opacity = fade;
       }
     }
 
-    // 🎀 RIBBON SYNC PERFECT
-    const eased = Math.pow(peelProgress, 1.25);
-
+    // 🎀 RIBBON – intrare sub crest
+    const eased = Math.pow(peelProgress, 1.3);
     const maxOffset = 3;
 
     if (leftRef.current && rightRef.current) {
@@ -57,15 +60,15 @@ function Scene({ crestProgress, peelProgress }: Props) {
       leftRef.current.position.x = xLeft;
       rightRef.current.position.x = xRight;
 
-      // 🔥 când ajung în crest → dispar
-      const scale = 1 - eased;
-      const opacity = 1 - eased;
+      // 🔥 intrare în adâncime (KEY AAA)
+      const depth = Math.min(eased * 0.3, 0.3);
 
-      leftRef.current.scale.x = Math.max(scale, 0);
-      rightRef.current.scale.x = Math.max(scale, 0);
+      leftRef.current.position.z = -depth;
+      rightRef.current.position.z = -depth;
 
-      (leftRef.current.material as any).opacity = opacity;
-      (rightRef.current.material as any).opacity = opacity;
+      // 🔥 subtle pressure (bend mic)
+      leftRef.current.rotation.y = eased * 0.15;
+      rightRef.current.rotation.y = -eased * 0.15;
     }
   });
 
@@ -76,9 +79,8 @@ function Scene({ crestProgress, peelProgress }: Props) {
         <planeGeometry args={[6, 1]} />
         <meshStandardMaterial
           map={ribbonTex}
-          transparent
           roughness={0.85}
-          metalness={0.1}
+          metalness={0.15}
           color="#c8b08a"
         />
       </mesh>
@@ -88,17 +90,20 @@ function Scene({ crestProgress, peelProgress }: Props) {
         <planeGeometry args={[6, 1]} />
         <meshStandardMaterial
           map={ribbonTex}
-          transparent
           roughness={0.85}
-          metalness={0.1}
+          metalness={0.15}
           color="#c8b08a"
         />
       </mesh>
 
-      {/* 🔴 CREST */}
-      <mesh ref={crestRef} position={[0, 0, 0.2]}>
+      {/* 🔴 CREST (OCCLUSION MASTER) */}
+      <mesh ref={crestRef} position={[0, 0, 0.25]}>
         <planeGeometry args={[1.4, 1.4]} />
-        <meshStandardMaterial map={crestTex} transparent />
+        <meshStandardMaterial
+          map={crestTex}
+          transparent
+          depthWrite={true} // 🔥 IMPORTANT
+        />
       </mesh>
     </>
   );
@@ -113,9 +118,14 @@ export default function PaperPeelCanvas({
       camera={{ position: [0, 0, 5], fov: 50 }}
       style={{ position: "absolute", inset: 0 }}
     >
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[3, 2, 5]} intensity={1.2} />
+      {/* 🎬 cinematic lighting */}
+      <ambientLight intensity={0.45} />
+
+      <directionalLight position={[3, 3, 5]} intensity={1.2} />
       <directionalLight position={[-3, -2, 3]} intensity={0.6} />
+
+      {/* rim light subtil */}
+      <directionalLight position={[0, 0, 5]} intensity={0.4} />
 
       <Scene crestProgress={crestProgress} peelProgress={peelProgress} />
     </Canvas>
