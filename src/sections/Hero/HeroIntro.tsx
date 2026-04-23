@@ -7,24 +7,24 @@ type Props = {
 };
 
 export default function HeroIntro({ onOpen }: Props) {
-  const [t, setT] = useState(0); // 🔥 timeline real
+  const [t, setT] = useState(0);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
     let time = 0;
 
     const interval = setInterval(() => {
-      time += 0.006; // 🔥 viteză globală
-
+      time += 0.006;
       setT(time);
 
-      if (time >= 1.3) {
+      if (time >= 1.35) {
         clearInterval(interval);
         setTimeout(onOpen, 400);
       }
     }, 16);
   };
 
-  // 🎯 PHASES
+  // 🎯 CORE
   const crestProgress = Math.min(t, 1);
 
   const peelStart = 0;
@@ -33,22 +33,25 @@ export default function HeroIntro({ onOpen }: Props) {
       ? 0
       : (crestProgress - peelStart) / (1 - peelStart);
 
-  // 🧠 HOLD + FADE
+  // 🔒 LOCK PHASE (IMPORTANT)
+  const lockStart = 1;
+  const fadeStart = 1.15;
+
+  // 💡 FADE DOAR DUPĂ LOCK
   let opacity = 1;
 
-  if (t > 1.05) {
-    // 🔥 începe DUPĂ ce totul s-a terminat
-    opacity = 1 - (t - 1.05) / (1.3 - 1.05);
+  if (t > fadeStart) {
+    opacity = 1 - (t - fadeStart) / (1.35 - fadeStart);
   }
 
-  opacity = Math.pow(opacity, 1.6);
+  opacity = Math.max(0, Math.min(1, opacity));
 
   return (
     <motion.div
       onClick={handleClick}
       className="absolute inset-0 z-20 cursor-pointer"
       animate={{ opacity }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
       style={{
         backgroundImage: `
           linear-gradient(rgba(20,25,18,0.7), rgba(20,25,18,0.8)),
@@ -56,6 +59,20 @@ export default function HeroIntro({ onOpen }: Props) {
         `,
       }}
     >
+      {/* 🔥 LIGHT IMPACT DOAR LA LOCK */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18), transparent 60%)",
+          mixBlendMode: "soft-light",
+        }}
+        animate={{
+          opacity: t > 0.98 && t < 1.05 ? 0.35 : 0,
+        }}
+        transition={{ duration: 0.2 }}
+      />
+
       <PaperPeelCanvas
         crestProgress={crestProgress}
         peelProgress={Math.min(peelProgress, 1)}

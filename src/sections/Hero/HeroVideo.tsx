@@ -116,7 +116,7 @@ export default function HeroVideo({ opened }: Props) {
             transition={{ delay: 1.4 }}
             className="script-cormorant-body text-lg text-white/90"
           >
-            Restaurant Pula Pula
+            Padurile Regale
           </motion.p>
         </motion.div>
       </div>

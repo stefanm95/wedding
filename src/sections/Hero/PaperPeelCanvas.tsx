@@ -11,13 +11,14 @@ function Scene({ crestProgress, peelProgress }: Props) {
   const crestRef = useRef<THREE.Mesh>(null!);
   const leftRef = useRef<THREE.Mesh>(null!);
   const rightRef = useRef<THREE.Mesh>(null!);
+  const shadowRef = useRef<THREE.Mesh>(null!);
 
   const { gl } = useThree();
 
   // 🎀 ribbon texture (NO repeat)
   const ribbonTex = useMemo(() => {
     const tex = new THREE.TextureLoader().load(
-      "/assets/ribbon/ribbon-vintage.png"
+      "/assets/ribbon/ribbon-vintage.png",
     );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
@@ -26,7 +27,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
   // 🔴 crest texture
   const crestTex = useMemo(() => {
     const tex = new THREE.TextureLoader().load(
-      "/assets/crest/logo-crest-vintage.png"
+      "/assets/crest/logo-crest-vintage.png",
     );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
@@ -39,17 +40,11 @@ function Scene({ crestProgress, peelProgress }: Props) {
     if (crestRef.current) {
       crestRef.current.rotation.z = -rot;
 
-      // subtle tilt (premium feel)
+      // subtle tilt
       crestRef.current.rotation.y = Math.sin(rot * 0.5) * 0.2;
-
-      // cinematic fade la final
-      if (crestProgress > 0.92) {
-        const fade = 1 - (crestProgress - 0.92) / 0.08;
-        (crestRef.current.material as any).opacity = fade;
-      }
     }
 
-    // 🎀 RIBBON – intrare sub crest
+    // 🎀 RIBBON
     const eased = Math.pow(peelProgress, 1.3);
     const maxOffset = 3;
 
@@ -60,15 +55,63 @@ function Scene({ crestProgress, peelProgress }: Props) {
       leftRef.current.position.x = xLeft;
       rightRef.current.position.x = xRight;
 
-      // 🔥 intrare în adâncime (KEY AAA)
+      // intrare sub crest
       const depth = Math.min(eased * 0.3, 0.3);
-
       leftRef.current.position.z = -depth;
       rightRef.current.position.z = -depth;
 
-      // 🔥 subtle pressure (bend mic)
-      leftRef.current.rotation.y = eased * 0.15;
-      rightRef.current.rotation.y = -eased * 0.15;
+      // pressure subtle (bend)
+      leftRef.current.rotation.y = eased * 0.12;
+      rightRef.current.rotation.y = -eased * 0.12;
+    }
+
+    // 🔥 MICRO PRESS (LOCK MOMENT)
+    const pressStart = 0.98;
+    const pressEnd = 1.05;
+
+    if (crestProgress > pressStart && crestProgress < pressEnd) {
+      const p = (crestProgress - pressStart) / (pressEnd - pressStart);
+
+      // smooth pulse
+      const press = Math.sin(p * Math.PI);
+
+      if (crestRef.current) {
+        crestRef.current.position.z = 0.25 - press * 0.08; // 🔥 apasă în ribbon
+        crestRef.current.scale.y = 1 - press * 0.05; // 🔥 ușor "flatten"
+      }
+
+      if (leftRef.current && rightRef.current) {
+        // ribbon reacționează la presiune
+        leftRef.current.rotation.x = press * 0.05;
+        rightRef.current.rotation.x = press * 0.05;
+      }
+    } else {
+      // reset
+      if (crestRef.current) {
+        crestRef.current.position.z = 0.25;
+        crestRef.current.scale.y = 1;
+      }
+
+      if (leftRef.current && rightRef.current) {
+        leftRef.current.rotation.x = 0;
+        rightRef.current.rotation.x = 0;
+      }
+    }
+    // 🌑 SHADOW REACTION
+    if (shadowRef.current) {
+      if (crestProgress > pressStart && crestProgress < pressEnd) {
+        const p = (crestProgress - pressStart) / (pressEnd - pressStart);
+        const press = Math.sin(p * Math.PI);
+
+        // 🔥 shadow devine mai intens + mai compact
+        shadowRef.current.scale.set(1 + press * 0.2, 1 + press * 0.1, 1);
+
+        (shadowRef.current.material as any).opacity = 0.15 + press * 0.25;
+      } else {
+        // reset
+        shadowRef.current.scale.set(1, 1, 1);
+        (shadowRef.current.material as any).opacity = 0.15;
+      }
     }
   });
 
@@ -104,6 +147,39 @@ function Scene({ crestProgress, peelProgress }: Props) {
           transparent
           depthWrite={true} // 🔥 IMPORTANT
         />
+      </mesh>
+
+      {/* 🌑 CONTACT SHADOW */}
+      <mesh ref={shadowRef} position={[0, 0, 0.15]}>
+        <planeGeometry args={[2, 2]} />
+        <meshBasicMaterial transparent opacity={0.15} depthWrite={false}>
+          <canvasTexture
+            attach="map"
+            image={(() => {
+              const size = 256;
+              const canvas = document.createElement("canvas");
+              canvas.width = canvas.height = size;
+
+              const ctx = canvas.getContext("2d")!;
+              const gradient = ctx.createRadialGradient(
+                size / 2,
+                size / 2,
+                10,
+                size / 2,
+                size / 2,
+                size / 2,
+              );
+
+              gradient.addColorStop(0, "rgba(0,0,0,0.4)");
+              gradient.addColorStop(1, "rgba(0,0,0,0)");
+
+              ctx.fillStyle = gradient;
+              ctx.fillRect(0, 0, size, size);
+
+              return canvas;
+            })()}
+          />
+        </meshBasicMaterial>
       </mesh>
     </>
   );
