@@ -10,7 +10,7 @@ export default function Questionnaire() {
 
         <input placeholder='Guest Names' className='input' />
 
-        <select className='input'>
+        <select title="questionnaire" className='input'>
           <option>Transport</option>
           <option>Bus</option>
           <option>Personal Car</option>

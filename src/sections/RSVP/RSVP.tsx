@@ -12,7 +12,7 @@ export default function RSVP() {
             placeholder='Your Name'
           />
 
-          <select className='w-full border border-border-subtle p-3 bg-transparent'>
+          <select title="rsvp" className='w-full border border-border-subtle p-3 bg-transparent'>
             <option>Menu Preference</option>
             <option>Normal</option>
             <option>Vegetarian</option>
