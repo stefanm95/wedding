@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-
 type Props = {
   opened: boolean;
 };
@@ -10,25 +9,36 @@ export default function HeroVideo({ opened }: Props) {
   const [light, setLight] = useState(0);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      // @ts-ignore
-      setLight(window.__heroLight || 0);
-    }, 16);
+    let rafId: number;
 
-    return () => clearInterval(id);
+    const animate = () => {
+      const target = (window as any).__heroLight || 0;
+
+      setLight((prev) => {
+        const delayFactor = 0.12; // 🔥 HERE
+
+        return prev + (target - prev) * delayFactor;
+      });
+
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  return (
-    <div className="absolute inset-0 z-10 pointer-events-none">
-      {/* 🌑 overlay */}
-      <div className="absolute inset-0 bg-black/45" />
+  const boosted = light + Math.pow(light, 3) * 0.5;
 
-      
+  return (
+    <div className='absolute inset-0 z-10 pointer-events-none'>
+      {/* 🌑 overlay */}
+      <div className='absolute inset-0 bg-black/45' />
 
       {/* ✨ TEXT */}
-      <div className="absolute inset-0 flex items-center justify-center text-center px-6">
+      <div className='absolute inset-0 flex items-center justify-center text-center px-6'>
         <motion.div
-          initial="hidden"
+          initial='hidden'
           animate={opened ? "show" : "hidden"}
           variants={{
             hidden: {},
@@ -41,7 +51,7 @@ export default function HeroVideo({ opened }: Props) {
         >
           {/* SCRIPT */}
           <motion.p
-            className="script-castlegar text-8xl tracking-[0.08em] text-white/90 mb-12"
+            className='script-castlegar text-8xl tracking-[0.08em] text-white/90 mb-12'
             variants={{
               hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
               show: {
@@ -57,7 +67,7 @@ export default function HeroVideo({ opened }: Props) {
 
           {/* MAIN */}
           <motion.h1
-            className="script-cormorant-body text-7xl text-white/80"
+            className='script-cormorant-body text-7xl text-white/80'
             variants={{
               hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
               show: {
@@ -69,12 +79,8 @@ export default function HeroVideo({ opened }: Props) {
             }}
             style={{
               textShadow: `
-                0 0 ${20 + light * 40}px rgba(255,220,160,${
-                0.15 + light * 0.3
-              }),
-                0 0 ${60 + light * 80}px rgba(255,200,120,${
-                0.08 + light * 0.2
-              })
+                0 0 ${30 + boosted * 80}px rgba(255,220,160,${0.2 + boosted * 0.5}),
+                0 0 ${80 + boosted * 160}px rgba(255,200,120,${0.1 + boosted * 0.35})
               `,
             }}
           >
@@ -83,7 +89,7 @@ export default function HeroVideo({ opened }: Props) {
 
           {/* DATE */}
           <motion.p
-            className="script-cormorant-body tracking-[0.6em] text-base mt-6 text-white/70"
+            className='script-cormorant-body tracking-[0.6em] text-base mt-6 text-white/70'
             variants={{
               hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
               show: {
@@ -99,7 +105,7 @@ export default function HeroVideo({ opened }: Props) {
 
           {/* LOCATION */}
           <motion.p
-            className="script-cormorant-body text-white/70"
+            className='script-cormorant-body text-white/70'
             variants={{
               hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
               show: {
