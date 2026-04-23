@@ -1,87 +1,65 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
 import PaperPeelCanvas from "./PaperPeelCanvas";
 import LightProbeCanvas from "./LightProbeCanvas";
-import CinematicOverlay from "../../components/CinematicOverlay";
+
 
 type Props = {
   onOpen: () => void;
+  progress: number;
+  setProgress: (v: number) => void;
 };
 
-export default function HeroIntro({ onOpen }: Props) {
-  const [t, setT] = useState(0);
-
+export default function HeroIntro({
+  onOpen,
+  progress,
+  setProgress,
+}: Props) {
   const handleClick = () => {
     let time = 0;
 
     const interval = setInterval(() => {
       time += 0.006;
-      setT(time);
 
-      if (time >= 1.35) {
+      const t = Math.min(time, 1);
+      setProgress(t);
+
+      if (time >= 1.2) {
         clearInterval(interval);
-        setTimeout(onOpen, 400);
+
+        setTimeout(() => {
+          onOpen();
+        }, 300);
       }
     }, 16);
   };
 
-  const crestProgress = Math.min(t, 1);
-  const peelProgress = crestProgress;
-
-  const fadeStart = 1.15;
-
-  let opacity = 1;
-  if (t > fadeStart) {
-    opacity = 1 - (t - fadeStart) / (1.35 - fadeStart);
-  }
-
-  opacity = Math.max(0, Math.min(1, opacity));
+  const crestProgress = progress;
+  const peelProgress = progress;
 
   return (
-    <motion.div
+    <div
       onClick={handleClick}
-      className="absolute inset-0 z-20 cursor-pointer overflow-hidden"
-      animate={{ opacity }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="absolute inset-0 z-20 cursor-pointer"
     >
-      {/* 🎬 BLURRED VIDEO BACKGROUND */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-        style={{
-          filter: "blur(18px) brightness(0.5)",
-          transform: "scale(1.1)", // 🔥 evită margini după blur
-        }}
-      >
-        <source src="/assets/video/hero.mp4" type="video/mp4" />
-      </video>
-
-      {/* 🌑 DARK OVERLAY (depth cinematic) */}
-      <div
-        className="absolute inset-0 z-[1] pointer-events-none"
-        style={{
-          background: "rgba(20,25,18,0.4)",
-        }}
-      />
-
-      {/* 🔥 Light probe (invizibil) */}
+      {/* 🔥 light probe */}
       <LightProbeCanvas />
 
-      {/* 🎬 Peel (ribbon + crest) */}
-      <div className="absolute inset-0 z-[2]">
+      {/* 🎬 peel UI */}
+      <motion.div
+        className="absolute inset-0 z-[2]"
+        animate={{
+          opacity: progress > 0.95 ? 0 : 1,
+        }}
+        transition={{ duration: 0.6 }}
+      >
         <PaperPeelCanvas
           crestProgress={crestProgress}
           peelProgress={peelProgress}
         />
-      </div>
+      </motion.div>
 
-      {/* 🎞 unified cinematic overlay */}
-      <CinematicOverlay intensity={0.5} />
 
-      {/* 💡 impact light (lock moment) */}
+      {/* 💡 impact */}
       <motion.div
         className="absolute inset-0 pointer-events-none z-[3]"
         style={{
@@ -90,10 +68,10 @@ export default function HeroIntro({ onOpen }: Props) {
           mixBlendMode: "soft-light",
         }}
         animate={{
-          opacity: t > 0.98 && t < 1.05 ? 0.35 : 0,
+          opacity: progress > 0.98 && progress < 1.05 ? 0.35 : 0,
         }}
         transition={{ duration: 0.2 }}
       />
-    </motion.div>
+    </div>
   );
 }
