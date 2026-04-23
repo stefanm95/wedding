@@ -16,14 +16,16 @@ export default function Hero() {
         muted
         loop
         playsInline
+        disablePictureInPicture
+        
         className="absolute inset-0 w-full h-full object-cover z-0"
         style={{
           filter: `
-    blur(${8 - eased * 8}px)
-    brightness(${0.75 + eased * 0.2})
-    contrast(${0.9 + eased * 0.1})
-    saturate(${0.85 + eased * 0.1})
-  `,
+            blur(${8 - eased * 8}px)
+            brightness(${0.75 + eased * 0.2})
+            contrast(${0.9 + eased * 0.1})
+            saturate(${0.85 + eased * 0.1})
+          `,
           transform: `scale(${1.05 - eased * 0.05})`,
         }}
       >
