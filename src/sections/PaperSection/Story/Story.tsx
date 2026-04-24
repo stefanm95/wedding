@@ -1,19 +1,19 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
 
-export default function StoryBlock(): React.ReactNode {
+import StoryItem from "./StoryItem";
+import { storyData } from "./storyData";
+
+export default function Story() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   return (
-    <div className="text-center mb-40 max-w-2xl mx-auto">
-      <h2 className="heading-lg text-[#6b1f2b] mb-8">Povestea noastră</h2>
-
-      <motion.p
-        initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        className="text-center text-[#6b1f2b]/80 leading-relaxed"
-      >
-        Ne-am întâlnit într-un mod simplu...
-      </motion.p>
-    </div>
+    <section className='relative text-center'>
+      <div ref={containerRef} className='relative max-w-5xl mx-auto'>
+        {/* ITEMS */}
+        {storyData.map((item, index) => (
+          <StoryItem key={index} item={item} index={index} />
+        ))}
+      </div>
+    </section>
   );
 }

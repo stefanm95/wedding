@@ -7,7 +7,7 @@ type Props = {
   paperRef: any;
 };
 
-export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
+export default function HeroVideo({ opened, paperRef }: Props) {
   const [light, setLight] = useState(0);
 
   // 🔥 SCROLL REAL (legat de Hero container din Home)
@@ -54,10 +54,10 @@ export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
   const boosted = light + Math.pow(light, 3) * 0.5;
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
-      <div className="absolute inset-0 bg-black/45" />
+    <div className='absolute inset-0 pointer-events-none'>
+      <div className='absolute inset-0 bg-black/45' />
 
-      <div className="absolute inset-0 flex items-center justify-center text-center px-6">
+      <div className='absolute inset-0 flex items-center justify-center text-center px-6'>
         <motion.div
           style={{
             opacity: opacityScroll,
@@ -65,7 +65,7 @@ export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
             scale: scaleScroll,
             filter: filter,
           }}
-          initial="hidden"
+          initial='hidden'
           animate={opened ? "show" : "hidden"}
           variants={{
             hidden: {},
@@ -77,7 +77,7 @@ export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
           }}
         >
           <motion.p
-            className="script-castlegar text-8xl text-white/90 mb-12"
+            className='script-castlegar text-8xl text-white/90 mb-12'
             variants={{
               hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
               show: {
@@ -92,7 +92,7 @@ export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
           </motion.p>
 
           <motion.h1
-            className="script-cormorant-body text-7xl text-white/80"
+            className='script-cormorant-body text-7xl text-white/80'
             variants={{
               hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
               show: {
@@ -117,7 +117,7 @@ export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
           </motion.h1>
 
           <motion.p
-            className="tracking-[0.6em] text-base mt-6 text-white/70"
+            className='tracking-[0.6em] text-base mt-6 text-white/70'
             variants={{
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 0.9, y: 0 },
@@ -127,7 +127,7 @@ export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
           </motion.p>
 
           <motion.p
-            className="text-white/70 script-cormorant tracking-[0.08em]"
+            className='text-white/70 script-cormorant tracking-[0.08em]'
             variants={{
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 0.9, y: 0 },
