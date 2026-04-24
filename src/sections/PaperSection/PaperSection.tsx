@@ -1,31 +1,23 @@
-import type { ReactNode } from "react";
-
-type PaperSectionProps = {
-  children: ReactNode;
-};
-
-export default function PaperSection({
-  children,
-}: PaperSectionProps): React.ReactNode {
+export default function PaperSection({ children }: any) {
   return (
-    <section className="relative min-h-screen py-32 px-6 overflow-hidden">
-      {/* 📜 cardboard */}
+    <section className="relative z-10 min-h-screen py-32 px-6 overflow-hidden">
+      {/* 🔥 SOFT EDGE peste hero */}
+      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#f4f1ea] to-transparent z-10" />
+
+      {/* texture */}
       <div
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: "url('/assets/paperboard-texture.jpg')",
+          backgroundImage: "url('/assets/base-paper/paperboard-texture.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "brightness(0.95)",
         }}
       />
 
-      {/* 🌫 vignette */}
       <div className="absolute inset-0 bg-black/10 z-0" />
 
-      {/* 🎞 grain */}
       <div
-        className="absolute inset-0 z-0 pointer-events-none"
+        className="absolute inset-0 z-0"
         style={{
           backgroundImage: "url('/assets/base-grain2.jpg')",
           opacity: 0.05,
@@ -33,10 +25,7 @@ export default function PaperSection({
         }}
       />
 
-      {/* 🧱 content */}
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {children}
-      </div>
+      <div className="relative z-10 max-w-4xl mx-auto">{children}</div>
     </section>
   );
 }

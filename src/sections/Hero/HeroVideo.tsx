@@ -1,12 +1,24 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 
 type Props = {
   opened: boolean;
+  heroRef: any;
 };
 
-export default function HeroVideo({ opened }: Props) {
+export default function HeroVideo({ opened, heroRef }: Props) {
   const [light, setLight] = useState(0);
+
+  // 🔥 SCROLL REAL (legat de Hero container din Home)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  // 🎬 fade + push
+  const opacityScroll = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
+  const blurScroll = useTransform(scrollYProgress, [0.3, 0.7], [0, 10]);
+  const yScroll = useTransform(scrollYProgress, [0.3, 0.7], [0, -60]);
 
   useEffect(() => {
     let rafId: number;
@@ -15,8 +27,7 @@ export default function HeroVideo({ opened }: Props) {
       const target = (window as any).__heroLight || 0;
 
       setLight((prev) => {
-        const delayFactor = 0.12; // 🔥 HERE
-
+        const delayFactor = 0.12;
         return prev + (target - prev) * delayFactor;
       });
 
@@ -31,89 +42,82 @@ export default function HeroVideo({ opened }: Props) {
   const boosted = light + Math.pow(light, 3) * 0.5;
 
   return (
-    <div className='absolute inset-0 z-10 pointer-events-none'>
-      {/* 🌑 overlay */}
-      <div className='absolute inset-0 bg-black/45' />
+    <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 bg-black/45" />
 
-      {/* ✨ TEXT */}
-      <div className='absolute inset-0 flex items-center justify-center text-center px-6'>
+      <div className="absolute inset-0 flex items-center justify-center text-center px-6">
         <motion.div
-          initial='hidden'
+          style={{
+            opacity: opacityScroll,
+            y: yScroll,
+            filter: useTransform(blurScroll, (b) => `blur(${b}px)`),
+          }}
+          initial="hidden"
           animate={opened ? "show" : "hidden"}
           variants={{
             hidden: {},
             show: {
               transition: {
-                staggerChildren: 0.12, // 🔥 rapid, cinematic
+                staggerChildren: 0.12,
               },
             },
           }}
         >
-          {/* SCRIPT */}
           <motion.p
-            className='script-castlegar text-8xl tracking-[0.08em] text-white/90 mb-12'
+            className="script-castlegar text-8xl text-white/90 mb-12"
             variants={{
               hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
               show: {
                 opacity: 0.8,
                 y: 0,
                 filter: "blur(0px)",
-                transition: { duration: 0.8, ease: "easeOut" },
+                transition: { duration: 0.8 },
               },
             }}
           >
             noi doi
           </motion.p>
 
-          {/* MAIN */}
           <motion.h1
-            className='script-cormorant-body text-7xl text-white/80'
+            className="script-cormorant-body text-7xl text-white/80"
             variants={{
               hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
               show: {
                 opacity: 1,
                 y: 0,
                 filter: "blur(0px)",
-                transition: { duration: 1, ease: "easeOut" },
+                transition: { duration: 1 },
               },
             }}
             style={{
               textShadow: `
-                0 0 ${30 + boosted * 80}px rgba(255,220,160,${0.2 + boosted * 0.5}),
-                0 0 ${80 + boosted * 160}px rgba(255,200,120,${0.1 + boosted * 0.35})
+                0 0 ${30 + boosted * 80}px rgba(255,220,160,${
+                0.2 + boosted * 0.5
+              }),
+                0 0 ${80 + boosted * 160}px rgba(255,200,120,${
+                0.1 + boosted * 0.35
+              })
               `,
             }}
           >
             Denisa & Iuli
           </motion.h1>
 
-          {/* DATE */}
           <motion.p
-            className='script-cormorant-body tracking-[0.6em] text-base mt-6 text-white/70'
+            className="tracking-[0.6em] text-base mt-6 text-white/70"
             variants={{
-              hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
-              show: {
-                opacity: 0.9,
-                y: 0,
-                filter: "blur(0px)",
-                transition: { duration: 0.7 },
-              },
+              hidden: { opacity: 0, y: 20 },
+              show: { opacity: 0.9, y: 0 },
             }}
           >
             22 August 2026
           </motion.p>
 
-          {/* LOCATION */}
           <motion.p
-            className='script-cormorant-body text-white/70'
+            className="text-white/70"
             variants={{
-              hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
-              show: {
-                opacity: 0.9,
-                y: 0,
-                filter: "blur(0px)",
-                transition: { duration: 0.7 },
-              },
+              hidden: { opacity: 0, y: 20 },
+              show: { opacity: 0.9, y: 0 },
             }}
           >
             Padurile Regale
