@@ -12,25 +12,38 @@ export default function StoryItem({ item, index }: Props) {
   const isLeft = index % 2 === 0;
 
   const { ref, progress, yParallax } = useSectionScroll({
-    offset: ["start 80%", "end 20%"],
+    offset: ["start 85%", "end 15%"], // 🔥 mai smooth
   });
 
-  const tilt = index % 2 === 0 ? -0.6 : 0.6;
+  const tiltBase = index % 2 === 0 ? -0.6 : 0.6;
+
+  // ✍️ tilt dinamic (se „așază” când apare)
+  const tiltTitle = useTransform(progress, [0, 1], [tiltBase * 1.6, tiltBase]);
+  const tiltText = useTransform(progress, [0, 1], [tiltBase, tiltBase * 0.5]);
+  const tiltMeta = useTransform(
+    progress,
+    [0, 1],
+    [tiltBase * 0.6, tiltBase * 0.3],
+  );
 
   const type = item.type || "story";
 
   if (type === "transition") {
     return (
-      <div ref={ref} className='relative w-full my-40 text-center'>
-        <InkRevealText progress={progress} align='center'>
-          <h3 className='heading-md script-cormorant-display text-[#6b1f2b] mb-4'>
-            {item.title}
-          </h3>
+      <div ref={ref} className='relative w-full my-48 text-center'>
+        <div style={{ transform: `rotate(${tiltBase * 0.3}deg)` }}>
+          <InkRevealText progress={progress} align='center' delay={0.05}>
+            <h3 className='heading-md script-cormorant-display text-[#6b1f2b] mb-4'>
+              {item.title}
+            </h3>
+          </InkRevealText>
 
-          <p className='body-lg script-cormorant-body text-[#6b1f2b] max-w-xl mx-auto'>
-            {item.text}
-          </p>
-        </InkRevealText>
+          <InkRevealText progress={progress} align='center' delay={0.15}>
+            <p className='body-lg script-cormorant-body text-[#6b1f2b] max-w-xl mx-auto'>
+              {item.text}
+            </p>
+          </InkRevealText>
+        </div>
       </div>
     );
   }
@@ -38,53 +51,67 @@ export default function StoryItem({ item, index }: Props) {
   return (
     <div
       ref={ref}
-      className='relative flex items-center justify-between w-full mb-40'
+      className='relative flex items-center justify-between w-full mb-48'
     >
       {/* TEXT */}
       <div
-        className={`w-[55%] ${
+        className={`w-[48%] ${
           isLeft
-            ? "ml-auto text-right pr-28"
-            : "mr-auto order-2 text-left pl-28"
+            ? "ml-auto text-right pr-24"
+            : "mr-auto order-2 text-left pl-24"
         }`}
-        style={{
-          transform: `rotate(${tilt}deg)`,
-        }}
       >
-        <InkRevealText progress={progress} align={isLeft ? "right" : "left"}>
-          <h3 className='heading-md script-cormorant-display text-[#6b1f2b] tracking-[0.04em] mb-4'>
-            {item.title}
-          </h3>
-        </InkRevealText>
-
-        <InkRevealText progress={progress} align={isLeft ? "right" : "left"}>
-          <p
-            className='body-lg script-cormorant-body leading-relaxed
-                    tracking-[0.02em]
-                    max-w-[420px] text-[#6b1f2b]'
+        {/* TITLE */}
+        <div style={{ transform: `rotate(${tiltTitle}deg)` }}>
+          <InkRevealText
+            progress={progress}
+            align={isLeft ? "right" : "left"}
+            delay={0.05}
           >
-            {item.text}
-          </p>
-        </InkRevealText>
-
-        {type === "event" && (
-          <InkRevealText progress={progress} align={isLeft ? "right" : "left"}>
-            <div className='mt-6 text-sm text-[#6b1f2b] opacity-80'>
-              {item.date && <p>{item.date}</p>}
-              {item.location && (
-                <p className='text-accent-red mt-1'>{item.location}</p>
-              )}
-              {item.mapLink && (
-                <a
-                  href={item.mapLink}
-                  target='_blank'
-                  className='underline text-gold mt-2 inline-block'
-                >
-                  Vezi pe hartă
-                </a>
-              )}
-            </div>
+            <h3 className='heading-md script-cormorant-display tracking-[0.04em] mb-4 text-[#6b1f2b]'>
+              {item.title}
+            </h3>
           </InkRevealText>
+        </div>
+
+        {/* TEXT */}
+        <div style={{ transform: `rotate(${tiltText}deg)` }}>
+          <InkRevealText
+            progress={progress}
+            align={isLeft ? "right" : "left"}
+            delay={0.15}
+          >
+            <p className='body-lg script-cormorant-body leading-relaxed tracking-[0.02em] max-w-[420px] text-[#6b1f2b]'>
+              {item.text}
+            </p>
+          </InkRevealText>
+        </div>
+
+        {/* EVENT */}
+        {type === "event" && (
+          <div style={{ transform: `rotate(${tiltMeta}deg)` }}>
+            <InkRevealText
+              progress={progress}
+              align={isLeft ? "right" : "left"}
+              delay={0.25}
+            >
+              <div className='mt-6 text-sm text-[#6b1f2b] opacity-80'>
+                {item.date && <p>{item.date}</p>}
+                {item.location && (
+                  <p className='text-accent-red mt-1'>{item.location}</p>
+                )}
+                {item.mapLink && (
+                  <a
+                    href={item.mapLink}
+                    target='_blank'
+                    className='underline text-gold mt-2 inline-block'
+                  >
+                    Vezi pe hartă
+                  </a>
+                )}
+              </div>
+            </InkRevealText>
+          </div>
         )}
       </div>
 

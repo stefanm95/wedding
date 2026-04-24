@@ -12,7 +12,7 @@ export default function Story() {
   return (
     <section ref={ref} className='relative text-center'>
       <div className='relative max-w-5xl mx-auto'>
-        {/* ✍️ INK LINE */}
+        {/*line*/}
         <svg
           className='absolute left-[48%] top-0 -translate-x-1/2 h-full'
           width='80'
@@ -32,13 +32,11 @@ export default function Story() {
             strokeWidth='8'
             strokeLinecap='round'
             style={{
-              pathLength,
               opacity: 0.2,
               filter: "blur(8px)",
             }}
           />
         </svg>
-
         {/* ITEMS */}
         {storyData.map((item, index) => (
           <StoryItem key={index} item={item} index={index} />
