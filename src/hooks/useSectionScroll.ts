@@ -8,7 +8,7 @@ type Options = {
 };
 
 type Return = {
-  ref: React.RefObject<HTMLElement | null>;
+  ref: React.RefObject<HTMLDivElement | null>;
   progress: MotionValue<number>;
   smoothProgress: MotionValue<number>;
   isActive: MotionValue<number>;
@@ -16,7 +16,7 @@ type Return = {
 };
 
 export function useSectionScroll(options?: Options): Return {
-  const ref = useRef<HTMLElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: ref,

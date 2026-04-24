@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
+import { useSectionScroll } from "../../../hooks/useSectionScroll";
+import InkRevealText from "../../../components/InkRevealText";
 import type { StoryItemType } from "./storyData";
 
 type Props = {
@@ -9,86 +11,91 @@ type Props = {
 export default function StoryItem({ item, index }: Props) {
   const isLeft = index % 2 === 0;
 
-  // 🔥 DEFAULT TYPE (fallback pentru ce aveai deja)
+  const { ref, progress, yParallax } = useSectionScroll({
+    offset: ["start 80%", "end 20%"],
+  });
+
+  const tilt = index % 2 === 0 ? -0.6 : 0.6;
+
   const type = item.type || "story";
 
-  // 🔥 TRANSITION BLOCK (full width, fără linie)
   if (type === "transition") {
     return (
-      <div className='relative w-full my-40 text-center'>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h3 className='heading-md script-cormorant-display tracking-[0.06em] text-[#6b1f2b] mb-4'>
+      <div ref={ref} className='relative w-full my-40 text-center'>
+        <InkRevealText progress={progress} align='center'>
+          <h3 className='heading-md script-cormorant-display text-[#6b1f2b] mb-4'>
             {item.title}
           </h3>
-          <p className='body-lg script-cormorant-body text-[#6b1f2b] tracking-[0.06em] max-w-xl mx-auto'>
+
+          <p className='body-lg script-cormorant-body text-[#6b1f2b] max-w-xl mx-auto'>
             {item.text}
           </p>
-        </motion.div>
+        </InkRevealText>
       </div>
     );
   }
 
   return (
-    <div className='relative flex items-center justify-between w-full mb-40'>
-      {/* LINE DOT */}
-      <div className='absolute left-1/2 -translate-x-1/2 z-10 flex items-center justify-center'>
-        {/* 🧵 BASE LINE (full height) */}
-        <div className='w-[1px] bg-[#6b1f2b]/30 h-40 mx-auto mb-10' />
-      </div>
+    <div
+      ref={ref}
+      className='relative flex items-center justify-between w-full mb-40'
+    >
       {/* TEXT */}
-      <motion.div
-        initial={{ opacity: 0, x: isLeft ? -60 : 60 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className={`w-1/2 px-8 ${isLeft ? "text-right" : "order-2 text-left"}`}
+      <div
+        className={`w-[55%] ${
+          isLeft
+            ? "ml-auto text-right pr-28"
+            : "mr-auto order-2 text-left pl-28"
+        }`}
+        style={{
+          transform: `rotate(${tilt}deg)`,
+        }}
       >
-        <h3 className='heading-md script-cormorant-display text-center tracking-[0.06em] text-[#6b1f2b] mb-4'>
-          {item.title}
-        </h3>
+        <InkRevealText progress={progress} align={isLeft ? "right" : "left"}>
+          <h3 className='heading-md script-cormorant-display text-[#6b1f2b] tracking-[0.04em] mb-4'>
+            {item.title}
+          </h3>
+        </InkRevealText>
 
-        <p className='body-lg script-cormorant-body text-center text-[#6b1f2b] tracking-[0.06em]'>
-          {item.text}
-        </p>
+        <InkRevealText progress={progress} align={isLeft ? "right" : "left"}>
+          <p
+            className='body-lg script-cormorant-body leading-relaxed
+                    tracking-[0.02em]
+                    max-w-[420px] text-[#6b1f2b]'
+          >
+            {item.text}
+          </p>
+        </InkRevealText>
 
-        {/* 🔥 EVENT EXTRA INFO */}
         {type === "event" && (
-          <div className='mt-6 text-sm text-[#6b1f2b] text-center pointer-events-none opacity-80'>
-            {item.date && <p>{item.date}</p>}
-
-            {item.location && (
-              <p className='text-accent-red mt-1'>{item.location}</p>
-            )}
-
-            {item.mapLink && (
-              <a
-                href={item.mapLink}
-                target='_blank'
-                className='underline text-gold mt-2 inline-block'
-              >
-                Vezi pe hartă
-              </a>
-            )}
-          </div>
+          <InkRevealText progress={progress} align={isLeft ? "right" : "left"}>
+            <div className='mt-6 text-sm text-[#6b1f2b] opacity-80'>
+              {item.date && <p>{item.date}</p>}
+              {item.location && (
+                <p className='text-accent-red mt-1'>{item.location}</p>
+              )}
+              {item.mapLink && (
+                <a
+                  href={item.mapLink}
+                  target='_blank'
+                  className='underline text-gold mt-2 inline-block'
+                >
+                  Vezi pe hartă
+                </a>
+              )}
+            </div>
+          </InkRevealText>
         )}
-      </motion.div>
+      </div>
 
-      {/* IMAGE (doar dacă există) */}
+      {/* IMAGE */}
       {item.image && (
-        <motion.div
-          initial={{ opacity: 0, x: isLeft ? 60 : -60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className='w-1/2 px-8'
-        >
+        <motion.div style={{ y: yParallax }} className='w-1/2 px-8'>
           <div className='overflow-hidden rounded-2xl shadow-lg'>
             <img
               src={item.image}
               alt={item.title}
-              className='w-full h-auto object-cover'
+              className='w-full object-cover'
             />
           </div>
         </motion.div>
