@@ -1,9 +1,17 @@
-export default function PaperSection({ children }: any) {
-  return (
-    <section className="relative z-10 min-h-screen py-32 px-6 overflow-hidden">
-      {/* 🔥 SOFT EDGE peste hero */}
-      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#f4f1ea] to-transparent z-10" />
+import { forwardRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
+export default forwardRef(function PaperSection({ children }: any, ref) {
+  const { scrollY } = useScroll();
+
+  const y = useTransform(scrollY, [0, 500], [0, -40]);
+
+  return (
+    <motion.section
+      ref={ref}
+      className="relative z-20 min-h-screen py-32 px-6 overflow-hidden"
+      style={{ y }}
+    >
       {/* texture */}
       <div
         className="absolute inset-0 z-0"
@@ -26,6 +34,6 @@ export default function PaperSection({ children }: any) {
       />
 
       <div className="relative z-10 max-w-4xl mx-auto">{children}</div>
-    </section>
+    </motion.section>
   );
-}
+})

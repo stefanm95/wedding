@@ -4,21 +4,33 @@ import { useEffect, useState } from "react";
 type Props = {
   opened: boolean;
   heroRef: any;
+  paperRef: any;
 };
 
-export default function HeroVideo({ opened, heroRef }: Props) {
+export default function HeroVideo({ opened, heroRef, paperRef }: Props) {
   const [light, setLight] = useState(0);
 
   // 🔥 SCROLL REAL (legat de Hero container din Home)
   const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
+    target: paperRef,
+    offset: ["start end", "end start"],
   });
 
   // 🎬 fade + push
-  const opacityScroll = useTransform(scrollYProgress, [0.3, 0.7], [1, 0]);
-  const blurScroll = useTransform(scrollYProgress, [0.3, 0.7], [0, 10]);
-  const yScroll = useTransform(scrollYProgress, [0.3, 0.7], [0, -60]);
+  const opacityScroll = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
+  const yScroll = useTransform(scrollYProgress, [0, 0.7, 1], [0, -80, -160]);
+
+  const blurScroll = useTransform(scrollYProgress, [0, 0.6, 1], [0, 0, 18]);
+
+  const scaleScroll = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
+
+  const brightness = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+
+  const filter = useTransform(
+    [blurScroll, brightness],
+    ([b, br]) => `blur(${b}px) brightness(${br})`,
+  );
 
   useEffect(() => {
     let rafId: number;
@@ -50,7 +62,8 @@ export default function HeroVideo({ opened, heroRef }: Props) {
           style={{
             opacity: opacityScroll,
             y: yScroll,
-            filter: useTransform(blurScroll, (b) => `blur(${b}px)`),
+            scale: scaleScroll,
+            filter: filter,
           }}
           initial="hidden"
           animate={opened ? "show" : "hidden"}
@@ -92,11 +105,11 @@ export default function HeroVideo({ opened, heroRef }: Props) {
             style={{
               textShadow: `
                 0 0 ${30 + boosted * 80}px rgba(255,220,160,${
-                0.2 + boosted * 0.5
-              }),
+                  0.2 + boosted * 0.5
+                }),
                 0 0 ${80 + boosted * 160}px rgba(255,200,120,${
-                0.1 + boosted * 0.35
-              })
+                  0.1 + boosted * 0.35
+                })
               `,
             }}
           >
@@ -114,7 +127,7 @@ export default function HeroVideo({ opened, heroRef }: Props) {
           </motion.p>
 
           <motion.p
-            className="text-white/70"
+            className="text-white/70 script-cormorant tracking-[0.08em]"
             variants={{
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 0.9, y: 0 },

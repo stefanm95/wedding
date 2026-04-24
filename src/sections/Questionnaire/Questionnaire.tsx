@@ -1,6 +1,6 @@
 export default function Questionnaire() {
   return (
-    <section className='bg-editorial py-32'>
+    <section className='bg-transparent py-32'>
       <div className='max-w-xl mx-auto space-y-6'>
         <h2 className='heading-lg text-center text-accent-red'>
           Additional Details

@@ -3,7 +3,7 @@ import HeroVideo from "./HeroVideo";
 import HeroIntro from "./HeroIntro";
 import CinematicOverlay from "../../components/CinematicOverlay";
 
-export default function Hero({ opened, setOpened, heroRef }: any) {
+export default function Hero({ opened, setOpened, heroRef, paperRef }: any) {
   const [progress, setProgress] = useState(0); // 🔥 shared animation state
   const eased = Math.pow(progress, 1.4);
 
@@ -18,13 +18,13 @@ export default function Hero({ opened, setOpened, heroRef }: any) {
         disablePictureInPicture
         className="absolute inset-0 w-full h-full object-cover z-0"
         style={{
+          transform: `scale(${1.06 - eased * 0.06}) translateY(${eased * 30}px)`,
           filter: `
             blur(${8 - eased * 8}px)
             brightness(${0.7 + eased * 0.25})
             contrast(${0.95 + eased * 0.15})
             saturate(${0.8 + eased * 0.15})
           `,
-          transform: `scale(${1.06 - eased * 0.06})`,
         }}
       >
         <source src="/assets/video/hero.mp4" type="video/mp4" />
@@ -40,7 +40,7 @@ export default function Hero({ opened, setOpened, heroRef }: any) {
       )}
 
       {/* ✨ FINAL UI (text peste video) */}
-      <HeroVideo opened={opened} heroRef={heroRef} />
+      <HeroVideo opened={opened} heroRef={heroRef} paperRef={paperRef} />
 
       <CinematicOverlay intensity={1} />
     </div>

@@ -1,6 +1,6 @@
 export default function RSVP() {
   return (
-    <section className='bg-editorial py-32'>
+    <section className='bg-transparent py-32'>
       <div className='max-w-xl mx-auto'>
         <h2 className='heading-lg text-center text-accent-red'>
           Confirm Attendance

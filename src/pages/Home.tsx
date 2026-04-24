@@ -7,7 +7,6 @@ import Timeline from "../sections/PaperSection/Timeline/Timeline";
 import Details from "../sections/Details/Details";
 import RSVP from "../sections/RSVP/RSVP";
 import Countdown from "../sections/PaperSection/Countdown/Countdown";
-import SectionTransition from "../components/SectionTransition";
 import Questionnaire from "../sections/Questionnaire/Questionnaire";
 import PaperSection from "../sections/PaperSection/PaperSection";
 import { useCountdown } from "../hooks/useCountdown";
@@ -15,44 +14,46 @@ import PolaroidCard from "../components/PolaroidCard";
 
 function Home() {
   const [opened, setOpened] = useState(false);
-
   const heroRef = useRef(null);
+  const paperRef = useRef(null);
   const time = useCountdown(new Date("2026-08-22T16:00:00"));
 
   return (
-    <div>
-      {/* HERO NORMAL */}
-      <div ref={heroRef} className="relative z-0 min-h-screen">
-        <Hero opened={opened} setOpened={setOpened} heroRef={heroRef} />
-      </div>
-
-      {/* PAPER SECTION care intră peste */}
-      <div className="relative z-10">
-      <PaperSection>
-        {/* POLAROID */}
-        <div className="relative -mt-24 flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 80, rotate: -8 }}
-            whileInView={{ opacity: 1, y: 0, rotate: -3 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-          >
-            <PolaroidCard />
-          </motion.div>
+    <>
+      <div className="relative">
+        {/* 🎬 HERO FIXED BACKGROUND */}
+        <div className="fixed inset-0 z-0">
+          <Hero opened={opened} setOpened={setOpened} heroRef={heroRef} paperRef={paperRef} />
         </div>
 
-        <Countdown {...time} />
-        <Story />
-        <Timeline />
-      </PaperSection>
+        {/* 📜 SCROLL CONTENT */}
+        <div ref={heroRef} className="relative z-10 pointer-events-none">
+          {/* spacer = înălțimea hero */}
+          <div className="h-screen" />
+
+          <PaperSection ref={paperRef}>
+            <motion.div
+              initial={{ opacity: 0, y: 120, rotate: -10, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, rotate: -3, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+            >
+              <PolaroidCard />
+            </motion.div>
+
+            <Countdown {...time} />
+            <Story />
+            <Timeline />
+          </PaperSection>
+        </div>
       </div>
 
-      <SectionTransition from="light" to="dark" />
+      
       <Details />
-      <SectionTransition from="dark" to="light" />
+      
       <RSVP />
       <Questionnaire />
-    </div>
+    </>
   );
 }
 
