@@ -1,54 +1,85 @@
-const PaperBackground = () => {
-  return (
-    <div className='absolute inset-0 z-0'>
-      {/* 🟤 BASE COLOR */}
-      <div className='absolute inset-0 bg-[#f3efe7]' />
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { paperThemes, type PaperVariant } from "../../utils/paperThemes";
 
-      {/* 🧻 PAPER SOFT */}
+type Props = {
+  variant?: PaperVariant;
+};
+
+const PaperBackground = ({ variant = "day" }: Props) => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const lightOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [0.2, 0.5, 0.3],
+  );
+  const lightScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.1]);
+
+  const theme = paperThemes[variant];
+
+  return (
+    <div ref={ref} className='absolute inset-0 z-0'>
+      {/* 🟤 BASE */}
+      <div
+        className='absolute inset-0'
+        style={{ backgroundColor: theme.baseColor }}
+      />
+
+      {/* 🧻 PAPER */}
       <div
         className='absolute inset-0 opacity-[0.45]'
         style={{
           backgroundImage: "url('/assets/base-paper/base-paper5.png')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
         }}
       />
 
-      {/* 🌫 SECOND PAPER LAYER */}
+      {/* 🌫 DEPTH */}
       <div
         className='absolute inset-0 opacity-[0.25]'
         style={{
           backgroundImage: "url('/assets/base-paper/base-paper7.jpg')",
           backgroundSize: "cover",
-          backgroundPosition: "center",
         }}
       />
 
-      {/* ✨ FINE GRAIN */}
+      {/* ✨ GRAIN */}
       <div
         className='absolute inset-0 pointer-events-none'
         style={{
-          backgroundImage: "url('/assets/base-grain/grain3.jpg')",
+          backgroundImage: "url('/assets/base-grain/grain2.jpg')",
           backgroundSize: "300px",
           opacity: 0.18,
           mixBlendMode: "overlay",
         }}
       />
 
-      {/* 💡 LIGHT OVERLAY */}
-      <div className='absolute inset-0 pointer-events-none'>
-        <div className='absolute inset-0 bg-white/20 mix-blend-soft-light' />
-
+      {/* 🌞 LIGHT */}
+      <motion.div
+        style={{
+          opacity: lightOpacity,
+          scale: lightScale,
+        }}
+        className='absolute inset-0 pointer-events-none'
+      >
         <div
           className='absolute inset-0'
-          style={{
-            background:
-              "radial-gradient(circle at 50% 30%, rgba(255,255,255,0.35), transparent 60%)",
-          }}
+          style={{ background: theme.lightGradient }}
         />
-      </div>
+      </motion.div>
 
-      {/* 🧻 PAPER EDGE */}
+      {/* 💡 OVERLAY */}
+      <div
+        className={`absolute inset-0 pointer-events-none mix-blend-soft-light ${theme.overlay}`}
+      />
+
+      {/* 🧻 EDGE */}
       <div className='absolute top-0 left-0 w-full h-40 pointer-events-none'>
         <div className='absolute top-0 left-0 w-full h-[2px] bg-white/40' />
         <div className='absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-white/20 to-transparent' />
