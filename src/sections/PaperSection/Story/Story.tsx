@@ -1,6 +1,6 @@
 import TimelineLine from "../../../components/TimeLine";
 import StoryItem from "./StoryItem";
-import { storyItems, eventItems } from "./storyData";
+import { storyItems } from "./storyData";
 
 export default function Story() {
   return (
@@ -9,23 +9,13 @@ export default function Story() {
         {/* 🔥 STORY PART */}
         <div className='relative'>
           {/* linie doar pentru story */}
-          <TimelineLine className='top-0' />
-
+          <TimelineLine className='top-0 hidden md:flex' />
           {storyItems.map((item, index) => (
             <StoryItem key={index} item={item} index={index} />
           ))}
         </div>
         {/* 🔥 TRANSITION SPACE */}
-        <div className='h-20' /> {/* 🔥 IMPORTANT */}
-        {/* 🔥 EVENTS PART */}
-        <div className='relative'>
-          {/* linie nouă (separată) */}
-          <TimelineLine className='top-0' />
-
-          {eventItems.map((item, index) => (
-            <StoryItem key={index} item={item} index={index} />
-          ))}
-        </div>
+        <div className='h-20' />
       </div>
     </section>
   );

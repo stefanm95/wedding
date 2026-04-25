@@ -5,9 +5,9 @@ export default function Countdown({ days, hours, minutes, seconds }: any) {
 
   return (
     <motion.div
-      className="text-center mb-32 mt-12"
-      initial="hidden"
-      whileInView="show"
+      className='text-center mt-12'
+      initial='hidden'
+      whileInView='show'
       viewport={{ once: true }}
       variants={{
         hidden: {},
@@ -18,7 +18,7 @@ export default function Countdown({ days, hours, minutes, seconds }: any) {
         },
       }}
     >
-      <div className="flex justify-center gap-10 text-[#6b1f2b]">
+      <div className='flex justify-center gap-4 md:gap-10 text-3xl md:text-5xl text-[#6b1f2b]'>
         {items.map((value, i) => (
           <motion.div
             key={i}
@@ -32,9 +32,11 @@ export default function Countdown({ days, hours, minutes, seconds }: any) {
               },
             }}
           >
-            <div className="text-5xl text-[#6b1f2b] script-castlegar">{value}</div>
+            <div className='text-5xl text-[#6b1f2b] script-castlegar'>
+              {value}
+            </div>
 
-            <div className="text-sm  script-cormorant tracking-[0.6em] mt-2 opacity-60">
+            <div className='text-sm  script-cormorant tracking-[0.6em] mt-2 opacity-60'>
               {["ZILE", "ORE", "MIN", "SEC"][i]}
             </div>
           </motion.div>

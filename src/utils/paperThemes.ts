@@ -58,18 +58,23 @@ export const paperThemes: Record<
     baseColor: "#f2ebe5",
 
     lightGradient: `
-      radial-gradient(
-        circle at 30% 25%,
-        rgba(255, 210, 190, 0.55),
-        rgba(255, 190, 170, 0.25) 35%,
-        transparent 65%
-      ),
-      linear-gradient(
-        130deg,
-        rgba(0,0,0,0.14),
-        transparent 45%
-      )
-    `,
+  radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 240, 200, 0.55),
+    rgba(255, 220, 170, 0.25) 30%,
+    transparent 60%
+  ),
+  radial-gradient(
+    circle at 70% 80%,   // 🔥 NEW (jos)
+    rgba(255, 240, 210, 0.25),
+    transparent 60%
+  ),
+  linear-gradient(
+    180deg,
+    rgba(255,255,255,0.05),
+    rgba(0,0,0,0.08)
+  )
+`,
 
     overlay: "bg-[#ffe4d6]/10",
 
@@ -80,18 +85,18 @@ export const paperThemes: Record<
     grainSize: "180px",
 
     vignette: `
-      radial-gradient(
-        circle at 50% 45%,
-        transparent 45%,
-        rgba(0,0,0,0.16) 100%
-      )
-    `,
+  radial-gradient(
+    circle at 50% 50%,   // 🔥 mutat din 40%
+    transparent 55%,
+    rgba(0,0,0,0.10) 100%
+  )
+`,
 
     filter: "contrast(1.05) brightness(1.02) saturate(0.98)",
   },
 
   day: {
-    baseColor: "#f6f3ed",
+    baseColor: "#f3efe7",
 
     lightGradient: `
       radial-gradient(
@@ -107,7 +112,7 @@ export const paperThemes: Record<
       )
     `,
 
-    overlay: "bg-white/25",
+    overlay: "bg-white/15",
 
     paperOpacity: 0.22,
     depthOpacity: 0.1,

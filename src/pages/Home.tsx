@@ -4,7 +4,6 @@ import Details from "../sections/Details/Details";
 import RSVP from "../sections/RSVP/RSVP";
 import Questionnaire from "../sections/Questionnaire/Questionnaire";
 import PaperSection from "../sections/PaperSection/PaperSection";
-import ProgramSection from "../sections/Program/ProgramSection";
 
 function Home() {
   const [opened, setOpened] = useState(false);
@@ -32,7 +31,6 @@ function Home() {
           <PaperSection ref={paperRef} />
         </div>
       </div>
-      <ProgramSection />
 
       <Details />
       <RSVP />

@@ -8,7 +8,7 @@ import {
 
 import Countdown from "./Countdown/Countdown";
 import Story from "./Story/Story";
-import PolaroidCard from "../../components/PolaroidCard";
+import PolaroidCard from "./Countdown/PolaroidCard";
 import PaperBackground from "./PaperBackground";
 
 import { useCountdown } from "../../hooks/useCountdown";
@@ -16,6 +16,7 @@ import { useMergedRefs } from "../../hooks/useMergedRefs";
 
 import type { PaperVariant } from "../../utils/paperThemes";
 import type { HTMLMotionProps } from "framer-motion";
+import PaperProgram from "./Program/PaperProgram";
 
 type Props = HTMLMotionProps<"section">;
 
@@ -45,7 +46,7 @@ const PaperSection = forwardRef<HTMLElement, Props>((props, ref) => {
     <motion.section
       ref={mergedRef}
       {...props}
-      className='relative z-20 min-h-screen py-32 px-6 overflow-hidden'
+      className='relative z-20 min-h-screen py-32 overflow-hidden'
       style={{ ...props.style, y }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -129,6 +130,8 @@ const PaperSection = forwardRef<HTMLElement, Props>((props, ref) => {
 
               <Countdown {...time} />
               <Story />
+
+              <PaperProgram />
             </div>
           </div>
         </div>

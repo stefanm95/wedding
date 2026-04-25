@@ -6,7 +6,7 @@ type Props = {
   variant?: PaperVariant;
 };
 
-const PaperBackground = ({ variant = "day" }: Props) => {
+const PaperBackground = ({ variant = "golden" }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
@@ -17,9 +17,9 @@ const PaperBackground = ({ variant = "day" }: Props) => {
   const lightOpacity = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [0.2, 0.5, 0.3],
+    [0.15, 0.4, 0.25],
   );
-  const lightScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.1]);
+  const lightScale = useTransform(scrollYProgress, [0, 1], [0.96, 1.05]);
 
   const theme = paperThemes[variant];
 
@@ -27,47 +27,72 @@ const PaperBackground = ({ variant = "day" }: Props) => {
     <div
       ref={ref}
       className='absolute inset-0 z-0'
-      style={{ filter: theme.filter }}
+      style={{
+        filter: theme.filter,
+
+        WebkitMaskImage: `
+      linear-gradient(
+        to bottom,
+        black 0%,
+        black 70%,
+        rgba(0,0,0,0.6) 80%,
+        transparent 100%
+      )
+    `,
+        maskImage: `
+      linear-gradient(
+        to bottom,
+        black 0%,
+        black 70%,
+        rgba(0,0,0,0.6) 80%,
+        transparent 100%
+      )
+    `,
+      }}
     >
-      {/* 🟤 BASE */}
+      {/* 🟤 BASE COLOR */}
       <div
         className='absolute inset-0'
         style={{ backgroundColor: theme.baseColor }}
       />
 
-      {/* 🧻 PAPER */}
+      {/* 🧻 MAIN PAPER (NO REPEAT, SLIGHT ZOOM) */}
       <div
-        className='absolute inset-0 opacity-[0.25]'
+        className='absolute inset-0'
         style={{
-          backgroundImage:
-            "url('/assets/base-paper/paper-high-resolution.jpg')",
-          backgroundSize: "cover",
+          backgroundImage: "url('/assets/base-paper/bg-premium2.png')",
+          backgroundSize: "contain", // 🔥 CRITICAL (no seam)
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           opacity: theme.paperOpacity,
         }}
       />
 
+      {/* 🧬 EMBOSS LAYER (crest subtle) */}
+      <div
+        className='absolute inset-0 pointer-events-none'
+        style={{
+          backgroundImage: "url('/assets/base-paper/paper-soft-clean.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.35,
+          mixBlendMode: "multiply",
+        }}
+      />
+
+      {/* 🌫 SOFT EDGE FADE (hides boundaries) */}
       <div
         className='absolute inset-0 pointer-events-none'
         style={{
           background: `
-      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.05), transparent 60%),
-      radial-gradient(circle at 20% 80%, rgba(255,255,255,0.06), transparent 60%)
-    `,
+            linear-gradient(to right, ${theme.baseColor} 0%, transparent 12%, transparent 88%, ${theme.baseColor} 100%),
+            linear-gradient(to bottom, ${theme.baseColor} 0%, transparent 12%, transparent 88%, ${theme.baseColor} 100%)
+          `,
+          opacity: 0.6,
         }}
       />
 
-      {/* 🌫 DEPTH */}
-      <div
-        className='absolute inset-0'
-        style={{
-          backgroundImage:
-            "url('/assets/base-paper/paper-high-resolution-warm.jpg')",
-          backgroundSize: "cover",
-          opacity: theme.depthOpacity,
-        }}
-      />
-
-      {/* ✨ GRAIN */}
+      {/* ✨ GRAIN (very important) */}
       <div
         className='absolute inset-0 pointer-events-none'
         style={{
@@ -78,7 +103,7 @@ const PaperBackground = ({ variant = "day" }: Props) => {
         }}
       />
 
-      {/* 🌞 LIGHT */}
+      {/* 🌞 LIGHT (animated) */}
       <motion.div
         style={{
           opacity: lightOpacity,
@@ -92,22 +117,26 @@ const PaperBackground = ({ variant = "day" }: Props) => {
         />
       </motion.div>
 
+      {/* 🌑 VIGNETTE */}
       <div
         className='absolute inset-0 pointer-events-none'
         style={{
           background: theme.vignette,
         }}
       />
+      <div
+        className='absolute inset-0 pointer-events-none'
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent, rgba(0,0,0,0.03), transparent)",
+          opacity: 0.4,
+        }}
+      />
 
-      {/* 💡 OVERLAY */}
+      {/* 💡 FINAL SOFT OVERLAY */}
       <div
         className={`absolute inset-0 pointer-events-none mix-blend-soft-light ${theme.overlay}`}
       />
-
-      {/* 🧻 EDGE */}
-      <div className='absolute top-0 left-0 w-full h-40 pointer-events-none'>
-        <div className='absolute inset-0 bg-gradient-to-b from-white/30 via-white/10 to-transparent' />
-      </div>
     </div>
   );
 };
