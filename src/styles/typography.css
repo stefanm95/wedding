@@ -115,4 +115,34 @@
 
     color: rgba(255, 255, 255, 0.85);
   }
+
+  .ink-text {
+    color: #6b1f2b;
+
+    /* ✨ simulare cerneală */
+    text-shadow:
+      0 0 0.3px rgba(107, 31, 43, 0.6),
+      0 0 1px rgba(107, 31, 43, 0.25);
+
+    /* ✨ ușor fade în material */
+    opacity: 0.92;
+  }
+
+  .ink-title {
+    color: #6b1f2b;
+
+    text-shadow:
+      0 0 0.4px rgba(107, 31, 43, 0.7),
+      0 1px 0 rgba(255, 255, 255, 0.25),
+      0 -1px 1px rgba(0, 0, 0, 0.15);
+
+    opacity: 0.95;
+  }
+
+  .ink-meta {
+    color: #6b1f2b;
+    opacity: 0.75;
+
+    text-shadow: 0 0 0.3px rgba(107, 31, 43, 0.4);
+  }
 }

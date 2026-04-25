@@ -6,31 +6,34 @@ export type StoryItemType = {
   text: string;
   image?: string;
   date?: string;
+  time?: string;
   location?: string;
   mapLink?: string;
 };
 
 export const storyData: StoryItemType[] = [
   {
-    title: "Cum ne-am întâlnit",
-    text: "Ne-am întâlnit într-un mod simplu, dar care avea să ne schimbe viața...",
-    image: "/images/story-1.jpg",
+    title: "Totul a început fără să știm",
+    text: "Nu a fost o întâlnire planificată. Nu a fost un moment spectaculos. Dar dintr-o întâmplare simplă, a început ceva ce avea să devină totul.",
+    image: "/public/assets/images/couple/couple-placeholder01.png",
+    date: "2021",
   },
   {
-    title: "Cum m-a cerut",
-    text: "Într-o zi care părea obișnuită, totul s-a transformat într-un moment magic...",
-    image: "/images/story-2.jpg",
+    title: "Un moment care a schimbat totul",
+    text: "Într-o zi obișnuită, timpul parcă s-a oprit. Iar întrebarea aceea simplă a devenit începutul unui nou capitol.",
+    image: "public/assets/images/couple/couple-placeholder02.png",
+    date: "2024",
   },
   {
-    title: "Familia noastră",
-    text: "Astăzi suntem înconjurați de oameni care ne definesc povestea...",
-    image: "/images/story-3.jpg",
+    title: "O lume construită împreună",
+    text: "Nu doar noi doi, ci toți cei care ne sunt alături. O familie, o poveste, o viață care crește în fiecare zi.",
+    image: "public/assets/images/couple/couple-placeholder03.png",
+    date: "2026",
   },
-  // 🔥 TRANZIȚIE (foarte importantă pentru flow)
   {
     type: "transition",
-    title: "Începem un nou capitol",
-    text: "Vă invităm să fiți alături de noi în ziua în care povestea noastră continuă...",
+    title: "Iar acum…",
+    text: "Vă invităm să fiți parte din ziua în care povestea noastră continuă.",
   },
 
   // 📍 CEREMONIE
@@ -40,6 +43,7 @@ export const storyData: StoryItemType[] = [
     text: "Vom spune „DA” în fața lui Dumnezeu, într-un loc plin de liniște și binecuvântare.",
     location: "Biserica X",
     date: "20 August 2026",
+    time: "16:00",
     image: "/images/church.jpg",
     mapLink: "https://maps.google.com",
   },
@@ -50,11 +54,15 @@ export const storyData: StoryItemType[] = [
     title: "Petrecerea",
     text: "Vom sărbători iubirea noastră într-un cadru natural de poveste.",
     location: "Pădurile Regale",
-    date: "20 August 2026",
+    date: "22 August 2026",
+    time: "19:00",
     image: "/images/padurile-regale.jpg",
     mapLink: "https://maps.google.com",
   },
 ];
+
+export const storyItems = storyData.filter((i) => i.type !== "event");
+export const eventItems = storyData.filter((i) => i.type === "event");
 
 export const timelineData = [
   {
