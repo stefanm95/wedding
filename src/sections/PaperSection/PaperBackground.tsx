@@ -24,7 +24,11 @@ const PaperBackground = ({ variant = "day" }: Props) => {
   const theme = paperThemes[variant];
 
   return (
-    <div ref={ref} className='absolute inset-0 z-0'>
+    <div
+      ref={ref}
+      className='absolute inset-0 z-0'
+      style={{ filter: theme.filter }}
+    >
       {/* 🟤 BASE */}
       <div
         className='absolute inset-0'
@@ -33,19 +37,33 @@ const PaperBackground = ({ variant = "day" }: Props) => {
 
       {/* 🧻 PAPER */}
       <div
-        className='absolute inset-0 opacity-[0.45]'
+        className='absolute inset-0 opacity-[0.25]'
         style={{
-          backgroundImage: "url('/assets/base-paper/base-paper5.png')",
+          backgroundImage:
+            "url('/assets/base-paper/paper-high-resolution.jpg')",
           backgroundSize: "cover",
+          opacity: theme.paperOpacity,
+        }}
+      />
+
+      <div
+        className='absolute inset-0 pointer-events-none'
+        style={{
+          background: `
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.05), transparent 60%),
+      radial-gradient(circle at 20% 80%, rgba(255,255,255,0.06), transparent 60%)
+    `,
         }}
       />
 
       {/* 🌫 DEPTH */}
       <div
-        className='absolute inset-0 opacity-[0.25]'
+        className='absolute inset-0'
         style={{
-          backgroundImage: "url('/assets/base-paper/base-paper7.jpg')",
+          backgroundImage:
+            "url('/assets/base-paper/paper-high-resolution-warm.jpg')",
           backgroundSize: "cover",
+          opacity: theme.depthOpacity,
         }}
       />
 
@@ -54,9 +72,9 @@ const PaperBackground = ({ variant = "day" }: Props) => {
         className='absolute inset-0 pointer-events-none'
         style={{
           backgroundImage: "url('/assets/base-grain/grain2.jpg')",
-          backgroundSize: "300px",
-          opacity: 0.18,
-          mixBlendMode: "overlay",
+          backgroundSize: theme.grainSize,
+          opacity: theme.grainOpacity,
+          mixBlendMode: "multiply",
         }}
       />
 
@@ -74,6 +92,13 @@ const PaperBackground = ({ variant = "day" }: Props) => {
         />
       </motion.div>
 
+      <div
+        className='absolute inset-0 pointer-events-none'
+        style={{
+          background: theme.vignette,
+        }}
+      />
+
       {/* 💡 OVERLAY */}
       <div
         className={`absolute inset-0 pointer-events-none mix-blend-soft-light ${theme.overlay}`}
@@ -81,10 +106,7 @@ const PaperBackground = ({ variant = "day" }: Props) => {
 
       {/* 🧻 EDGE */}
       <div className='absolute top-0 left-0 w-full h-40 pointer-events-none'>
-        <div className='absolute top-0 left-0 w-full h-[2px] bg-white/40' />
-        <div className='absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-white/20 to-transparent' />
-        <div className='absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/30 to-transparent' />
-        <div className='absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-[#f4f1ea] via-[#f4f1ea]/80 to-transparent' />
+        <div className='absolute inset-0 bg-gradient-to-b from-white/30 via-white/10 to-transparent' />
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ import {
 
 import Countdown from "./Countdown/Countdown";
 import Story from "./Story/Story";
-import Timeline from "./Timeline/Timeline";
 import PolaroidCard from "../../components/PolaroidCard";
 import PaperBackground from "./PaperBackground";
 
@@ -68,7 +67,6 @@ const PaperSection = forwardRef<HTMLElement, Props>((props, ref) => {
 
         <Countdown {...time} />
         <Story />
-        <Timeline />
       </div>
     </motion.section>
   );

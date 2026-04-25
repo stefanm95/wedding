@@ -4,7 +4,7 @@ import Details from "../sections/Details/Details";
 import RSVP from "../sections/RSVP/RSVP";
 import Questionnaire from "../sections/Questionnaire/Questionnaire";
 import PaperSection from "../sections/PaperSection/PaperSection";
-
+import ProgramSection from "../sections/Program/ProgramSection";
 
 function Home() {
   const [opened, setOpened] = useState(false);
@@ -14,9 +14,9 @@ function Home() {
 
   return (
     <>
-      <div className="relative">
+      <div className='relative'>
         {/* HERO */}
-        <div className="fixed inset-0 z-0">
+        <div className='fixed inset-0 z-0'>
           <Hero
             opened={opened}
             setOpened={setOpened}
@@ -26,12 +26,13 @@ function Home() {
         </div>
 
         {/* FLOW */}
-        <div ref={heroRef} className="relative z-10 pointer-events-none">
-          <div className="h-screen" />
+        <div ref={heroRef} className='relative z-10 pointer-events-none'>
+          <div className='h-screen' />
 
           <PaperSection ref={paperRef} />
         </div>
       </div>
+      <ProgramSection />
 
       <Details />
       <RSVP />
