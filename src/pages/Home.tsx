@@ -20,7 +20,7 @@ function Home() {
         <div className='h-screen' />
 
         {/* PAPER vine peste */}
-        <PaperSection ref={paperRef} className='pointerevents-auto' />
+        <PaperSection ref={paperRef} className='pointer-events-auto' />
       </div>
     </div>
   );
