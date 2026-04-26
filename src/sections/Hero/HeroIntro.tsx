@@ -63,7 +63,7 @@ export default function HeroIntro({
   return (
     <div
       onClick={handleClick}
-      className='absolute inset-0 z-20 cursor-pointer'
+      className='absolute inset-0 z-[999] cursor-pointer'
       style={{
         pointerEvents: started ? "none" : "auto",
         position: "absolute",

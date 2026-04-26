@@ -1,32 +1,28 @@
 import { useRef, useState } from "react";
 
 import Hero from "../sections/Hero/Hero";
-import Details from "../sections/Details/Details";
-import RSVP from "../sections/RSVP/RSVP";
-import Questionnaire from "../sections/Questionnaire/Questionnaire";
 import PaperSection from "../sections/PaperSection/PaperSection";
 
 function Home() {
   const [opened, setOpened] = useState(false);
-
-  const heroRef = useRef<HTMLElement | null>(null);
   const paperRef = useRef<HTMLElement | null>(null);
 
   return (
-    <>
-      <Hero
-        opened={opened}
-        setOpened={setOpened}
-        heroRef={heroRef}
-        paperRef={paperRef}
-      />
+    <div className='relative'>
+      {/* 🎬 HERO (BACKGROUND GLOBAL) */}
+      <div className='fixed inset-0 z-0'>
+        <Hero opened={opened} setOpened={setOpened} paperRef={paperRef} />
+      </div>
 
-      <PaperSection ref={paperRef} />
+      {/* 📄 CONTENT FLOW */}
+      <div className='relative z-10 pointer-events-none'>
+        {/* spacer = înălțimea hero */}
+        <div className='h-screen' />
 
-      <Details />
-      <RSVP />
-      <Questionnaire />
-    </>
+        {/* PAPER vine peste */}
+        <PaperSection ref={paperRef} className='pointerevents-auto' />
+      </div>
+    </div>
   );
 }
 

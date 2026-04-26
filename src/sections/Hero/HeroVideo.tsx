@@ -1,32 +1,33 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import type { HeroVideoProps } from "../../types/hero";
 
 export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const [light, setLight] = useState(0);
 
-  // 🔥 SCROLL REAL (legat de Hero container din Home)
+  // 🔥 SINGLE SOURCE OF TRUTH
   const { scrollYProgress } = useScroll({
     target: paperRef,
-    offset: ["start end", "end start"],
+    offset: ["start end", "start start"],
   });
 
-  // 🎬 fade + push
-  const opacityScroll = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  // 🎬 TEXT MOVE
+  const y = useTransform(scrollYProgress, [0, 1], [0, 220]);
 
-  const yScroll = useTransform(scrollYProgress, [0, 0.7, 1], [0, -80, -160]);
+  // 🎬 FADE OUT
+  const opacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.4, 0]);
 
-  const blurScroll = useTransform(scrollYProgress, [0, 0.6, 1], [0, 0, 18]);
+  // 🎬 SCALE
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
 
-  const scaleScroll = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-
-  const brightness = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
-
-  const filter = useTransform(
-    [blurScroll, brightness],
-    ([b, br]) => `blur(${b}px) brightness(${br})`,
+  // 🎬 TEXT BLUR
+  const blurText = useTransform(
+    scrollYProgress,
+    [0.6, 1],
+    ["blur(0px)", "blur(10px)"],
   );
 
+  // 🔥 păstrăm glow-ul tău
   useEffect(() => {
     let rafId: number;
 
@@ -34,16 +35,12 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
       const target =
         typeof window.__heroLight === "number" ? window.__heroLight : 0;
 
-      setLight((prev) => {
-        const delayFactor = 0.12;
-        return prev + (target - prev) * delayFactor;
-      });
+      setLight((prev) => prev + (target - prev) * 0.12);
 
       rafId = requestAnimationFrame(animate);
     };
 
     rafId = requestAnimationFrame(animate);
-
     return () => cancelAnimationFrame(rafId);
   }, []);
 
@@ -51,24 +48,20 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
 
   return (
     <div className='absolute inset-0 pointer-events-none'>
-      <div className='absolute inset-0 bg-black/45' />
-
       <div className='absolute inset-0 flex items-center justify-center text-center'>
         <motion.div
           style={{
-            opacity: opacityScroll,
-            y: yScroll,
-            scale: scaleScroll,
-            filter: filter,
+            y,
+            opacity,
+            scale,
+            filter: blurText,
           }}
           initial='hidden'
           animate={opened ? "show" : "hidden"}
           variants={{
             hidden: {},
             show: {
-              transition: {
-                staggerChildren: 0.12,
-              },
+              transition: { staggerChildren: 0.12 },
             },
           }}
         >
