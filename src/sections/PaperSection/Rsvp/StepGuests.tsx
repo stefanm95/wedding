@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { stepVariants } from "./stepVariants";
-import type { RSVPGuest, RSVPStatus } from "../../../types/rsvp";
+import type { RSVPGuest } from "../../../types/rsvp";
+import type { DietaryOption } from "../../../types/rsvp";
 
 type Props = {
   guests: RSVPGuest[];
-  attending: RSVPStatus;
   onChange: (guests: RSVPGuest[]) => void;
   onNext: () => void;
   onBack: () => void;
@@ -13,20 +12,10 @@ type Props = {
 
 export default function StepGuests({
   guests,
-  attending,
   onChange,
   onNext,
   onBack,
 }: Props) {
-  // ❌ skip dacă nu vine
-  useEffect(() => {
-    if (attending === "no") {
-      onNext();
-    }
-  }, [attending, onNext]);
-
-  if (attending === "no") return null;
-
   const updateGuest = (index: number, value: string) => {
     const updated = [...guests];
     updated[index] = { ...updated[index], name: value };
@@ -39,6 +28,12 @@ export default function StepGuests({
 
   const removeGuest = (index: number) => {
     const updated = guests.filter((_, i) => i !== index);
+    onChange(updated);
+  };
+
+  const updateGuestDietary = (index: number, value: DietaryOption) => {
+    const updated = [...guests];
+    updated[index] = { ...updated[index], dietary: value };
     onChange(updated);
   };
 
@@ -70,36 +65,60 @@ export default function StepGuests({
       {/* LIST */}
       <div className='space-y-6'>
         {guests.map((guest, index) => (
-          <div key={index} className='flex items-center gap-4 group'>
-            <input
-              value={guest.name}
-              onChange={(e) => updateGuest(index, e.target.value)}
-              placeholder={`Invitat ${index + 1}`}
-              className='
-                flex-1
-                bg-transparent
-                border-b border-[#6b1f2b]/20
-                focus:border-[#6b1f2b]
-                outline-none
-                py-3
-                text-[#6b1f2b]
-                placeholder:text-[#6b1f2b]/40
-              '
-            />
-
-            {/* REMOVE */}
-            {guests.length > 1 && (
-              <button
-                onClick={() => removeGuest(index)}
+          <div key={index} className='space-y-2 group'>
+            {/* ROW */}
+            <div className='flex items-center gap-4'>
+              <input
+                value={guest.name}
+                onChange={(e) => updateGuest(index, e.target.value)}
+                placeholder={`Invitat ${index + 1}`}
                 className='
-                  opacity-0 group-hover:opacity-100
-                  text-[#6b1f2b]/40 hover:text-[#6b1f2b]
-                  transition
-                '
-              >
-                ✕
-              </button>
-            )}
+            flex-1
+            bg-transparent
+            border-b border-[#6b1f2b]/20
+            focus:border-[#6b1f2b]
+            outline-none
+            py-3
+            text-[#6b1f2b]
+            placeholder:text-[#6b1f2b]/40
+          '
+              />
+
+              {guests.length > 1 && (
+                <button
+                  onClick={() => removeGuest(index)}
+                  className='
+              opacity-0 group-hover:opacity-100
+              text-[#6b1f2b]/40 hover:text-[#6b1f2b]
+              transition
+            '
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {/* 🔥 DIETARY PER GUEST */}
+            <select
+              value={guest.dietary || "none"}
+              onChange={(e) =>
+                updateGuestDietary(index, e.target.value as DietaryOption)
+              }
+              className='
+          text-sm
+          bg-transparent
+          border-b border-[#6b1f2b]/20
+          focus:border-[#6b1f2b]
+          outline-none
+          text-[#6b1f2b]/70
+        '
+            >
+              <option value='none'>Fără restricții</option>
+              <option value='vegetarian'>Vegetarian</option>
+              <option value='vegan'>Vegan</option>
+              <option value='gluten-free'>Fără gluten</option>
+              <option value='other'>Altceva</option>
+            </select>
           </div>
         ))}
       </div>
