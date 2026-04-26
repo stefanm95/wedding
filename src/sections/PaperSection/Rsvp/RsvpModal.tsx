@@ -4,6 +4,7 @@ import { StepWelcome } from "./StepWelcome";
 import type { RSVPFormData } from "../../../types/rsvp"; // sau unde l-ai pus
 import { defaultRSVP } from "../../../types/rsvp";
 import StepName from "./StepName";
+import StepGuests from "./StepGuests";
 
 type Props = {
   open: boolean;
@@ -25,6 +26,8 @@ function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
             setForm((prev: RSVPFormData) => ({
               ...prev,
               attending,
+              guests:
+                attending === "yes" ? [{ name: "", dietary: "none" }] : [],
             }));
             setStep(1);
           }}
@@ -43,6 +46,22 @@ function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
           }
           onNext={() => setStep(2)}
           onBack={() => setStep(0)}
+        />
+      );
+
+    case 2:
+      return (
+        <StepGuests
+          guests={form.guests}
+          onChange={(guests) =>
+            setForm((prev: RSVPFormData) => ({
+              ...prev,
+              guests,
+            }))
+          }
+          onNext={() => setStep(3)}
+          onBack={() => setStep(1)}
+          attending={form.attending}
         />
       );
 
@@ -72,7 +91,7 @@ export default function RsvpModal({ open, onClose }: Props) {
     }
 
     return () => document.removeEventListener("keydown", handleKey);
-  }, [open]);
+  }, [open, handleClose]);
 
   // ❌ nu randăm dacă nu e deschis
   if (!open) return null;
