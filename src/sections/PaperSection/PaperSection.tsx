@@ -36,9 +36,9 @@ const PaperSection = forwardRef<HTMLElement>((_, ref) => {
       <div className='absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black/80 to-transparent z-20 pointer-events-none' />
       {/* 📄 CONTENT FLOW */}
       <div className='relative z-10 flex flex-col'>
-        <PaperHeroBlock variant={variant} />
-        <PaperStoryBlock variant={variant} />
-        <PaperProgramBlock variant={variant} />
+        <PaperHeroBlock />
+        <PaperStoryBlock />
+        <PaperProgramBlock />
       </div>
     </section>
   );

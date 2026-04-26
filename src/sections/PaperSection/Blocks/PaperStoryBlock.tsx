@@ -1,24 +1,19 @@
-// blocks/PaperStoryBlock.tsx
-import type { PaperBlockProps } from "../../../types/paper";
 import Story from "../Story/Story";
-import PaperBackground from "./PaperBackground";
 
-export default function PaperStoryBlock({ variant }: PaperBlockProps) {
+export default function PaperStoryBlock() {
   return (
-    <section className='relative py-32 md:py-40'>
-      {/* 🧻 PAPER REAL (nu overlay) */}
+    <section className='relative py-40'>
+      {/* 🔥 FOCUS ELEMENT */}
       <div className='absolute inset-0 flex justify-center pointer-events-none'>
         <img
           src='/assets/paper/paper-mid-split.jpg'
           className='
-        w-full max-w-[1100px]
-        h-full
-        object-cover
-      '
+            w-full max-w-[1100px]
+            opacity-60
+          '
         />
       </div>
 
-      {/* ✨ CONTENT */}
       <div className='relative z-10 max-w-4xl mx-auto px-6'>
         <Story />
       </div>

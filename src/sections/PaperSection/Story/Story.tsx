@@ -1,4 +1,3 @@
-import TimelineLine from "../../../components/TimeLine";
 import StoryItem from "./StoryItem";
 import { storyItems } from "./storyData";
 

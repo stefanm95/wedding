@@ -96,23 +96,23 @@ export const paperThemes: Record<
   },
 
   day: {
-    baseColor: "#f3efe7",
+    baseColor: "#f4efe6", // 🔥 ușor mai cald decât albul actual
 
     lightGradient: `
-      radial-gradient(
-        circle at 28% 18%,
-        rgba(255,255,255,0.7),
-        rgba(255,255,255,0.3) 35%,
-        transparent 65%
-      ),
-      linear-gradient(
-        115deg,
-        rgba(0,0,0,0.1),
-        transparent 40%
-      )
-    `,
+    radial-gradient(
+      circle at 28% 18%,
+      rgba(255, 245, 220, 0.45),
+      rgba(255, 230, 190, 0.18) 35%,
+      transparent 65%
+    ),
+    linear-gradient(
+      115deg,
+      rgba(0,0,0,0.08),
+      transparent 40%
+    )
+  `,
 
-    overlay: "bg-white/15",
+    overlay: "bg-[#fff6e8]/10", // 🔥 în loc de alb pur
 
     paperOpacity: 0.22,
     depthOpacity: 0.1,
@@ -121,13 +121,13 @@ export const paperThemes: Record<
     grainSize: "180px",
 
     vignette: `
-      radial-gradient(
-        circle at 50% 35%,
-        transparent 45%,
-        rgba(0,0,0,0.12) 100%
-      )
-    `,
+    radial-gradient(
+      circle at 50% 38%,
+      transparent 50%,
+      rgba(0,0,0,0.10) 100%
+    )
+  `,
 
-    filter: "contrast(1.04) brightness(1.03) saturate(0.98)",
+    filter: "contrast(1.04) brightness(1.02) saturate(1.01)", // 🔥 mai cald
   },
 };
