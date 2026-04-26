@@ -4,8 +4,8 @@ import StoryItem from "./StoryItem";
 export default function Story() {
   return (
     <section className='relative -mt-10 pt-8 md:pt-16'>
-      {/* 🧭 HEADER */}
-      <div className='max-w-3xl mx-auto px-6 mb-16 text-center'>
+      {/* HEADER */}
+      <div className='max-w-3xl mx-auto px-6 mb-24 md:mb-32 text-center'>
         <p className='font-[Castlegar_Caps] tracking-[0.4em] uppercase text-[#6b1f2b]/60 mb-4'>
           Povestea noastră
         </p>
@@ -15,11 +15,23 @@ export default function Story() {
         </h2>
       </div>
 
-      {/* 📄 FLOW */}
-      <div className='max-w-6xl mx-auto px-6 space-y-28'>
-        {storyData.map((item, index) => (
-          <StoryItem key={index} item={item} index={index} />
-        ))}
+      <div className='max-w-[1600px] mx-auto px-6 md:px-16'>
+        {/* 🔥 FIRST HALF (CONTROLLED HEIGHT) */}
+        <div className='space-y-16 md:space-y-20'>
+          {storyData.slice(0, 3).map((item, index) => (
+            <StoryItem key={index} item={item} index={index} />
+          ))}
+        </div>
+
+        {/* 🔥 GAP EXACT CA SĂ EVIȚI FOLD */}
+        <div className='h-24 md:h-40' />
+
+        {/* 🔥 REST */}
+        <div className='space-y-24 md:space-y-32'>
+          {storyData.slice(3).map((item, index) => (
+            <StoryItem key={index + 3} item={item} index={index + 3} />
+          ))}
+        </div>
       </div>
     </section>
   );
