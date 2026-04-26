@@ -1,12 +1,18 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { paperThemes, type PaperVariant } from "../../utils/paperThemes";
+import { paperThemes, type PaperVariant } from "../../../utils/paperThemes";
+
+type PaperTexture = "premium" | "premium2";
 
 type Props = {
   variant?: PaperVariant;
+  texture?: PaperTexture;
 };
 
-const PaperBackground = ({ variant = "golden" }: Props) => {
+const PaperBackground = ({
+  variant = "golden",
+  texture = "premium2",
+}: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
@@ -23,31 +29,17 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
 
   const theme = paperThemes[variant];
 
+  const textureMap: Record<PaperTexture, string> = {
+    premium: "/assets/base-paper/bg-premium.png",
+    premium2: "/assets/base-paper/bg-premium2.png",
+  };
+
   return (
     <div
       ref={ref}
       className='absolute inset-0 z-0'
       style={{
         filter: theme.filter,
-
-        WebkitMaskImage: `
-      linear-gradient(
-        to bottom,
-        black 0%,
-        black 70%,
-        rgba(0,0,0,0.6) 80%,
-        transparent 100%
-      )
-    `,
-        maskImage: `
-      linear-gradient(
-        to bottom,
-        black 0%,
-        black 70%,
-        rgba(0,0,0,0.6) 80%,
-        transparent 100%
-      )
-    `,
       }}
     >
       {/* 🟤 BASE COLOR */}
@@ -57,26 +49,12 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
       />
 
       {/* 🧻 MAIN PAPER (NO REPEAT, SLIGHT ZOOM) */}
-      <div
-        className='absolute inset-0'
+      <motion.img
+        src='/assets/paper/paper.jpg'
+        className='absolute inset-0 w-full h-full object-cover'
         style={{
-          backgroundImage: "url('/assets/base-paper/bg-premium2.png')",
-          backgroundSize: "contain", // 🔥 CRITICAL (no seam)
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          opacity: theme.paperOpacity,
-        }}
-      />
-
-      {/* 🧬 EMBOSS LAYER (crest subtle) */}
-      <div
-        className='absolute inset-0 pointer-events-none'
-        style={{
-          backgroundImage: "url('/assets/base-paper/paper-soft-clean.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.35,
-          mixBlendMode: "multiply",
+          opacity: 0.7,
+          scale: lightScale,
         }}
       />
 
@@ -89,17 +67,6 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
             linear-gradient(to bottom, ${theme.baseColor} 0%, transparent 12%, transparent 88%, ${theme.baseColor} 100%)
           `,
           opacity: 0.6,
-        }}
-      />
-
-      {/* ✨ GRAIN (very important) */}
-      <div
-        className='absolute inset-0 pointer-events-none'
-        style={{
-          backgroundImage: "url('/assets/base-grain/grain2.jpg')",
-          backgroundSize: theme.grainSize,
-          opacity: theme.grainOpacity,
-          mixBlendMode: "multiply",
         }}
       />
 

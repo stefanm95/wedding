@@ -9,7 +9,7 @@ export default function Story() {
         {/* 🔥 STORY PART */}
         <div className='relative'>
           {/* linie doar pentru story */}
-          <TimelineLine className='top-0 hidden md:flex' />
+          {/* <TimelineLine className='top-0 hidden md:flex' /> */}
           {storyItems.map((item, index) => (
             <StoryItem key={index} item={item} index={index} />
           ))}
