@@ -30,12 +30,6 @@ export const storyData: StoryItemType[] = [
     image: "public/assets/images/couple/couple-placeholder03.png",
     date: "2026",
   },
-  {
-    type: "transition",
-    title: "Iar acum…",
-    text: "Vă invităm să fiți parte din ziua în care povestea noastră continuă.",
-  },
-
   // 📍 CEREMONIE
   {
     type: "event",

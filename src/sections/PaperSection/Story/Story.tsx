@@ -19,12 +19,14 @@ export default function Story() {
         {/* 🔥 FIRST HALF (CONTROLLED HEIGHT) */}
         <div className='space-y-16 md:space-y-20'>
           {storyData.slice(0, 3).map((item, index) => (
-            <StoryItem key={index} item={item} index={index} />
+            <div key={index} className={index === 2 ? "mt-12 md:mt-20" : ""}>
+              <StoryItem item={item} index={index} />
+            </div>
           ))}
         </div>
 
         {/* 🔥 GAP EXACT CA SĂ EVIȚI FOLD */}
-        <div className='h-24 md:h-40' />
+        <div className='h-99 md:h-99' />
 
         {/* 🔥 REST */}
         <div className='space-y-24 md:space-y-32'>
