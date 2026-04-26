@@ -9,11 +9,23 @@ export default function PaperHeroBlock() {
   return (
     <section className='relative py-32 md:py-40 text-center'>
       <div className='max-w-4xl mx-auto px-6'>
-        <div className='flex justify-center mb-16'>
+        {/* 📸 POLAROID */}
+        <div className='flex justify-center mb-0'>
           <PolaroidCard />
         </div>
 
-        <Countdown {...time} />
+        <div
+          className='mx-auto w-[200px] md:w-[400px] h-[30px] blur-xl opacity-20'
+          style={{
+            background:
+              "radial-gradient(circle, rgba(0,0,0,0.25), transparent 70%)",
+          }}
+        />
+
+        {/* ⏳ COUNTDOWN */}
+        <div className='-mt-6 md:-mt-10'>
+          <Countdown {...time} />
+        </div>
       </div>
     </section>
   );

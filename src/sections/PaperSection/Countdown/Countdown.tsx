@@ -24,7 +24,7 @@ export default function Countdown({
         },
       }}
     >
-      <div className='flex justify-center gap-4 md:gap-10 text-3xl md:text-5xl text-[#6b1f2b]'>
+      <div className='flex justify-center gap-6 md:gap-12 text-[#6b1f2b]'>
         {items.map((value, i) => (
           <motion.div
             key={i}
@@ -38,11 +38,11 @@ export default function Countdown({
               },
             }}
           >
-            <div className='text-5xl text-[#6b1f2b] script-castlegar'>
+            <div className='text-4xl md:text-5xl text-[#6b1f2b] script-castlegar opacity-90'>
               {value}
             </div>
 
-            <div className='text-sm  script-cormorant tracking-[0.6em] mt-2 opacity-60'>
+            <div className='text-xs tracking-[0.5em] mt-2 opacity-50'>
               {["ZILE", "ORE", "MIN", "SEC"][i]}
             </div>
           </motion.div>
