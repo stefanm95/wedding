@@ -9,48 +9,56 @@ import StepTransport from "./StepTransport";
 import StepMessage from "./StepMessage";
 import StepSuccess from "./StepSuccess";
 
-import type { RSVPFormData } from "../../../types/rsvp";
+import type { RSVPFormData, RSVPStatus } from "../../../types/rsvp";
 import { defaultRSVP } from "../../../types/rsvp";
 
 import { transition, getPrevStep, type Step } from "../../../utils/rsvpMachine";
+import { stepVariants } from "./stepVariants";
 
 type Props = {
   open: boolean;
   onClose: () => void;
 };
 
+type NextContext = {
+  attending?: RSVPStatus;
+};
+
 type StepRendererProps = {
   step: Step;
-  setStep: (step: Step) => void;
+  onNext: (ctx?: NextContext) => void;
+  onBack: () => void;
   form: RSVPFormData;
   setForm: React.Dispatch<React.SetStateAction<RSVPFormData>>;
 };
 
 /* 🔥 STEP RENDERER */
-function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
+function StepRenderer({
+  step,
+  onBack,
+  onNext,
+  form,
+  setForm,
+}: StepRendererProps) {
   switch (step) {
     case "welcome":
       return (
         <StepWelcome
-          onNext={async (attending) => {
-            const updatedForm: RSVPFormData = {
+          onNext={(attending) => {
+            const updatedForm = {
               ...form,
               attending,
               guests:
                 attending === "yes"
                   ? form.guests.length > 0
                     ? form.guests
-                    : [{ name: "", dietary: "none" }]
+                    : [{ name: "", dietary: "none" as const }]
                   : [],
             };
 
             setForm(updatedForm);
 
-            const next = await transition("welcome", updatedForm, {
-              attending,
-            });
-
-            setStep(next);
+            onNext({ attending }); // 🔥 direct, fără lag
           }}
         />
       );
@@ -60,11 +68,8 @@ function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
         <StepName
           value={form.name}
           onChange={(value) => setForm((prev) => ({ ...prev, name: value }))}
-          onNext={async () => {
-            const next = await transition("name", form);
-            setStep(next);
-          }}
-          onBack={() => setStep(getPrevStep("name")!)}
+          onNext={onNext} // 🔥 nu mai face transition aici
+          onBack={onBack}
         />
       );
 
@@ -73,34 +78,21 @@ function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
         <StepGuests
           guests={form.guests}
           onChange={(guests) => setForm((prev) => ({ ...prev, guests }))}
-          onNext={async () => {
-            const next = await transition("guests", form);
-            setStep(next);
-          }}
-          onBack={() => setStep(getPrevStep("guests")!)}
+          onNext={onNext} // 🔥 nu mai face transition aici
+          onBack={onBack}
         />
       );
 
     case "regret":
-      return (
-        <StepRegret
-          onClose={async () => {
-            const next = await transition("regret", form);
-            setStep(next);
-          }}
-        />
-      );
+      return <StepRegret onClose={() => onNext()} />;
 
     case "transport":
       return (
         <StepTransport
           value={form.transport!}
           onChange={(transport) => setForm((prev) => ({ ...prev, transport }))}
-          onNext={async () => {
-            const next = await transition("transport", form);
-            setStep(next);
-          }}
-          onBack={() => setStep(getPrevStep("transport")!)}
+          onNext={onNext} // 🔥 nu mai face transition aici
+          onBack={onBack}
         />
       );
 
@@ -109,11 +101,8 @@ function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
         <StepMessage
           value={form.message || ""}
           onChange={(message) => setForm((prev) => ({ ...prev, message }))}
-          onNext={async () => {
-            const next = await transition("message", form);
-            setStep(next);
-          }}
-          onBack={() => setStep(getPrevStep("message")!)}
+          onNext={onNext} // 🔥 nu mai face transition aici
+          onBack={onBack}
         />
       );
 
@@ -131,11 +120,29 @@ function StepRenderer({ step, setStep, form, setForm }: StepRendererProps) {
 export default function RsvpModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>("welcome");
   const [form, setForm] = useState<RSVPFormData>(defaultRSVP);
+  const [direction, setDirection] = useState(1);
 
   const handleClose = () => {
     setStep("welcome");
     setForm(defaultRSVP);
     onClose();
+  };
+
+  const handleNext = async (ctx?: { attending?: RSVPStatus }) => {
+    setDirection(1);
+
+    const next = await transition(step, form, ctx);
+
+    setStep(next);
+  };
+
+  const handleBack = () => {
+    const prev = getPrevStep(step);
+
+    if (!prev) return;
+
+    setDirection(-1);
+    setStep(prev);
   };
 
   useEffect(() => {
@@ -204,14 +211,23 @@ export default function RsvpModal({ open, onClose }: Props) {
         </button>
 
         {/* STEPS */}
-        <AnimatePresence mode='sync'>
-          <StepRenderer
+        <AnimatePresence mode='wait' custom={direction} initial={false}>
+          <motion.div
             key={step}
-            step={step}
-            setStep={setStep}
-            form={form}
-            setForm={setForm}
-          />
+            variants={stepVariants}
+            custom={direction}
+            initial='initial'
+            animate='animate'
+            exit='exit'
+          >
+            <StepRenderer
+              step={step}
+              onNext={handleNext}
+              onBack={handleBack}
+              form={form}
+              setForm={setForm}
+            />
+          </motion.div>
         </AnimatePresence>
       </motion.div>
     </div>
