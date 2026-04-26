@@ -59,21 +59,7 @@ export default function PolaroidCard() {
           '
           style={{ transform: "rotate(-0.8deg)" }}
         >
-          Prima noastră amintire
-        </p>
-
-        {/* ✨ SUBTEXT (face toată diferența) */}
-        <p
-          className='
-            text-center
-            text-sm md:text-base
-            mt-2
-            text-[#6b1f2b]/70
-            italic
-            tracking-wide
-          '
-        >
-          totul a început fără să știm
+          Prima noastra amintire
         </p>
       </div>
     </motion.div>

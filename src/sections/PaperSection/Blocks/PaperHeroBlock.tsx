@@ -29,15 +29,16 @@ export default function PaperHeroBlock() {
           }}
         />
 
-        {/* ✍️ MICRO INTRO (leagă de story) */}
-        <p className='mt-6 text-sm md:text-base italic text-[#6b1f2b]/70'>
-          o poveste care a început fără să știm
-        </p>
-
         {/* ⏳ COUNTDOWN (secundar, integrat) */}
         <div className='mt-8 md:mt-10 opacity-90'>
           <Countdown {...time} />
         </div>
+        <div
+          className='mx-auto mt-10 w-[1px] h-12 opacity-20'
+          style={{
+            background: "linear-gradient(to bottom, #6b1f2b, transparent)",
+          }}
+        />
       </div>
     </section>
   );
