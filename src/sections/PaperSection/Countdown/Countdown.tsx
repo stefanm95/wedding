@@ -11,16 +11,14 @@ export default function Countdown({
 
   return (
     <motion.div
-      className='text-center mt-12'
+      className='text-center'
       initial='hidden'
       whileInView='show'
       viewport={{ once: true }}
       variants={{
         hidden: {},
         show: {
-          transition: {
-            staggerChildren: 0.15,
-          },
+          transition: { staggerChildren: 0.12 },
         },
       }}
     >
@@ -31,18 +29,18 @@ export default function Countdown({
             variants={{
               hidden: { opacity: 0, y: 20, filter: "blur(6px)" },
               show: {
-                opacity: 1,
+                opacity: 0.9,
                 y: 0,
                 filter: "blur(0px)",
                 transition: { duration: 0.6 },
               },
             }}
           >
-            <div className='text-4xl md:text-5xl text-[#6b1f2b] script-castlegar opacity-90'>
+            <div className='text-3xl md:text-4xl text-[#6b1f2b script-castlegar'>
               {value}
             </div>
 
-            <div className='text-xs tracking-[0.5em] mt-2 opacity-50'>
+            <div className='text-xs tracking-[0.4em] mt-2 opacity-50'>
               {["ZILE", "ORE", "MIN", "SEC"][i]}
             </div>
           </motion.div>

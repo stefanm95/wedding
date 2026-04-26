@@ -52,7 +52,7 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
       <div
         className='absolute inset-0 pointer-events-none'
         style={{
-          backgroundImage: "url('/assets/base-grain/grain1.jpg')",
+          backgroundImage: "url('/assets/base-grain/grai1.jpg')",
           opacity: 0.08,
           mixBlendMode: "overlay",
         }}
