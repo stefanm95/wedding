@@ -3,7 +3,7 @@ import { storyItems } from "./storyData";
 
 export default function Story() {
   return (
-    <section className='relative py-40 overflow-hidden'>
+    <section className='relative pt-12 md:pt-20 pb-32'>
       <div className='relative max-w-6xl mx-auto px-6 z-10'>
         {/* 🔥 STORY PART */}
         <div className='relative'>

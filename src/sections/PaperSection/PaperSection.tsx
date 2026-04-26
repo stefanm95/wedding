@@ -88,6 +88,15 @@ const PaperSection = forwardRef<HTMLElement, { className?: string }>(
         </div>
         {/* 📄 CONTENT */}
         <div className='relative z-10 flex flex-col'>
+          <div className='max-w-3xl mx-auto px-6 mb-16 text-center'>
+            <p className='text-xs tracking-[0.4em] uppercase text-[#6b1f2b]/60 mb-4'>
+              Povestea noastră
+            </p>
+
+            <h2 className='script-castlegar text-4xl md:text-5xl text-[#6b1f2b]'>
+              Cum a început totul
+            </h2>
+          </div>
           <PaperHeroBlock />
           <PaperStoryBlock />
           <PaperProgramBlock />

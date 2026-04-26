@@ -2,20 +2,22 @@ import Story from "../Story/Story";
 
 export default function PaperStoryBlock() {
   return (
-    <section className='relative py-40'>
-      {/* 🔥 FOCUS ELEMENT */}
-      <div className='absolute inset-0 flex justify-center pointer-events-none'>
-        <img
-          src='/assets/paper/paper-mid-split.jpg'
-          className='
+    <section className='relative pt-12 md:pt-16 pb-24 md:pb-32'>
+      <div className='flex flex-col gap-24 md:gap-32'>
+        {/* 🔥 FOCUS ELEMENT */}
+        <div className='absolute inset-0 flex justify-center pointer-events-none'>
+          <img
+            src='/assets/paper/paper-mid-split.jpg'
+            className='
             w-full max-w-[1100px]
             opacity-60
           '
-        />
-      </div>
+          />
+        </div>
 
-      <div className='relative z-10 max-w-4xl mx-auto px-6'>
-        <Story />
+        <div className='relative z-10 max-w-4xl mx-auto px-6'>
+          <Story />
+        </div>
       </div>
     </section>
   );
