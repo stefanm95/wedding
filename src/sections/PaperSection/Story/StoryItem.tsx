@@ -1,4 +1,3 @@
-// StoryItem.tsx
 import { motion, useTransform } from "framer-motion";
 import { useSectionScroll } from "../../../hooks/useSectionScroll";
 import PaperImage from "../../../components/PaperImage";
@@ -14,100 +13,144 @@ export default function StoryItem({ item, index }: Props) {
   const type = item.type || "story";
 
   const { ref, progress } = useSectionScroll({
-    offset: ["start 80%", "end 20%"],
+    offset: ["start 85%", "end 20%"],
   });
 
-  const y = useTransform(progress, [0, 1], [40, 0]);
+  const y = useTransform(progress, [0, 1], [50, 0]);
   const opacity = useTransform(progress, [0, 0.4], [0, 1]);
 
-  /**
-   * 🔥 TRANSITION
-   */
-  if (type === "transition") {
-    return (
-      <motion.div
-        ref={ref}
-        style={{ y, opacity }}
-        className='grid grid-cols-2 items-center gap-16 my-32 relative'
-      >
-        {/* TEXT */}
-        <div className='text-right pr-12'>
-          <h3 className='text-[26px] tracking-[0.08em] font-serif text-[#5a1e28] mb-4'>
-            {item.title}
-          </h3>
+  // ✅ SAFE IMAGE (NO TS ERROR)
+  const imageSrc: string | null =
+    typeof item.image === "string" ? item.image : null;
 
-          <p className='text-[15px] leading-[1.9] text-[#5a1e28]/75 max-w-[380px] inline-block'>
-            {item.text}
-          </p>
-        </div>
-      </motion.div>
-    );
-  }
+  const hasImage = imageSrc !== null;
 
-  /**
-   * 🔥 NORMAL / EVENT
-   */
+  if (type === "transition") return null;
+
   return (
     <motion.div
       ref={ref}
       style={{ y, opacity }}
-      className='
-  grid 
-  grid-cols-1 md:grid-cols-2
-  gap-10 md:gap-16 
-  items-center 
-  mb-20 md:mb-32
-'
+      className='relative mb-32 md:mb-44'
     >
-      {/* TEXT */}
-      <div
-        className={`
-    flex
-    ${isLeft ? "md:justify-end md:pr-20" : "md:justify-start md:pl-20"}
-    justify-center
-    text-center md:text-left
-  `}
-      >
-        <div className='max-w-[380px]'>
-          <h3 className='text-[20px]  tracking-[0.06em] font-serif text-[#5a1e28] mb-2'>
-            {item.title}
-          </h3>
-
-          {item.date && (
-            <p className='text-lg tracking-[0.3em] italic text-[#5a1e28]/60 mb-3'>
-              {item.date}
-            </p>
-          )}
-
-          <p className='text-[15px] leading-[1.9] text-[#5a1e28]/75 max-w-[380px] inline-block'>
-            {item.text}
-          </p>
-
-          {type === "event" && (
-            <div className='mt-4 text-sm text-[#5a1e28]/70 space-y-1'>
-              {item.location && <p>{item.location}</p>}
-
-              {item.mapLink && (
-                <a
-                  href={item.mapLink}
-                  target='_blank'
-                  className='inline-block mt-2 text-[#6b1f2b] underline'
+      <div className='mx-auto px-6 md:px-10'>
+        <div
+          className={`
+            grid gap-12 md:gap-20
+            ${hasImage ? "md:grid-cols-2" : "md:grid-cols-1"}
+            items-start
+          `}
+        >
+          {/* ✍️ TEXT */}
+          <div
+            className={`
+              ${
+                hasImage
+                  ? isLeft
+                    ? "md:col-start-1 md:pr-16"
+                    : "md:col-start-2 md:pl-16"
+                  : "mx-auto text-center"
+              }
+            `}
+          >
+            <div
+              className={`
+                ${
+                  hasImage
+                    ? isLeft
+                      ? "mr-auto ml-0"
+                      : "ml-auto mr-0"
+                    : "mx-auto"
+                }
+                max-w-[560px]
+              `}
+            >
+              {/* DATE */}
+              {item.date && (
+                <p
+                  className={`
+                    text-[12px]
+                    tracking-[0.5em]
+                    text-[#5a1e28]/60
+                    mb-6
+                  `}
                 >
-                  Vezi pe hartă
-                </a>
+                  {item.date}
+                </p>
               )}
+              {/* TITLE */}
+              <h3
+                className={`
+                  text-[26px] md:text-[34px]
+                  leading-[1.3]
+                  tracking-[0.12em]
+                  text-[#5a1e28]
+                  script-castlegar-title
+                  mb-5
+                `}
+              >
+                {item.title}
+              </h3>
+
+              {/* TEXT */}
+              <p
+                className='
+                  text-[24px]
+                  leading-[2.1]
+                  tracking-[0.01em]
+                  text-[#5a1e28]/75
+                  script-cormorant-display
+                  text-left
+                '
+              >
+                {item.text}
+              </p>
+
+              {/* EVENT */}
+              {type === "event" && (
+                <div className='mt-6 text-sm text-[#5a1e28]/70 space-y-2 text-left'>
+                  {item.location && <p>{item.location}</p>}
+
+                  {item.mapLink && (
+                    <a
+                      href={item.mapLink}
+                      target='_blank'
+                      className='inline-block mt-3 underline text-[#6b1f2b]'
+                    >
+                      Vezi pe hartă
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 🖼 IMAGE */}
+          {imageSrc && (
+            <div
+              className={`
+                ${
+                  isLeft
+                    ? "md:col-start-2 justify-start md:pl-6"
+                    : "md:col-start-1 justify-end md:pr-6"
+                }
+                flex items-start
+              `}
+            >
+              <div
+                className='
+                  w-full max-w-[420px]
+                  shadow-[0_30px_80px_rgba(0,0,0,0.18)]
+                '
+                style={{
+                  transform: `rotate(${isLeft ? "1deg" : "-1deg"})`,
+                }}
+              >
+                <PaperImage src={imageSrc} alt={item.title} />
+              </div>
             </div>
           )}
         </div>
-      </div>
-      {/* IMAGE */}
-      <div
-        className={`
-    flex justify-center
-    ${isLeft ? "md:justify-start md:pl-20" : "md:justify-end md:pr-20"}
-  `}
-      >
-        {item.image && <PaperImage src={item.image} alt={item.title} />}
       </div>
     </motion.div>
   );

@@ -37,6 +37,16 @@
 }
 
 @font-face {
+  font-family: "Castlegar Caps";
+  src: url("/fonts/castlegar/Castlegar-Caps.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Castlegar Tails";
+  src: url("/fonts/castlegar/Castlegar-Tails.otf") format("opentype");
+}
+
+@font-face {
   font-family: "Cormorant";
   src: url("/fonts/cormorant/CormorantGaramond-Regular.ttf") format("truetype");
   font-weight: 400;
@@ -84,7 +94,7 @@
 
   /* ✨ CASTLEGAR (IMPORTANT) */
   .script-castlegar {
-    font-family: "Castlegar", serif;
+    font-family: "Castlegar", "Cormorant", serif;
 
     font-size: 14px;
     letter-spacing: 0.5em;
@@ -98,6 +108,22 @@
       0 0 4px rgba(255, 255, 255, 0.1),
       0 4px 20px rgba(0, 0, 0, 0.6);
   }
+
+  /* ✨ CASTLEGAR (IMPORTANT) */
+  .script-castlegar-title {
+    font-family: "Castlegar", serif;
+
+    font-size: 24px;
+    letter-spacing: 0.5em;
+    color: rgba(255, 255, 255, 0.7);
+
+    transform: translateY(2px);
+
+    text-shadow:
+      0 0 4px rgba(255, 255, 255, 0.1),
+      0 4px 20px rgba(0, 0, 0, 0.6);
+  }
+
   /* ✨ CORMORANT DISPLAY (headlines) */
   .script-cormorant-display {
     font-family: "Cormorant", serif;
