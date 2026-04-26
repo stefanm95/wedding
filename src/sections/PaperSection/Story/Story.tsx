@@ -37,7 +37,7 @@ export default function Story() {
         {/* 🔥 subtle separator */}
         <div className='absolute inset-0 bg-white/10' />
       </div>
-      <p className='italic script-cormorant-body text-[36px] text-center mt-16 text-[#6b1f2b]/70 mb-12'>
+      <p className='italic script-cormorant-body text-[36px] text-center mt-24 text-[#6b1f2b]/70'>
         Vă invităm să fiți alături de noi !
       </p>
     </section>

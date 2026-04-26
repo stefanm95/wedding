@@ -1,4 +1,13 @@
-export const programData = [
+export type ProgramItemType = {
+  type: "transport" | "event";
+  title: string;
+  time: string;
+  location?: string;
+  note?: string;
+  mapLink?: string;
+};
+
+export const programData: ProgramItemType[] = [
   {
     type: "transport",
     title: "Plecare cu autobuzul",

@@ -1,25 +1,64 @@
+import type { ProgramItemType } from "./programData";
+
 type Props = {
-  time: string;
-  title: string;
-  location?: string;
-  note?: string;
+  item: ProgramItemType;
 };
 
-export default function ProgramItem({ time, title, location, note }: Props) {
+export default function ProgramItem({ item }: Props) {
+  const isTransport = item.type === "transport";
+
   return (
-    <div className='mb-10 flex gap-6'>
+    <div className='relative flex items-start gap-8'>
       {/* TIME */}
-      <div className='w-16 text-[#6b1f2b] text-xl font-serif'>{time}</div>
+      <div className='w-[70px] text-right'>
+        <p className='text-[18px] text-[#6b1f2b] font-serif'>{item.time}</p>
+      </div>
+
+      {/* DOT */}
+      <div className='relative mt-[6px]'>
+        <div
+          className={`
+            w-3 h-3 rotate-45
+            ${isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]"}
+          `}
+        />
+      </div>
 
       {/* CONTENT */}
-      <div>
-        <p className='uppercase text-xs tracking-[0.3em] text-[#6b1f2b]/60'>
-          {note}
+      <div className='max-w-[420px]'>
+        {/* TYPE */}
+        <p className='text-[11px] tracking-[0.4em] text-[#6b1f2b]/60 mb-2 uppercase'>
+          {isTransport ? "Transport" : "Eveniment"}
         </p>
 
-        <h3 className='text-xl font-serif text-[#6b1f2b]'>{title}</h3>
+        {/* TITLE */}
+        <h3 className='text-[24px] text-[#3d2b1f] font-serif mb-2'>
+          {item.title}
+        </h3>
 
-        {location && <p className='text-sm text-[#6b1f2b]/70'>{location}</p>}
+        {/* LOCATION */}
+        {item.location && (
+          <p className='text-[15px] text-[#3d2b1f]/70'>{item.location}</p>
+        )}
+
+        {/* NOTE */}
+        {item.note && (
+          <p className='text-[14px] text-[#6b1f2b]/70 italic mt-2'>
+            {item.note}
+          </p>
+        )}
+
+        {/* MAP */}
+        {item.mapLink && (
+          <a
+            href={item.mapLink}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-block mt-2 text-[#c9a46c] underline text-sm'
+          >
+            Vezi pe hartă
+          </a>
+        )}
       </div>
     </div>
   );
