@@ -34,7 +34,12 @@ export default function Story() {
             <StoryItem key={index + 3} item={item} index={index + 3} />
           ))}
         </div>
+        {/* 🔥 subtle separator */}
+        <div className='absolute inset-0 bg-white/10' />
       </div>
+      <p className='italic script-cormorant-body text-[36px] text-center mt-16 text-[#6b1f2b]/70 mb-12'>
+        Vă invităm să fiți alături de noi !
+      </p>
     </section>
   );
 }
