@@ -22,7 +22,6 @@ function LightProbe({ progress }: { progress: number }) {
 
     const intensity = base + impact * 0.8;
 
-    // @ts-ignore
     window.__heroLight = intensity;
   });
 
@@ -30,15 +29,23 @@ function LightProbe({ progress }: { progress: number }) {
 }
 
 function Scene({ crestProgress, peelProgress }: Props) {
-  const crestRef = useRef<THREE.Mesh>(null!);
-  const leftRef = useRef<THREE.Mesh>(null!);
-  const rightRef = useRef<THREE.Mesh>(null!);
-  const shadowRef = useRef<THREE.Mesh>(null!);
+  const crestRef = useRef<
+    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
+  >(null!);
+  const leftRef = useRef<
+    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
+  >(null!);
+  const rightRef = useRef<
+    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
+  >(null!);
+  const shadowRef = useRef<
+    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>
+  >(null!);
 
   const { gl } = useThree();
 
   // 🎀 ribbon texture (NO repeat)
-  const ribbonTex = useMemo(() => {
+  const ribbonTex = useMemo<THREE.Texture>(() => {
     const tex = new THREE.TextureLoader().load(
       "/assets/ribbon/ribbon-vintage.png",
     );
@@ -47,7 +54,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
   }, [gl]);
 
   // 🔴 crest texture
-  const crestTex = useMemo(() => {
+  const crestTex = useMemo<THREE.Texture>(() => {
     const tex = new THREE.TextureLoader().load(
       "/assets/crest/logo-crest-vintage.png",
     );
@@ -125,14 +132,11 @@ function Scene({ crestProgress, peelProgress }: Props) {
         const p = (crestProgress - pressStart) / (pressEnd - pressStart);
         const press = Math.sin(p * Math.PI);
 
-        // 🔥 shadow devine mai intens + mai compact
         shadowRef.current.scale.set(1 + press * 0.2, 1 + press * 0.1, 1);
-
-        (shadowRef.current.material as any).opacity = 0.15 + press * 0.25;
+        shadowRef.current.material.opacity = 0.15 + press * 0.25;
       } else {
-        // reset
         shadowRef.current.scale.set(1, 1, 1);
-        (shadowRef.current.material as any).opacity = 0.15;
+        shadowRef.current.material.opacity = 0.15;
       }
     }
   });
@@ -214,7 +218,7 @@ export default function PaperPeelCanvas({
   return (
     <Canvas
       gl={{ preserveDrawingBuffer: true }}
-      camera={{ position: [0, 0, 5], fov: 50 }}
+      camera={{ position: [0, 0, 5] as [number, number, number], fov: 50 }}
       style={{ position: "absolute", inset: 0 }}
       onCreated={({ gl }) => {
         gl.setClearColor(0x000000, 0); // 🔥 transparent real

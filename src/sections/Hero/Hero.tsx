@@ -2,13 +2,19 @@ import { useState } from "react";
 import HeroVideo from "./HeroVideo";
 import HeroIntro from "./HeroIntro";
 import CinematicOverlay from "../../components/CinematicOverlay";
+import type { HeroProps } from "../../types/hero";
 
-export default function Hero({ opened, setOpened, heroRef, paperRef }: any) {
+export default function Hero({
+  opened,
+  setOpened,
+  heroRef,
+  paperRef,
+}: HeroProps) {
   const [progress, setProgress] = useState(0); // 🔥 shared animation state
   const eased = Math.pow(progress, 1.4);
 
   return (
-    <div className="relative z-0 min-h-screen w-full overflow-hidden bg-black">
+    <section ref={heroRef} className='relative h-screen overflow-hidden z-10'>
       {/* 🎬 SHARED VIDEO (SINGURUL VIDEO DIN APP) */}
       <video
         autoPlay
@@ -16,9 +22,9 @@ export default function Hero({ opened, setOpened, heroRef, paperRef }: any) {
         loop
         playsInline
         disablePictureInPicture
-        className="absolute inset-0 w-full h-full object-cover z-0"
+        className='absolute inset-0 w-full h-full object-cover'
         style={{
-          transform: `scale(${1.06 - eased * 0.06}) translateY(${eased * 30}px)`,
+          transform: `scale(${1.08 - eased * 0.08}))`,
           filter: `
             blur(${8 - eased * 8}px)
             brightness(${0.7 + eased * 0.25})
@@ -27,7 +33,7 @@ export default function Hero({ opened, setOpened, heroRef, paperRef }: any) {
           `,
         }}
       >
-        <source src="/assets/video/hero.mp4" type="video/mp4" />
+        <source src='/assets/video/hero.mp4' type='video/mp4' />
       </video>
 
       {/* 🎭 INTRO (controlează animația) */}
@@ -43,6 +49,6 @@ export default function Hero({ opened, setOpened, heroRef, paperRef }: any) {
       <HeroVideo opened={opened} heroRef={heroRef} paperRef={paperRef} />
 
       <CinematicOverlay intensity={1} />
-    </div>
+    </section>
   );
 }

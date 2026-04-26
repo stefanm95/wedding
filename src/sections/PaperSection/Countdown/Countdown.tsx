@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
+import type { CountdownTime } from "../../../types/countdown";
 
-export default function Countdown({ days, hours, minutes, seconds }: any) {
+export default function Countdown({
+  days,
+  hours,
+  minutes,
+  seconds,
+}: CountdownTime) {
   const items = [days, hours, minutes, seconds];
 
   return (

@@ -1,13 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
+import type { HeroVideoProps } from "../../types/hero";
 
-type Props = {
-  opened: boolean;
-  heroRef: any;
-  paperRef: any;
-};
-
-export default function HeroVideo({ opened, paperRef }: Props) {
+export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const [light, setLight] = useState(0);
 
   // 🔥 SCROLL REAL (legat de Hero container din Home)
@@ -36,7 +31,8 @@ export default function HeroVideo({ opened, paperRef }: Props) {
     let rafId: number;
 
     const animate = () => {
-      const target = (window as any).__heroLight || 0;
+      const target =
+        typeof window.__heroLight === "number" ? window.__heroLight : 0;
 
       setLight((prev) => {
         const delayFactor = 0.12;
@@ -57,7 +53,7 @@ export default function HeroVideo({ opened, paperRef }: Props) {
     <div className='absolute inset-0 pointer-events-none'>
       <div className='absolute inset-0 bg-black/45' />
 
-      <div className='absolute inset-0 flex items-center justify-center text-center px-6'>
+      <div className='absolute inset-0 flex items-center justify-center text-center'>
         <motion.div
           style={{
             opacity: opacityScroll,

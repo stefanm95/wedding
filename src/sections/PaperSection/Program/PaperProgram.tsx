@@ -10,12 +10,6 @@ export default function PaperProgram() {
 
       {/* 🧻 PAPER CARD */}
       <div className='relative max-w-5xl mx-auto'>
-        {/* BACKGROUND IMAGE */}
-        <img
-          src='/assets/program-bg.png'
-          className='w-full h-auto rounded-sm shadow-[0_20px_60px_rgba(0,0,0,0.2)]'
-        />
-
         {/* CONTENT OVERLAY */}
         <div className='absolute inset-0 flex'>
           {/* LEFT SIDE */}

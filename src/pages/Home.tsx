@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+
 import Hero from "../sections/Hero/Hero";
 import Details from "../sections/Details/Details";
 import RSVP from "../sections/RSVP/RSVP";
@@ -8,29 +9,19 @@ import PaperSection from "../sections/PaperSection/PaperSection";
 function Home() {
   const [opened, setOpened] = useState(false);
 
-  const heroRef = useRef(null);
-  const paperRef = useRef(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+  const paperRef = useRef<HTMLElement | null>(null);
 
   return (
     <>
-      <div className='relative'>
-        {/* HERO */}
-        <div className='fixed inset-0 z-0'>
-          <Hero
-            opened={opened}
-            setOpened={setOpened}
-            heroRef={heroRef}
-            paperRef={paperRef}
-          />
-        </div>
+      <Hero
+        opened={opened}
+        setOpened={setOpened}
+        heroRef={heroRef}
+        paperRef={paperRef}
+      />
 
-        {/* FLOW */}
-        <div ref={heroRef} className='relative z-10 pointer-events-none'>
-          <div className='h-screen' />
-
-          <PaperSection ref={paperRef} />
-        </div>
-      </div>
+      <PaperSection ref={paperRef} />
 
       <Details />
       <RSVP />

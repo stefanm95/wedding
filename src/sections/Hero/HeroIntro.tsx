@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+
 import PaperPeelCanvas from "./PaperPeelCanvas";
 import { getImpact } from "../../utils/animation";
 import { cinematicEase } from "../../utils/cinematic-ease";
 
-type Props = {
-  onOpen: () => void;
-  progress: number;
-  setProgress: (v: number) => void;
-};
+import type { HeroIntroProps } from "../../types/hero";
 
-export default function HeroIntro({ onOpen, progress, setProgress }: Props) {
+export default function HeroIntro({
+  onOpen,
+  progress,
+  setProgress,
+}: HeroIntroProps) {
   const [started, setStarted] = useState(false);
 
   const handleClick = () => {
