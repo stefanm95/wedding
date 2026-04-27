@@ -1,13 +1,14 @@
 import { forwardRef, useRef, useState } from "react";
 import { motion, useScroll, useMotionValueEvent, useTransform } from "framer-motion";
 
-import PaperBackground from "./Blocks/PaperBackground";
-import PaperHeroBlock from "./Blocks/PaperHeroBlock";
-import PaperStoryBlock from "./Blocks/PaperStoryBlock";
-import PaperProgramBlock from "./Blocks/PaperProgramBlock";
+import PaperBackground from "@paper/Blocks/PaperBackground";
+import PaperHeroBlock from "@paper/Blocks/PaperHeroBlock";
+import PaperStoryBlock from "@paper/Blocks/PaperStoryBlock";
+import PaperProgramBlock from "@paper/Blocks/PaperProgramBlock";
 
-import type { PaperVariant } from "../../utils/paperThemes";
-import { useMergedRefs } from "../../hooks/useMergedRefs";
+import { useMergedRefs } from "@hooks/useMergedRefs";
+import { cn } from "@utils/cn";
+import type { PaperVariant } from "@utils/paperThemes";
 
 const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ className }, ref) => {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -44,7 +45,7 @@ const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ classNam
   return (
     <motion.section
       ref={mergedRef}
-      className={`relative z-20 ${className ?? ""}`}
+      className={cn("relative z-20", className)}
       style={{
         y,
         scale,

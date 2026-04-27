@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import Countdown from "../Countdown/Countdown";
-import PolaroidCard from "../Countdown/PolaroidCard";
-import { useCountdown } from "../../../hooks/useCountdown";
+import { useCountdown } from "@hooks/useCountdown";
+import Countdown from "@paper/Countdown/Countdown";
+import PolaroidCard from "@paper/Countdown/PolaroidCard";
 
 export default function PaperHeroBlock() {
   const time = useCountdown(new Date("2026-08-22T16:00:00"));

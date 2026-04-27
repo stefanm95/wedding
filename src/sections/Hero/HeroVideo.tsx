@@ -1,6 +1,6 @@
 import { motion, useTransform, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import type { HeroVideoProps } from "../../types/hero";
+import type { HeroVideoProps } from "@/types/hero";
 
 export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const [light, setLight] = useState(0);

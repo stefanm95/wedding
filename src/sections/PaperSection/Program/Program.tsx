@@ -1,5 +1,5 @@
 import { useState } from "react";
-import RsvpModal from "../Rsvp/RsvpModal";
+import RsvpModal from "@paper/Rsvp/RsvpModal";
 import { programData } from "./programData";
 import ProgramItem from "./ProgramItem";
 

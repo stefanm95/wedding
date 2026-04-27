@@ -1,4 +1,4 @@
-import { paperThemes, type PaperVariant } from "../../../utils/paperThemes";
+import { paperThemes, type PaperVariant } from "@utils/paperThemes";
 
 type PaperTexture = "premium" | "premium2";
 

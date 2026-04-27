@@ -1,4 +1,4 @@
-import Story from "../Story/Story";
+import Story from "@paper/Story/Story";
 
 export default function PaperStoryBlock() {
   return (

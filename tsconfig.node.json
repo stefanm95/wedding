@@ -6,6 +6,18 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@sections/*": ["src/sections/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"],
+      "@types/*": ["src/types/*"],
+      "@styles/*": ["src/styles/*"],
+      "@paper/*": ["src/sections/PaperSection/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

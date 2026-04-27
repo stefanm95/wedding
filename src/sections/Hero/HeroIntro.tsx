@@ -2,10 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import PaperPeelCanvas from "./PaperPeelCanvas";
-import { getImpact } from "../../utils/animation";
-import { cinematicEase } from "../../utils/cinematic-ease";
+import { getImpact } from "@utils/animation";
+import { cinematicEase } from "@utils/cinematic-ease";
 
-import type { HeroIntroProps } from "../../types/hero";
+import type { HeroIntroProps } from "@/types/hero";
 
 export default function HeroIntro({ onOpen, progress, setProgress }: HeroIntroProps) {
   const [started, setStarted] = useState(false);

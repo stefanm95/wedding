@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { CountdownTime } from "../../../types/countdown";
+import type { CountdownTime } from "@/types/countdown";
 
 type ExtendedTime = CountdownTime & {
   months: number;

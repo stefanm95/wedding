@@ -1,7 +1,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
 import * as THREE from "three";
-import { getImpact } from "../../utils/animation";
+import { getImpact } from "@utils/animation";
 
 type Props = {
   crestProgress: number;

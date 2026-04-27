@@ -4,9 +4,9 @@ import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motio
 import HeroVideo from "./HeroVideo";
 import HeroIntro from "./HeroIntro";
 
-import CinematicOverlay from "../../components/CinematicOverlay";
+import CinematicOverlay from "@components/CinematicOverlay";
 
-import type { HeroProps } from "../../types/hero";
+import type { HeroProps } from "@/types/hero";
 
 export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
   const [progress, setProgress] = useState(0);

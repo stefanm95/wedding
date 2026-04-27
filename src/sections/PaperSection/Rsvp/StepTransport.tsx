@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
+import { cn } from "@utils/cn";
 import { stepVariants } from "./stepVariants";
-import type { RSVPTransport, TransportType } from "../../../types/rsvp";
+import type { RSVPTransport, TransportType } from "@/types/rsvp";
 
 type Props = {
   value: RSVPTransport;
@@ -55,11 +56,12 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
                 type: opt.value,
               })
             }
-            className={`w-full border px-6 py-4 text-left transition ${
+            className={cn(
+              "w-full border px-6 py-4 text-left transition",
               isSelected(opt.value)
                 ? "border-[#c9a46c] bg-[#c9a46c]/10 text-[#6b1f2b]"
-                : "border-[#6b1f2b]/20 text-[#6b1f2b]/70 hover:border-[#6b1f2b]"
-            } `}
+                : "border-[#6b1f2b]/20 text-[#6b1f2b]/70 hover:border-[#6b1f2b]",
+            )}
           >
             {opt.label}
           </button>
@@ -71,11 +73,12 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
         <button
           onClick={onNext}
           disabled={!isValid}
-          className={`border px-10 py-4 uppercase tracking-[0.3em] transition ${
+          className={cn(
+            "border px-10 py-4 uppercase tracking-[0.3em] transition",
             isValid
               ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30"
-          } `}
+              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
+          )}
         >
           Continuă
         </button>

@@ -9,10 +9,10 @@ import StepTransport from "./StepTransport";
 import StepMessage from "./StepMessage";
 import StepSuccess from "./StepSuccess";
 
-import type { RSVPFormData, RSVPStatus } from "../../../types/rsvp";
-import { defaultRSVP } from "../../../types/rsvp";
+import { defaultRSVP } from "@/types/rsvp";
+import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
 
-import { transition, getPrevStep, type Step } from "../../../utils/rsvpMachine";
+import { transition, getPrevStep, type Step } from "@utils/rsvpMachine";
 import { stepVariants } from "./stepVariants";
 
 type Props = {

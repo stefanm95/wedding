@@ -1,6 +1,7 @@
 import { motion, useTransform } from "framer-motion";
-import { useSectionScroll } from "../../../hooks/useSectionScroll";
-import PaperImage from "../../../components/PaperImage";
+import PaperImage from "@components/PaperImage";
+import { useSectionScroll } from "@hooks/useSectionScroll";
+import { cn } from "@utils/cn";
 import type { StoryItemType } from "./storyData";
 
 type Props = {
@@ -28,7 +29,7 @@ export default function StoryItem({ item, index }: Props) {
         {/* ========================= */}
         <div className="flex flex-col gap-10 md:gap-12 lg:hidden">
           {/* TEXT */}
-          <div className={`max-w-[520px] ${isLeft ? "mr-auto text-left" : "ml-auto text-right"} `}>
+          <div className={cn("max-w-[520px]", isLeft ? "mr-auto text-left" : "ml-auto text-right")}>
             {item.date && (
               <p className="mb-4 text-[12px] tracking-[0.4em] text-[#5a1e28]/60">{item.date}</p>
             )}
@@ -44,7 +45,7 @@ export default function StoryItem({ item, index }: Props) {
 
           {/* IMAGE */}
           {imageSrc && (
-            <div className={`flex ${isLeft ? "justify-start" : "justify-end"} `}>
+            <div className={cn("flex", isLeft ? "justify-start" : "justify-end")}>
               <div
                 className="w-full max-w-[320px] shadow-xl"
                 style={{
@@ -62,7 +63,7 @@ export default function StoryItem({ item, index }: Props) {
         {/* ========================= */}
         <div className="hidden items-center gap-24 lg:grid lg:grid-cols-2">
           {/* TEXT */}
-          <div className={isLeft ? "pr-20" : "order-2 pl-20"}>
+          <div className={cn(isLeft ? "pr-20" : "order-2 pl-20")}>
             <div className="max-w-[640px]">
               {item.date && (
                 <p className="mb-6 text-[12px] tracking-[0.5em] text-[#5a1e28]/60">{item.date}</p>
@@ -80,7 +81,7 @@ export default function StoryItem({ item, index }: Props) {
 
           {/* IMAGE */}
           {imageSrc && (
-            <div className={`flex ${isLeft ? "justify-start" : "order-1 justify-end"} `}>
+            <div className={cn("flex", isLeft ? "justify-start" : "order-1 justify-end")}>
               <div
                 className="w-full max-w-[520px] shadow-[0_40px_100px_rgba(0,0,0,0.2)]"
                 style={{

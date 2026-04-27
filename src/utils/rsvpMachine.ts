@@ -1,4 +1,4 @@
-import type { RSVPFormData, RSVPStatus } from "../types/rsvp";
+import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
 
 export type Step =
   | "welcome"

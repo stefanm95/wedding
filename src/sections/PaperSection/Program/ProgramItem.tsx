@@ -1,5 +1,6 @@
 import { motion, useMotionTemplate, useTransform } from "framer-motion";
-import { useEmbossLight } from "../../../hooks/useEmbossLight";
+import { useEmbossLight } from "@hooks/useEmbossLight";
+import { cn } from "@utils/cn";
 import type { ProgramItemType } from "./programData";
 
 type Props = {
@@ -40,7 +41,7 @@ export default function ProgramItem({ item }: Props) {
 
       {/* DOT */}
       <div
-        className={`h-3 w-3 rotate-45 ${isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]"} `}
+        className={cn("h-3 w-3 rotate-45", isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]")}
         style={{
           boxShadow: "0.5px 0.5px 1px rgba(0,0,0,0.25)",
         }}

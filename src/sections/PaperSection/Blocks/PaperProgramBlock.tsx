@@ -1,4 +1,4 @@
-import Program from "../Program/Program";
+import Program from "@paper/Program/Program";
 
 export default function PaperProgramBlock() {
   return (

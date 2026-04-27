@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { cn } from "@utils/cn";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -43,11 +44,12 @@ export default function StepName({ value, onChange, onNext, onBack }: Props) {
         <button
           onClick={onNext}
           disabled={!isValid}
-          className={`border px-10 py-4 uppercase tracking-[0.3em] transition ${
+          className={cn(
+            "border px-10 py-4 uppercase tracking-[0.3em] transition",
             isValid
               ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30"
-          } `}
+              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
+          )}
         >
           Continuă
         </button>

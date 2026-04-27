@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 
-import Hero from "../sections/Hero/Hero";
-import PaperSection from "../sections/PaperSection/PaperSection";
+import Hero from "@sections/Hero/Hero";
+import PaperSection from "@paper/PaperSection";
 
 function Home() {
   const [opened, setOpened] = useState(false);
