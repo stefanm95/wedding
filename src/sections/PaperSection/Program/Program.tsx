@@ -5,12 +5,13 @@ import RsvpModal from "../Rsvp/RsvpModal";
 
 export default function Program() {
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <section className='relative'>
         <div className='max-w-[1400px] mx-auto px-6 md:px-16'>
           {/* HEADER */}
-          <div className=''>
+          <div>
             <h2 className='text-[36px] md:text-[44px] tracking-[0.25em] text-[#6b1f2b] font-serif'>
               PROGRAMUL ZILEI
             </h2>
@@ -23,7 +24,7 @@ export default function Program() {
           </div>
 
           {/* LAYOUT */}
-          <div className='grid lg:grid-cols-[1fr_0.8fr] gap-16 items-start'>
+          <div className='mt-16 md:mt-20 grid lg:grid-cols-[1fr_0.8fr] gap-16 items-start'>
             {/* 🔥 TIMELINE */}
             <div className='relative pl-14'>
               {/* LINE */}
@@ -88,7 +89,7 @@ export default function Program() {
           </div>
         </div>
       </section>
-      <RsvpModal open={open} onClose={() => setOpen(false)} />;
+      <RsvpModal open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

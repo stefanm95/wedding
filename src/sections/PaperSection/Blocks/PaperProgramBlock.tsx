@@ -2,7 +2,7 @@ import Program from "../Program/Program";
 
 export default function PaperProgramBlock() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative mt-[35vh] overflow-hidden">
       {/* 🧻 BACKGROUND TEXTURE */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img
@@ -18,11 +18,7 @@ export default function PaperProgramBlock() {
 
       {/* 📄 CONTENT */}
       <div
-        className="relative z-10 max-w-8xl mx-auto px-6"
-        style={{
-          paddingTop: "35vh",
-          paddingBottom: "20vh",
-        }}
+        className="relative z-10 max-w-8xl mx-auto px-6 pb-[20vh]"
       >
         <Program />
       </div>
