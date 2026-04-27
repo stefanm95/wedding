@@ -116,6 +116,9 @@ function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps
     case "success":
       return <StepSuccess />;
 
+    case "submitting":
+      return <div className="py-10 text-center">Se trimite RSVP...</div>;
+
     case "done":
       return null;
 

@@ -17,9 +17,11 @@ export type RSVPTransport = {
 
 export type RSVPFormData = {
   groupId: string; // 🔥 adauga asta
+  name: string;
+  attending: RSVPStatus;
 
   guests: RSVPGuest[];
-  extraGuests: RSVPGuest[];
+  extraGuests?: RSVPGuest[];
 
   message?: string;
   transport?: RSVPTransport;
@@ -38,6 +40,8 @@ export type GuestGroup = {
 
 export const defaultRSVP: RSVPFormData = {
   groupId: "",
+  name: "",
+  attending: "yes",
   guests: [],
   extraGuests: [],
   message: "",

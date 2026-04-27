@@ -1,4 +1,5 @@
 import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
+import { submitRsvp } from "@/services/submitRsvp";
 
 export type Step =
   | "welcome"
@@ -7,6 +8,7 @@ export type Step =
   | "transport"
   | "message"
   | "success"
+  | "submitting"
   | "regret"
   | "done";
 
@@ -47,9 +49,22 @@ export const rsvpMachine: Record<Step, StateConfig> = {
     next: () => "success",
     prev: "transport",
   },
-
+  // 🔥 AICI SE ÎNTÂMPLĂ MAGIA
   success: {
-    next: () => "done",
+    next: () => "submitting",
+  },
+  submitting: {
+    next: () => "success",
+
+    onEnter: async (form) => {
+      await submitRsvp({
+        groupId: form.groupId!,
+        guests: form.guests,
+        extraGuests: form.extraGuests || [],
+        message: form.message,
+        transport: form.transport,
+      });
+    },
   },
 
   regret: {
@@ -71,14 +86,18 @@ export const transition = async (
   const next = rsvpMachine[current].next(ctx);
   const nextState = rsvpMachine[next];
 
-  // guard
   if (nextState.canEnter && !nextState.canEnter(form)) {
     return current;
   }
 
-  // side effects
-  if (nextState.onEnter) {
-    await nextState.onEnter(form);
+  try {
+    if (nextState.onEnter) {
+      await nextState.onEnter(form);
+    }
+  } catch (err) {
+    console.error("RSVP submit failed:", err);
+
+    return current; // 🔥 rămâi în message
   }
 
   return next;
