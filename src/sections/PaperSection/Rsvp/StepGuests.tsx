@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@utils/cn";
 import { stepVariants } from "./stepVariants";
-import type { DietaryOption, RSVPGuest } from "@/types/rsvp";
+import type { DietaryOption, RSVPGuest, RSVPStatus } from "@/types/rsvp";
 
 type Props = {
   guests: RSVPGuest[];
@@ -11,28 +11,21 @@ type Props = {
 };
 
 export default function StepGuests({ guests, onChange, onNext, onBack }: Props) {
-  const updateGuest = (index: number, value: string) => {
+  const toggleAttending = (index: number, value: RSVPStatus) => {
     const updated = [...guests];
-    updated[index] = { ...updated[index], name: value };
+    updated[index] = { ...updated[index], attending: value };
     onChange(updated);
   };
 
-  const addGuest = () => {
-    onChange([...guests, { name: "", dietary: "none" as const }]);
-  };
-
-  const removeGuest = (index: number) => {
-    const updated = guests.filter((_, i) => i !== index);
-    onChange(updated);
-  };
-
-  const updateGuestDietary = (index: number, value: DietaryOption) => {
+  const updateDietary = (index: number, value: DietaryOption) => {
     const updated = [...guests];
     updated[index] = { ...updated[index], dietary: value };
     onChange(updated);
   };
 
-  const isValid = guests.every((g) => g.name.trim().length > 1);
+  const confirmedCount = guests.filter((g) => g.attending === "yes").length;
+
+  const isValid = confirmedCount > 0; // măcar unul vine
 
   return (
     <motion.div
@@ -49,56 +42,68 @@ export default function StepGuests({ guests, onChange, onNext, onBack }: Props) 
 
       {/* HEADER */}
       <div className="space-y-6 text-center">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">Cine vă însoțește?</h2>
+        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
+          Confirmați participanții
+        </h2>
       </div>
 
       {/* LIST */}
       <div className="space-y-6">
         {guests.map((guest, index) => (
-          <div key={index} className="group space-y-2">
-            {/* ROW */}
-            <div className="flex items-center gap-4">
-              <input
-                value={guest.name}
-                onChange={(e) => updateGuest(index, e.target.value)}
-                placeholder={`Invitat ${index + 1}`}
-                className="flex-1 border-b border-[#6b1f2b]/20 bg-transparent py-3 text-[#6b1f2b] outline-none placeholder:text-[#6b1f2b]/40 focus:border-[#6b1f2b]"
-              />
+          <div key={index} className="space-y-3 border-b border-[#6b1f2b]/10 pb-4">
+            {/* NAME */}
+            <div className="flex items-center justify-between">
+              <span className="text-[#6b1f2b]">{guest.name}</span>
 
-              {guests.length > 1 && (
+              {/* YES / NO */}
+              <div className="flex gap-2">
                 <button
-                  onClick={() => removeGuest(index)}
-                  className="text-[#6b1f2b]/40 opacity-0 transition hover:text-[#6b1f2b] group-hover:opacity-100"
+                  onClick={() => toggleAttending(index, "yes")}
+                  className={cn(
+                    "border px-3 py-1 text-sm",
+                    guest.attending === "yes"
+                      ? "bg-[#6b1f2b] text-white"
+                      : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
+                  )}
                 >
-                  ✕
+                  Da
                 </button>
-              )}
+
+                <button
+                  onClick={() => toggleAttending(index, "no")}
+                  className={cn(
+                    "border px-3 py-1 text-sm",
+                    guest.attending === "no"
+                      ? "bg-[#6b1f2b] text-white"
+                      : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
+                  )}
+                >
+                  Nu
+                </button>
+              </div>
             </div>
 
-            {/* 🔥 DIETARY PER GUEST */}
-            <select
-              value={guest.dietary || "none"}
-              onChange={(e) => updateGuestDietary(index, e.target.value as DietaryOption)}
-              className="border-b border-[#6b1f2b]/20 bg-transparent text-sm text-[#6b1f2b]/70 outline-none focus:border-[#6b1f2b]"
-            >
-              <option value="none">Fără restricții</option>
-              <option value="vegetarian">Vegetarian</option>
-              <option value="vegan">Vegan</option>
-              <option value="gluten-free">Fără gluten</option>
-              <option value="other">Altceva</option>
-            </select>
+            {/* DIETARY doar dacă vine */}
+            {guest.attending === "yes" && (
+              <select
+                value={guest.dietary || "none"}
+                onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
+                className="border-b border-[#6b1f2b]/20 bg-transparent text-sm text-[#6b1f2b]/70 outline-none"
+              >
+                <option value="none">Fără restricții</option>
+                <option value="vegetarian">Vegetarian</option>
+                <option value="vegan">Vegan</option>
+                <option value="gluten-free">Fără gluten</option>
+                <option value="other">Altceva</option>
+              </select>
+            )}
           </div>
         ))}
       </div>
 
-      {/* ADD */}
-      <div className="flex justify-center">
-        <button
-          onClick={addGuest}
-          className="text-sm uppercase tracking-[0.3em] text-[#c9a46c] transition hover:text-[#6b1f2b]"
-        >
-          + Adaugă invitat
-        </button>
+      {/* INFO */}
+      <div className="text-center text-sm text-[#6b1f2b]/60">
+        {confirmedCount} persoane confirmate
       </div>
 
       {/* CTA */}

@@ -10,20 +10,14 @@ type Props = {
   onBack: () => void;
 };
 
-const OPTIONS: {
-  label: string;
-  value: TransportType;
-  required: boolean;
-}[] = [
-  { label: "Nu avem nevoie", value: "none", required: false },
-  { label: "Transport organizat", value: "bus", required: true },
-  { label: "Mașină personală", value: "personal", required: true },
+const OPTIONS: { label: string; value: TransportType }[] = [
+  { label: "Nu avem nevoie", value: "none" },
+  { label: "Transport organizat", value: "bus" },
+  { label: "Mașină personală", value: "personal" },
 ];
 
 export default function StepTransport({ value, onChange, onNext, onBack }: Props) {
   const isSelected = (type: TransportType) => value?.type === type;
-
-  const isValid = value?.type !== undefined;
 
   return (
     <motion.div
@@ -41,7 +35,7 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
       {/* HEADER */}
       <div className="space-y-6 text-center">
         <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-          Aveți nevoie de transport?
+          Transport pentru cei care participă
         </h2>
       </div>
 
@@ -52,7 +46,6 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
             key={opt.value}
             onClick={() =>
               onChange({
-                required: opt.required,
                 type: opt.value,
               })
             }
@@ -66,19 +59,26 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
             {opt.label}
           </button>
         ))}
+
+        {value.type === "bus" && (
+          <input
+            placeholder="Locație preluare"
+            value={value.pickupLocation || ""}
+            onChange={(e) =>
+              onChange({
+                ...value,
+                pickupLocation: e.target.value,
+              })
+            }
+          />
+        )}
       </div>
 
       {/* CTA */}
       <div className="flex justify-center">
         <button
           onClick={onNext}
-          disabled={!isValid}
-          className={cn(
-            "border px-10 py-4 uppercase tracking-[0.3em] transition",
-            isValid
-              ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
-          )}
+          className="border border-[#c9a46c] px-10 py-4 uppercase tracking-[0.3em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white"
         >
           Continuă
         </button>

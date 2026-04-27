@@ -6,39 +6,42 @@ export type DietaryOption = "none" | "vegetarian" | "vegan" | "gluten-free" | "o
 
 export type RSVPGuest = {
   name: string;
+  attending: RSVPStatus;
   dietary?: DietaryOption;
 };
 
 export type RSVPTransport = {
-  required: boolean;
-  type?: TransportType;
+  type: TransportType;
   pickupLocation?: string;
 };
 
 export type RSVPFormData = {
-  name: string;
-  attending: RSVPStatus;
+  groupId: string; // 🔥 adauga asta
+
   guests: RSVPGuest[];
+  extraGuests: RSVPGuest[];
+
   message?: string;
   transport?: RSVPTransport;
+
   createdAt?: number;
 };
 
-// 🔥 DEV helper
-const DEV_GUESTS: RSVPGuest[] = [
-  { name: "Ștefan Moise", dietary: "none" },
-  { name: "Invitat +1", dietary: "vegetarian" },
-];
-
-const isDev = import.meta.env.DEV;
+export type GuestGroup = {
+  id: string;
+  familyLabel: string;
+  members: string[];
+  maxGuests: number;
+  hasResponded: boolean;
+  representative?: string;
+};
 
 export const defaultRSVP: RSVPFormData = {
-  name: "",
-  attending: "yes",
-  guests: isDev ? DEV_GUESTS : [{ name: "", dietary: "none" }],
+  groupId: "",
+  guests: [],
+  extraGuests: [],
   message: "",
   transport: {
-    required: false,
     type: "none",
   },
 };

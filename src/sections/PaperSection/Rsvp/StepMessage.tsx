@@ -32,7 +32,7 @@ export default function StepMessage({ value, onChange, onNext, onBack }: Props) 
         </h2>
 
         <p className="text-sm text-[#6b1f2b]/60">
-          Orice detaliu ne ajută — alergii, preferințe sau întrebări 🤍
+          Dacă vrei să ne transmiți ceva în plus, ne bucurăm să citim 🤍
         </p>
       </div>
 

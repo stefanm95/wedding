@@ -39,18 +39,18 @@ function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps
       return (
         <StepWelcome
           onNext={(attending) => {
-            const updatedForm = {
-              ...form,
-              attending,
-              guests:
-                attending === "yes"
-                  ? form.guests.length > 0
-                    ? form.guests
-                    : [{ name: "", dietary: "none" as const }]
-                  : [],
-            };
+            // const updatedForm = {
+            //   ...form,
+            //   attending,
+            //   guests:
+            //     attending === "yes"
+            //       ? form.guests.length > 0
+            //         ? form.guests
+            //         : [{ name: "", dietary: "none" as const }]
+            //       : [],
+            // };
 
-            setForm(updatedForm);
+            // setForm(updatedForm);
 
             onNext({ attending }); // 🔥 direct, fără lag
           }}
@@ -60,8 +60,21 @@ function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps
     case "name":
       return (
         <StepName
-          value={form.name}
-          onChange={(value) => setForm((prev) => ({ ...prev, name: value }))}
+          value={form.groupId}
+          onSelectGroup={(group) => {
+            setForm((prev) => ({
+              ...prev,
+              groupId: group.id,
+
+              guests: group.members.map((name: string) => ({
+                name,
+                attending: "yes",
+                dietary: "none",
+              })),
+
+              extraGuests: [],
+            }));
+          }}
           onNext={onNext} // 🔥 nu mai face transition aici
           onBack={onBack}
         />
