@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { programData } from "./programData";
 import ProgramItem from "./ProgramItem";
-import RsvpModal from "../Rsvp/RSVPModal";
+import RsvpModal from "../Rsvp/RsvpModal";
 
 export default function Program() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <section className='relative pt-32 md:pt-32 pb-32'>
+      <section className='relative'>
         <div className='max-w-[1400px] mx-auto px-6 md:px-16'>
           {/* HEADER */}
-          <div className='mb-20'>
+          <div className=''>
             <h2 className='text-[36px] md:text-[44px] tracking-[0.25em] text-[#6b1f2b] font-serif'>
               PROGRAMUL ZILEI
             </h2>
