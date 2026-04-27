@@ -3,11 +3,11 @@
 /* ========================= */
 @layer components {
   .heading-xl {
-    @apply font-display text-5xl md:text-6xl tracking-wide text-ink-dark;
+    @apply font-display text-5xl tracking-wide text-ink-dark md:text-6xl;
   }
 
   .heading-lg {
-    @apply font-display text-3xl md:text-4xl text-ink-dark;
+    @apply font-display text-3xl text-ink-dark md:text-4xl;
   }
 
   .heading-md {
@@ -15,7 +15,7 @@
   }
 
   .body-lg {
-    @apply font-body text-lg text-ink-muted leading-relaxed;
+    @apply font-body text-lg leading-relaxed text-ink-muted;
   }
 
   .body-md {
@@ -67,11 +67,11 @@
 /* ========================= */
 @layer components {
   .heading-xl {
-    @apply font-serif text-5xl md:text-6xl tracking-wide text-ink-dark;
+    @apply font-serif text-5xl tracking-wide text-ink-dark md:text-6xl;
   }
 
   .heading-lg {
-    @apply font-serif text-3xl md:text-4xl text-ink-dark;
+    @apply font-serif text-3xl text-ink-dark md:text-4xl;
   }
 
   .heading-md {
@@ -79,7 +79,7 @@
   }
 
   .body-lg {
-    @apply font-sans text-lg text-ink-muted leading-relaxed;
+    @apply font-sans text-lg leading-relaxed text-ink-muted;
   }
 
   .body-md {

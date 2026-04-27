@@ -33,13 +33,7 @@ type StepRendererProps = {
 };
 
 /* 🔥 STEP RENDERER */
-function StepRenderer({
-  step,
-  onBack,
-  onNext,
-  form,
-  setForm,
-}: StepRendererProps) {
+function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps) {
   switch (step) {
     case "welcome":
       return (
@@ -180,12 +174,9 @@ export default function RsvpModal({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
-    <div className='fixed inset-0 z-[999] flex items-center justify-center'>
+    <div className="fixed inset-0 z-[999] flex items-center justify-center">
       {/* BACKDROP */}
-      <div
-        onClick={handleClose}
-        className='absolute inset-0 bg-black/40 backdrop-blur-md'
-      />
+      <div onClick={handleClose} className="absolute inset-0 bg-black/40 backdrop-blur-md" />
 
       {/* MODAL */}
       <motion.div
@@ -193,32 +184,25 @@ export default function RsvpModal({ open, onClose }: Props) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className='
-          relative z-10
-          w-full max-w-[640px]
-          mx-4
-          p-10
-          bg-[#f4f1ea]
-          shadow-[0_40px_120px_rgba(0,0,0,0.25)]
-        '
+        className="relative z-10 mx-4 w-full max-w-[640px] bg-[#f4f1ea] p-10 shadow-[0_40px_120px_rgba(0,0,0,0.25)]"
       >
         {/* CLOSE */}
         <button
           onClick={handleClose}
-          className='absolute top-6 right-6 text-[#6b1f2b]/60 hover:text-[#6b1f2b]'
+          className="absolute right-6 top-6 text-[#6b1f2b]/60 hover:text-[#6b1f2b]"
         >
           ✕
         </button>
 
         {/* STEPS */}
-        <AnimatePresence mode='wait' custom={direction} initial={false}>
+        <AnimatePresence mode="wait" custom={direction} initial={false}>
           <motion.div
             key={step}
             variants={stepVariants}
             custom={direction}
-            initial='initial'
-            animate='animate'
-            exit='exit'
+            initial="initial"
+            animate="animate"
+            exit="exit"
           >
             <StepRenderer
               step={step}

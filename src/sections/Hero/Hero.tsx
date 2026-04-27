@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 
 import HeroVideo from "./HeroVideo";
 import HeroIntro from "./HeroIntro";
@@ -32,10 +27,10 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
 `;
 
   return (
-    <section className='relative h-screen overflow-hidden z-0'>
+    <section className="relative z-0 h-screen overflow-hidden">
       {/* 🎬 VIDEO */}
       <motion.div
-        className='absolute inset-0'
+        className="absolute inset-0"
         style={{
           scale: scaleScroll,
         }}
@@ -46,18 +41,18 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
           loop
           playsInline
           disablePictureInPicture
-          className='absolute inset-0 w-full h-full object-cover will-change-transform'
+          className="absolute inset-0 h-full w-full object-cover will-change-transform"
           style={{
             filter,
             willChange: "filter, transform",
           }}
         >
-          <source src='/assets/video/hero.mp4' type='video/mp4' />
+          <source src="/assets/video/hero.mp4" type="video/mp4" />
         </motion.video>
       </motion.div>
 
       {/* 🔥 IMPORTANT: elimină linia gri */}
-      <div className='absolute inset-0 bg-black/30 pointer-events-none' />
+      <div className="pointer-events-none absolute inset-0 bg-black/30" />
 
       {/* ✨ TEXT + SCROLL */}
       <HeroVideo opened={opened} paperRef={paperRef} />
@@ -66,11 +61,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
 
       {/* 🎭 INTRO */}
       {!opened && (
-        <HeroIntro
-          onOpen={() => setOpened(true)}
-          progress={progress}
-          setProgress={setProgress}
-        />
+        <HeroIntro onOpen={() => setOpened(true)} progress={progress} setProgress={setProgress} />
       )}
     </section>
   );

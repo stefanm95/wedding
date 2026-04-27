@@ -9,7 +9,7 @@ export default function CinematicOverlay({ intensity = 3 }: Props) {
     <>
       {/* 🎬 VIGNETTE */}
       <div
-        className='absolute inset-0 pointer-events-none'
+        className="pointer-events-none absolute inset-0"
         style={{
           background: `
             radial-gradient(
@@ -23,7 +23,7 @@ export default function CinematicOverlay({ intensity = 3 }: Props) {
 
       {/* 🎞 FILM GRAIN */}
       <motion.div
-        className='absolute inset-0 pointer-events-none'
+        className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: "url('/assets/base-grain2.jpg')",
           mixBlendMode: "overlay",

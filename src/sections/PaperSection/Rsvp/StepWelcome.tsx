@@ -9,44 +9,26 @@ export function StepWelcome({ onNext }: Props) {
   return (
     <motion.div
       variants={stepVariants}
-      initial='initial'
-      animate='animate'
-      exit='exit'
-      className='text-center space-y-10'
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="space-y-10 text-center"
     >
-      <h2 className='text-[28px] md:text-[34px] text-[#6b1f2b] font-serif'>
+      <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
         Veți fi alături de noi?
       </h2>
 
-      <div className='flex flex-col gap-4'>
+      <div className="flex flex-col gap-4">
         <button
           onClick={() => onNext("yes")}
-          className='
-            px-8 py-4
-            border border-[#c9a46c]
-            tracking-[0.3em]
-            uppercase
-            text-[#6b1f2b]
-            hover:bg-[#6b1f2b]
-            hover:text-white
-            transition
-          '
+          className="border border-[#c9a46c] px-8 py-4 uppercase tracking-[0.3em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white"
         >
           Da, vom fi prezenți
         </button>
 
         <button
           onClick={() => onNext("no")}
-          className='
-            px-8 py-4
-            border border-[#6b1f2b]/20
-            tracking-[0.3em]
-            uppercase
-            text-[#6b1f2b]/70
-            hover:bg-[#6b1f2b]
-            hover:text-white
-            transition
-          '
+          className="border border-[#6b1f2b]/20 px-8 py-4 uppercase tracking-[0.3em] text-[#6b1f2b]/70 transition hover:bg-[#6b1f2b] hover:text-white"
         >
           Nu putem ajunge
         </button>

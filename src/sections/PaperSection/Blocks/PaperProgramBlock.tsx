@@ -4,22 +4,16 @@ export default function PaperProgramBlock() {
   return (
     <section className="relative mt-[35vh] overflow-hidden">
       {/* 🧻 BACKGROUND TEXTURE */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0 z-0">
         <img
           alt="paper"
           src="/assets/paper/paper-mid-split.jpg"
-          className="
-            w-full h-full object-cover
-            opacity-50
-            object-[center_30%] md:object-[center_35%] lg:object-[center_40%]
-          "
+          className="h-full w-full object-cover object-[center_30%] opacity-50 md:object-[center_35%] lg:object-[center_40%]"
         />
       </div>
 
       {/* 📄 CONTENT */}
-      <div
-        className="relative z-10 max-w-8xl mx-auto px-6 pb-[20vh]"
-      >
+      <div className="max-w-8xl relative z-10 mx-auto px-6 pb-[20vh]">
         <Program />
       </div>
     </section>

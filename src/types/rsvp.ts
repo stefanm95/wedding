@@ -2,12 +2,7 @@ export type RSVPStatus = "yes" | "no";
 
 export type TransportType = "none" | "bus" | "personal";
 
-export type DietaryOption =
-  | "none"
-  | "vegetarian"
-  | "vegan"
-  | "gluten-free"
-  | "other";
+export type DietaryOption = "none" | "vegetarian" | "vegan" | "gluten-free" | "other";
 
 export type RSVPGuest = {
   name: string;

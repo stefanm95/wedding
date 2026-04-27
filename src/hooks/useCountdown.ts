@@ -17,8 +17,7 @@ function calculateTimeLeft(targetDate: Date): CountdownTime {
 
   // 🧠 1. CALCUL LUNI (calendaristic)
   let months =
-    (targetDate.getFullYear() - now.getFullYear()) * 12 +
-    (targetDate.getMonth() - now.getMonth());
+    (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth());
 
   const tempDate = new Date(now);
   tempDate.setMonth(tempDate.getMonth() + months);
@@ -47,9 +46,7 @@ function calculateTimeLeft(targetDate: Date): CountdownTime {
 }
 
 export function useCountdown(targetDate: Date): CountdownTime {
-  const [time, setTime] = useState<CountdownTime>(() =>
-    calculateTimeLeft(targetDate),
-  );
+  const [time, setTime] = useState<CountdownTime>(() => calculateTimeLeft(targetDate));
 
   useEffect(() => {
     const interval = setInterval(() => {

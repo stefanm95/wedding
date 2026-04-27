@@ -6,10 +6,7 @@ type Props = {
   to?: "dark" | "light";
 };
 
-export default function SectionTransition({
-  from = "dark",
-  to = "light",
-}: Props) {
+export default function SectionTransition({ from = "dark", to = "light" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -26,10 +23,10 @@ export default function SectionTransition({
       : "linear-gradient(to bottom, #f5f0e6, #0b0b0b)";
 
   return (
-    <motion.div ref={ref} style={{ opacity }} className='relative h-40 w-full'>
+    <motion.div ref={ref} style={{ opacity }} className="relative h-40 w-full">
       {/* Gradient */}
       <div
-        className='absolute inset-0'
+        className="absolute inset-0"
         style={{
           background: gradient,
         }}
@@ -37,10 +34,9 @@ export default function SectionTransition({
 
       {/* Optional soft blur layer */}
       <div
-        className='absolute inset-0'
+        className="absolute inset-0"
         style={{
-          background:
-            "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.15), transparent 70%)",
+          background: "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.15), transparent 70%)",
         }}
       />
     </motion.div>

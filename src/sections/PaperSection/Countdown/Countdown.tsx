@@ -7,20 +7,14 @@ type ExtendedTime = CountdownTime & {
 
 const labels = ["LUNI", "ZILE", "ORE", "MIN", "SEC"];
 
-export default function Countdown({
-  months,
-  days,
-  hours,
-  minutes,
-  seconds,
-}: ExtendedTime) {
+export default function Countdown({ months, days, hours, minutes, seconds }: ExtendedTime) {
   const items = [months, days, hours, minutes, seconds];
 
   return (
     <motion.div
-      className='relative mt-10'
-      initial='hidden'
-      whileInView='show'
+      className="relative mt-10"
+      initial="hidden"
+      whileInView="show"
       viewport={{ once: true }}
       variants={{
         hidden: {},
@@ -33,7 +27,7 @@ export default function Countdown({
     >
       {/* ✨ TITLE */}
       <motion.p
-        className='text-sm md:text-base tracking-[0.3em] text-[#6b1f2b]/80 mb-6'
+        className="mb-6 text-sm tracking-[0.3em] text-[#6b1f2b]/80 md:text-base"
         variants={{
           hidden: { opacity: 0, y: 10 },
           show: { opacity: 1, y: 0 },
@@ -43,23 +37,23 @@ export default function Countdown({
       </motion.p>
 
       {/* ⏳ GRID RESPONSIVE */}
-      <div className='grid grid-cols-5 gap-4 md:gap-10 justify-center items-end'>
+      <div className="grid grid-cols-5 items-end justify-center gap-4 md:gap-10">
         {items.map((value, i) => (
           <motion.div
             key={i}
-            className='flex flex-col items-center'
+            className="flex flex-col items-center"
             variants={{
               hidden: { opacity: 0, y: 20 },
               show: { opacity: 1, y: 0 },
             }}
           >
             {/* 🔢 VALUE */}
-            <span className='script-castlegar text-4xl md:text-6xl text-[#6b1f2b] leading-none'>
+            <span className="script-castlegar text-4xl leading-none text-[#6b1f2b] md:text-6xl">
               {value}
             </span>
 
             {/* 🏷 LABEL */}
-            <span className='text-[10px] md:text-xs tracking-[0.25em] mt-2 text-[#6b1f2b]/70'>
+            <span className="mt-2 text-[10px] tracking-[0.25em] text-[#6b1f2b]/70 md:text-xs">
               {labels[i]}
             </span>
           </motion.div>
@@ -68,15 +62,14 @@ export default function Countdown({
 
       {/* ✨ LINE */}
       <motion.div
-        className='mx-auto mt-6 w-[160px] h-[1px]'
+        className="mx-auto mt-6 h-[1px] w-[160px]"
         style={{
-          background:
-            "linear-gradient(to right, transparent, rgba(107,31,43,0.5), transparent)",
+          background: "linear-gradient(to right, transparent, rgba(107,31,43,0.5), transparent)",
         }}
       />
 
       {/* ✍️ SUBTEXT */}
-      <motion.p className='mt-4 text-sm italic text-[#6b1f2b]/70'>
+      <motion.p className="mt-4 text-sm italic text-[#6b1f2b]/70">
         fiecare zi ne aduce mai aproape
       </motion.p>
     </motion.div>

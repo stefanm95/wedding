@@ -8,19 +8,19 @@ function Home() {
   const paperRef = useRef<HTMLElement | null>(null);
 
   return (
-    <div className='relative'>
+    <div className="relative">
       {/* 🎬 HERO (BACKGROUND GLOBAL) */}
-      <div className='fixed inset-0 z-0'>
+      <div className="fixed inset-0 z-0">
         <Hero opened={opened} setOpened={setOpened} paperRef={paperRef} />
       </div>
 
       {/* 📄 CONTENT FLOW */}
-      <div className='relative z-10 pointer-events-none'>
+      <div className="pointer-events-none relative z-10">
         {/* spacer = înălțimea hero */}
-        <div className='h-screen' />
+        <div className="h-screen" />
 
         {/* PAPER vine peste */}
-        <PaperSection ref={paperRef} className='pointer-events-auto' />
+        <PaperSection ref={paperRef} className="pointer-events-auto" />
       </div>
     </div>
   );

@@ -29,35 +29,23 @@ function LightProbe({ progress }: { progress: number }) {
 }
 
 function Scene({ crestProgress, peelProgress }: Props) {
-  const crestRef = useRef<
-    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
-  >(null!);
-  const leftRef = useRef<
-    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
-  >(null!);
-  const rightRef = useRef<
-    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>
-  >(null!);
-  const shadowRef = useRef<
-    THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>
-  >(null!);
+  const crestRef = useRef<THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>>(null!);
+  const leftRef = useRef<THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>>(null!);
+  const rightRef = useRef<THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>>(null!);
+  const shadowRef = useRef<THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>>(null!);
 
   const { gl } = useThree();
 
   // 🎀 ribbon texture (NO repeat)
   const ribbonTex = useMemo<THREE.Texture>(() => {
-    const tex = new THREE.TextureLoader().load(
-      "/assets/ribbon/ribbon-vintage.png",
-    );
+    const tex = new THREE.TextureLoader().load("/assets/ribbon/ribbon-vintage.png");
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
   }, [gl]);
 
   // 🔴 crest texture
   const crestTex = useMemo<THREE.Texture>(() => {
-    const tex = new THREE.TextureLoader().load(
-      "/assets/crest/logo-crest-vintage.png",
-    );
+    const tex = new THREE.TextureLoader().load("/assets/crest/logo-crest-vintage.png");
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
   }, [gl]);
@@ -146,23 +134,13 @@ function Scene({ crestProgress, peelProgress }: Props) {
       {/* 🎀 LEFT */}
       <mesh ref={leftRef} position={[-3, 0, 0]}>
         <planeGeometry args={[6, 1]} />
-        <meshStandardMaterial
-          map={ribbonTex}
-          roughness={0.85}
-          metalness={0.15}
-          color='#c8b08a'
-        />
+        <meshStandardMaterial map={ribbonTex} roughness={0.85} metalness={0.15} color="#c8b08a" />
       </mesh>
 
       {/* 🎀 RIGHT */}
       <mesh ref={rightRef} position={[3, 0, 0]}>
         <planeGeometry args={[6, 1]} />
-        <meshStandardMaterial
-          map={ribbonTex}
-          roughness={0.85}
-          metalness={0.15}
-          color='#c8b08a'
-        />
+        <meshStandardMaterial map={ribbonTex} roughness={0.85} metalness={0.15} color="#c8b08a" />
       </mesh>
 
       {/* 🔴 CREST (OCCLUSION MASTER) */}
@@ -180,7 +158,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
         <planeGeometry args={[2, 2]} />
         <meshBasicMaterial transparent opacity={0.15} depthWrite={false}>
           <canvasTexture
-            attach='map'
+            attach="map"
             image={(() => {
               const size = 256;
               const canvas = document.createElement("canvas");
@@ -211,10 +189,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
   );
 }
 
-export default function PaperPeelCanvas({
-  crestProgress,
-  peelProgress,
-}: Props) {
+export default function PaperPeelCanvas({ crestProgress, peelProgress }: Props) {
   return (
     <Canvas
       gl={{ preserveDrawingBuffer: true }}

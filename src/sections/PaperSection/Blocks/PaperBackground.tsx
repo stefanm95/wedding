@@ -11,10 +11,10 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
   const theme = paperThemes[variant];
 
   return (
-    <div className='absolute inset-0 z-0'>
+    <div className="absolute inset-0 z-0">
       {/* 🧻 BASE PAPER */}
       <div
-        className='absolute inset-0'
+        className="absolute inset-0"
         style={{
           backgroundColor: theme.baseColor,
           backgroundImage: "url('/assets/paper/paper.jpg')",
@@ -26,7 +26,7 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
 
       {/* ✨ LIGHT */}
       <div
-        className='absolute inset-0 pointer-events-none'
+        className="pointer-events-none absolute inset-0"
         style={{
           background: theme.lightGradient,
           opacity: 0.6,
@@ -35,7 +35,7 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
 
       {/* 🌫 DEPTH LIGHT */}
       <div
-        className='absolute inset-0 pointer-events-none'
+        className="pointer-events-none absolute inset-0"
         style={{
           background: `
             radial-gradient(
@@ -50,7 +50,7 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
 
       {/* 🎞 GRAIN */}
       <div
-        className='absolute inset-0 pointer-events-none'
+        className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: "url('/assets/base-grain/grai1.jpg')",
           opacity: 0.08,
@@ -60,7 +60,7 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
 
       {/* 🌑 VIGNETTE */}
       <div
-        className='absolute inset-0 pointer-events-none'
+        className="pointer-events-none absolute inset-0"
         style={{
           background: `
             radial-gradient(

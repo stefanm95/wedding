@@ -31,8 +31,7 @@ function getDeviceState(): DeviceState {
     isTablet: width >= BREAKPOINTS.mobile && width < BREAKPOINTS.tablet,
     isDesktop: width >= BREAKPOINTS.tablet,
     isTouch: "ontouchstart" in window || navigator.maxTouchPoints > 0,
-    orientation:
-      window.innerHeight > window.innerWidth ? "portrait" : "landscape",
+    orientation: window.innerHeight > window.innerWidth ? "portrait" : "landscape",
   };
 }
 

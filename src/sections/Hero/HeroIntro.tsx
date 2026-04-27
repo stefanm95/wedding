@@ -7,11 +7,7 @@ import { cinematicEase } from "../../utils/cinematic-ease";
 
 import type { HeroIntroProps } from "../../types/hero";
 
-export default function HeroIntro({
-  onOpen,
-  progress,
-  setProgress,
-}: HeroIntroProps) {
+export default function HeroIntro({ onOpen, progress, setProgress }: HeroIntroProps) {
   const [started, setStarted] = useState(false);
 
   const handleClick = () => {
@@ -52,9 +48,7 @@ export default function HeroIntro({
 
   // 🔥 FADE DOAR DUPĂ LOCK
   const opacity =
-    progress < fadeStart
-      ? 1
-      : Math.max(0, 1 - (progress - fadeStart) / (fadeEnd - fadeStart));
+    progress < fadeStart ? 1 : Math.max(0, 1 - (progress - fadeStart) / (fadeEnd - fadeStart));
 
   // 🔥 IMPACT LIGHT (lock window)
   const rawImpact = getImpact(progress);
@@ -63,26 +57,22 @@ export default function HeroIntro({
   return (
     <div
       onClick={handleClick}
-      className='absolute inset-0 z-[999] cursor-pointer'
+      className="absolute inset-0 z-[999] cursor-pointer"
       style={{
         pointerEvents: started ? "none" : "auto",
         position: "absolute",
       }}
     >
       {/* 🎬 peel UI */}
-      <motion.div className='absolute inset-0 z-[2]' style={{ opacity }}>
-        <PaperPeelCanvas
-          crestProgress={crestProgress}
-          peelProgress={peelProgress}
-        />
+      <motion.div className="absolute inset-0 z-[2]" style={{ opacity }}>
+        <PaperPeelCanvas crestProgress={crestProgress} peelProgress={peelProgress} />
       </motion.div>
 
       {/* 💡 impact (LOCK MOMENT REAL) */}
       <motion.div
-        className='absolute inset-0 pointer-events-none z-[3]'
+        className="pointer-events-none absolute inset-0 z-[3]"
         style={{
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18), transparent 60%)",
+          background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18), transparent 60%)",
           mixBlendMode: "soft-light",
           opacity: impact,
         }}

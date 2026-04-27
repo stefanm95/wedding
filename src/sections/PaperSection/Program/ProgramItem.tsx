@@ -32,7 +32,7 @@ export default function ProgramItem({ item }: Props) {
       <div className="w-[70px] text-right">
         <motion.p
           style={{ textShadow: shadowMain }}
-          className="text-[15px] text-[#6b1f2b]/80 font-serif tracking-wide"
+          className="font-serif text-[15px] tracking-wide text-[#6b1f2b]/80"
         >
           {item.time}
         </motion.p>
@@ -40,10 +40,7 @@ export default function ProgramItem({ item }: Props) {
 
       {/* DOT */}
       <div
-        className={`
-    w-3 h-3 rotate-45
-    ${isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]"}
-  `}
+        className={`h-3 w-3 rotate-45 ${isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]"} `}
         style={{
           boxShadow: "0.5px 0.5px 1px rgba(0,0,0,0.25)",
         }}
@@ -54,7 +51,7 @@ export default function ProgramItem({ item }: Props) {
         {/* TYPE */}
         <motion.p
           style={{ textShadow: shadowSoft }}
-          className="text-[10px] tracking-[0.5em] text-[#6b1f2b] mb-3 uppercase"
+          className="mb-3 text-[10px] uppercase tracking-[0.5em] text-[#6b1f2b]"
         >
           {isTransport ? "Transport" : "Eveniment"}
         </motion.p>
@@ -62,7 +59,7 @@ export default function ProgramItem({ item }: Props) {
         {/* TITLE */}
         <motion.h3
           style={{ textShadow: shadowMain }}
-          className="text-[26px] text-[#3d2b1f] script-cormorant-display mb-2 leading-snug"
+          className="script-cormorant-display mb-2 text-[26px] leading-snug text-[#3d2b1f]"
         >
           {item.title}
         </motion.h3>
@@ -71,7 +68,7 @@ export default function ProgramItem({ item }: Props) {
         {item.location && (
           <motion.p
             style={{ textShadow: shadowSoft }}
-            className="text-[15px] text-[#3d2b1f]/80 mb-3"
+            className="mb-3 text-[15px] text-[#3d2b1f]/80"
           >
             {item.location}
           </motion.p>
@@ -81,7 +78,7 @@ export default function ProgramItem({ item }: Props) {
         {item.note && (
           <motion.p
             style={{ textShadow: shadowDeboss }}
-            className="text-[14px] text-[#6b1f2b]/60 italic mb-3"
+            className="mb-3 text-[14px] italic text-[#6b1f2b]/60"
           >
             {item.note}
           </motion.p>
@@ -93,32 +90,14 @@ export default function ProgramItem({ item }: Props) {
             href={item.mapLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="
-    relative
-    inline-flex items-center gap-2
-    text-[12px]
-    tracking-[0.3em]
-    uppercase
-    font-medium
-    text-[#4a1c24]
-    transition
-    group
-  "
+            className="group relative inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.3em] text-[#4a1c24] transition"
           >
             {/* mic marker tipografic */}
-            <span className="text-[#c9a46c] text-[9px] translate-y-[-1px]">
-              ◆
-            </span>
+            <span className="translate-y-[-1px] text-[9px] text-[#c9a46c]">◆</span>
 
             {/* TEXT */}
             <span
-              className="
-      relative
-      z-10
-      transition
-      group-hover:text-[#6b1f2b]
-      group-hover:tracking-[0.35em]
-    "
+              className="relative z-10 transition group-hover:tracking-[0.35em] group-hover:text-[#6b1f2b]"
               style={{
                 textShadow: "0.3px 0.3px 0 rgba(0,0,0,0.15)", // 🔥 emboss feel
               }}
@@ -127,17 +106,7 @@ export default function ProgramItem({ item }: Props) {
             </span>
 
             {/* 🔥 underline premium (nu mai mișcă layout) */}
-            <span
-              className="
-      absolute left-0 bottom-0
-      h-[1px] w-full
-      bg-[#c9a46c]/70
-      origin-left
-      scale-x-0
-      group-hover:scale-x-100
-      transition-transform duration-300
-    "
-            />
+            <span className="absolute bottom-0 left-0 h-[1px] w-full origin-left scale-x-0 bg-[#c9a46c]/70 transition-transform duration-300 group-hover:scale-x-100" />
           </a>
         )}
       </div>
