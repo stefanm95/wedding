@@ -1,7 +1,7 @@
 import { useState } from "react";
+import RsvpModal from "../Rsvp/RsvpModal";
 import { programData } from "./programData";
 import ProgramItem from "./ProgramItem";
-import RsvpModal from "../Rsvp/RsvpModal";
 
 export default function Program() {
   const [open, setOpen] = useState(false);
