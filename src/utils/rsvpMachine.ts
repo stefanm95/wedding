@@ -1,5 +1,5 @@
-import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
 import { submitRsvp } from "@/services/submitRsvp";
+import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
 
 export type Step =
   | "welcome"
@@ -27,7 +27,7 @@ type StateConfig = {
 
 export const rsvpMachine: Record<Step, StateConfig> = {
   welcome: {
-    next: (ctx) => (ctx?.attending === "no" ? "regret" : "name"),
+    next: (ctx) => (ctx?.attending === false ? "regret" : "name"),
   },
 
   name: {
@@ -54,13 +54,12 @@ export const rsvpMachine: Record<Step, StateConfig> = {
     next: () => "submitting",
   },
   submitting: {
-    next: () => "success",
+    next: () => "done",
 
     onEnter: async (form) => {
       await submitRsvp({
         groupId: form.groupId!,
         guests: form.guests,
-        extraGuests: form.extraGuests || [],
         message: form.message,
         transport: form.transport,
       });

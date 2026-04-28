@@ -1,4 +1,4 @@
-export type RSVPStatus = "yes" | "no";
+export type RSVPStatus = true | false;
 
 export type TransportType = "none" | "bus" | "personal";
 
@@ -21,7 +21,6 @@ export type RSVPFormData = {
   attending: RSVPStatus;
 
   guests: RSVPGuest[];
-  extraGuests?: RSVPGuest[];
 
   message?: string;
   transport?: RSVPTransport;
@@ -37,13 +36,19 @@ export type GuestGroup = {
   hasResponded: boolean;
   representative?: string;
 };
+export type FirestoreRsvp = {
+  groupId: string;
+  guests: RSVPGuest[];
+  message?: string;
+  transport?: RSVPTransport | null;
+  createdAt: any;
+};
 
 export const defaultRSVP: RSVPFormData = {
   groupId: "",
   name: "",
-  attending: "yes",
+  attending: true,
   guests: [],
-  extraGuests: [],
   message: "",
   transport: {
     type: "none",

@@ -1,22 +1,15 @@
 import { db } from "@/lib/firebase";
-import type { RSVPGuest, RSVPTransport } from "@/types/rsvp";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import type { FirestoreRsvp, RSVPGuest, RSVPTransport } from "@/types/rsvp";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
 type SubmitRsvpParams = {
   groupId: string;
   guests: RSVPGuest[];
-  extraGuests: RSVPGuest[];
   message?: string;
   transport?: RSVPTransport;
 };
 
-export async function submitRsvp({
-  groupId,
-  guests,
-  extraGuests,
-  message,
-  transport,
-}: SubmitRsvpParams) {
+export async function submitRsvp({ groupId, guests, message, transport }: SubmitRsvpParams) {
   const groupRef = doc(db, "guestGroups", groupId);
   const groupSnap = await getDoc(groupRef);
 
@@ -27,13 +20,8 @@ export async function submitRsvp({
   const group = groupSnap.data();
 
   const rsvpRef = doc(db, "rsvps", groupId);
-  const rsvpSnap = await getDoc(rsvpRef);
 
-  if (rsvpSnap.exists()) {
-    throw new Error("RSVP deja trimis");
-  }
-
-  // 🔥 VALIDARE MEMBRI
+  // VALIDARE
   const validMembers: string[] = group.members || [];
 
   const invalidGuests = guests.filter((g) => !validMembers.includes(g.name));
@@ -42,26 +30,21 @@ export async function submitRsvp({
     throw new Error("Invitati invalizi");
   }
 
-  // 🔥 VALIDARE MAX
-  const confirmedCount = guests.filter((g) => g.attending === "yes").length;
+  const confirmedCount = guests.filter((g) => g.attending).length;
 
-  const totalGuests = confirmedCount + (extraGuests?.length || 0);
-
-  if (totalGuests > group.maxGuests) {
+  if (confirmedCount > group.maxGuests) {
     throw new Error("Depasire limita invitati");
   }
 
-  // 🔥 SAVE
-  await setDoc(rsvpRef, {
+  const data: FirestoreRsvp = {
     groupId,
-    familyLabel: group.familyLabel,
-
     guests,
-    extraGuests,
-
     message: message || "",
-    transport: transport || null,
-
+    transport: transport ?? null,
     createdAt: serverTimestamp(),
-  });
+  };
+
+  await setDoc(rsvpRef, data, { merge: true });
+
+  console.log("SUBMITTING RSVP", data);
 }

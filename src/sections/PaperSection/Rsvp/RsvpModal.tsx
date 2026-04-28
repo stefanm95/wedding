@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-import { StepWelcome } from "./StepWelcome";
-import StepName from "./StepName";
 import StepGuests from "./StepGuests";
-import StepRegret from "./StepRegret";
-import StepTransport from "./StepTransport";
 import StepMessage from "./StepMessage";
+import StepName from "./StepName";
+import StepRegret from "./StepRegret";
 import StepSuccess from "./StepSuccess";
+import StepTransport from "./StepTransport";
+import { StepWelcome } from "./StepWelcome";
 
-import { defaultRSVP } from "@/types/rsvp";
 import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
+import { defaultRSVP } from "@/types/rsvp";
 
-import { transition, getPrevStep, type Step } from "@utils/rsvpMachine";
+import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -21,7 +21,7 @@ type Props = {
 };
 
 type NextContext = {
-  attending?: RSVPStatus;
+  attending?: boolean;
 };
 
 type StepRendererProps = {
@@ -38,7 +38,7 @@ function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps
     case "welcome":
       return (
         <StepWelcome
-          onNext={(attending) => {
+          onNext={(attending: boolean) => {
             // const updatedForm = {
             //   ...form,
             //   attending,
@@ -68,7 +68,7 @@ function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps
 
               guests: group.members.map((name: string) => ({
                 name,
-                attending: "yes",
+                attending: true,
                 dietary: "none",
               })),
 
@@ -131,6 +131,7 @@ export default function RsvpModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>("welcome");
   const [form, setForm] = useState<RSVPFormData>(defaultRSVP);
   const [direction, setDirection] = useState(1);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleClose = () => {
     setStep("welcome");
@@ -156,15 +157,17 @@ export default function RsvpModal({ open, onClose }: Props) {
   };
 
   useEffect(() => {
-    if (step === "success") {
+    if (step === "success" && !hasSubmitted) {
       const t = setTimeout(async () => {
+        setHasSubmitted(true);
+
         const next = await transition("success", form);
         setStep(next);
-      }, 2000);
+      }, 1500);
 
       return () => clearTimeout(t);
     }
-  }, [step]);
+  }, [step, hasSubmitted]);
 
   // 🔥 auto close după done
   useEffect(() => {

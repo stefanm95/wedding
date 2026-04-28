@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
-import { cn } from "@utils/cn";
-import { stepVariants } from "./stepVariants";
 import type { DietaryOption, RSVPGuest, RSVPStatus } from "@/types/rsvp";
+import { cn } from "@utils/cn";
+import { motion } from "framer-motion";
+import { stepVariants } from "./stepVariants";
 
 type Props = {
   guests: RSVPGuest[];
@@ -23,7 +23,7 @@ export default function StepGuests({ guests, onChange, onNext, onBack }: Props) 
     onChange(updated);
   };
 
-  const confirmedCount = guests.filter((g) => g.attending === "yes").length;
+  const confirmedCount = guests.filter((g) => g.attending === true).length;
 
   const isValid = confirmedCount > 0; // măcar unul vine
 
@@ -58,10 +58,10 @@ export default function StepGuests({ guests, onChange, onNext, onBack }: Props) 
               {/* YES / NO */}
               <div className="flex gap-2">
                 <button
-                  onClick={() => toggleAttending(index, "yes")}
+                  onClick={() => toggleAttending(index, true)}
                   className={cn(
                     "border px-3 py-1 text-sm",
-                    guest.attending === "yes"
+                    guest.attending === true
                       ? "bg-[#6b1f2b] text-white"
                       : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
                   )}
@@ -70,10 +70,10 @@ export default function StepGuests({ guests, onChange, onNext, onBack }: Props) 
                 </button>
 
                 <button
-                  onClick={() => toggleAttending(index, "no")}
+                  onClick={() => toggleAttending(index, false)}
                   className={cn(
                     "border px-3 py-1 text-sm",
-                    guest.attending === "no"
+                    guest.attending === false
                       ? "bg-[#6b1f2b] text-white"
                       : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
                   )}
@@ -84,8 +84,9 @@ export default function StepGuests({ guests, onChange, onNext, onBack }: Props) 
             </div>
 
             {/* DIETARY doar dacă vine */}
-            {guest.attending === "yes" && (
+            {guest.attending === true && (
               <select
+                title="dietary options"
                 value={guest.dietary || "none"}
                 onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
                 className="border-b border-[#6b1f2b]/20 bg-transparent text-sm text-[#6b1f2b]/70 outline-none"
