@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { db } from "@/lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
 import { cn } from "@utils/cn";
+import { collection, getDocs } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { stepVariants } from "./stepVariants";
 
 import type { GuestGroup } from "@/types/rsvp";
 
 type Props = {
   value: string;
-  onSelectGroup: (group: GuestGroup) => void;
+  onSelectGroup: (group: GuestGroup) => Promise<void>;
   onNext: () => void;
   onBack: () => void;
 };
@@ -33,9 +33,23 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
     fetchGroups();
   }, []);
 
-  const results = groups.filter((group) =>
-    group.members.some((m) => m.toLowerCase().includes(query.toLowerCase())),
-  );
+  const results = groups.filter((group) => {
+    const q = query.toLowerCase();
+
+    return (
+      group.familyLabel.toLowerCase().includes(q) ||
+      group.representative?.toLowerCase().includes(q) ||
+      group.members.some((m) => m.toLowerCase().includes(q))
+    );
+  });
+
+  const getDisplayName = (group: GuestGroup) => {
+    const membersPreview = group.members.slice(0, 2).join(", ");
+
+    return `${group.familyLabel} — ${group.representative}${
+      membersPreview ? ` (${membersPreview})` : ""
+    }`;
+  };
 
   const isValid = !!value;
 
@@ -68,9 +82,14 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
             <button
               key={group.id}
               onClick={() => onSelectGroup(group)}
-              className="w-full border border-[#6b1f2b]/20 py-3 hover:bg-[#6b1f2b]/5"
+              className={cn(
+                "w-full border py-3 transition",
+                value === group.id
+                  ? "border-[#c9a46c] bg-[#6b1f2b]/5"
+                  : "border-[#6b1f2b]/20 hover:bg-[#6b1f2b]/5",
+              )}
             >
-              {group.familyLabel}
+              {getDisplayName(group)}
             </button>
           ))}
         </div>

@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -9,7 +12,7 @@ import StepSuccess from "./StepSuccess";
 import StepTransport from "./StepTransport";
 import { StepWelcome } from "./StepWelcome";
 
-import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
+import type { GuestGroup, RSVPFormData, RSVPStatus } from "@/types/rsvp";
 import { defaultRSVP } from "@/types/rsvp";
 
 import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
@@ -30,51 +33,20 @@ type StepRendererProps = {
   onBack: () => void;
   form: RSVPFormData;
   setForm: React.Dispatch<React.SetStateAction<RSVPFormData>>;
+  onSelectGroup: (group: GuestGroup) => Promise<void>; // 🔥 adaugă asta
 };
 
 /* 🔥 STEP RENDERER */
-function StepRenderer({ step, onBack, onNext, form, setForm }: StepRendererProps) {
+function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: StepRendererProps) {
   switch (step) {
     case "welcome":
-      return (
-        <StepWelcome
-          onNext={(attending: boolean) => {
-            // const updatedForm = {
-            //   ...form,
-            //   attending,
-            //   guests:
-            //     attending === "yes"
-            //       ? form.guests.length > 0
-            //         ? form.guests
-            //         : [{ name: "", dietary: "none" as const }]
-            //       : [],
-            // };
-
-            // setForm(updatedForm);
-
-            onNext({ attending }); // 🔥 direct, fără lag
-          }}
-        />
-      );
+      return <StepWelcome onNext={(attending: boolean) => onNext({ attending })} />;
 
     case "name":
       return (
         <StepName
           value={form.groupId}
-          onSelectGroup={(group) => {
-            setForm((prev) => ({
-              ...prev,
-              groupId: group.id,
-
-              guests: group.members.map((name: string) => ({
-                name,
-                attending: true,
-                dietary: "none",
-              })),
-
-              extraGuests: [],
-            }));
-          }}
+          onSelectGroup={onSelectGroup}
           onNext={onNext} // 🔥 nu mai face transition aici
           onBack={onBack}
         />
@@ -133,9 +105,42 @@ export default function RsvpModal({ open, onClose }: Props) {
   const [direction, setDirection] = useState(1);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  const handleSelectGroup = async (group: GuestGroup) => {
+    const rsvpRef = doc(db, "rsvps", group.id);
+    const rsvpSnap = await getDoc(rsvpRef);
+
+    if (rsvpSnap.exists()) {
+      const rsvp = rsvpSnap.data();
+
+      // 🔥 EDIT MODE
+      setForm({
+        groupId: group.id,
+        guests: rsvp.guests || [],
+        message: rsvp.message || "",
+        transport: rsvp.transport || { type: "none" },
+        name: "",
+        attending: true,
+      });
+
+      setStep(rsvpSnap.exists() ? "guests" : "guests");
+    } else {
+      // 🔥 CREATE MODE
+      setForm((prev) => ({
+        ...prev,
+        groupId: group.id,
+        guests: group.members.map((name: string) => ({
+          name,
+          attending: true,
+          dietary: "none",
+        })),
+      }));
+    }
+  };
+
   const handleClose = () => {
     setStep("welcome");
     setForm(defaultRSVP);
+    setHasSubmitted(false);
     onClose();
   };
 
@@ -229,6 +234,7 @@ export default function RsvpModal({ open, onClose }: Props) {
               onBack={handleBack}
               form={form}
               setForm={setForm}
+              onSelectGroup={handleSelectGroup}
             />
           </motion.div>
         </AnimatePresence>
