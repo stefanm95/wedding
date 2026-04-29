@@ -15,19 +15,19 @@ export const storyData: StoryItemType[] = [
   {
     title: "Totul a început...",
     text: "fără să știm, nu a fost o întâlnire planificată. Nu a fost un moment spectaculos. Dar dintr-o întâmplare simplă, a început ceva ce avea să devină totul.",
-    image: "/assets/images/couple/couple-placeholder01.png",
+    image: "/assets/images/couple/couple-placeholder01.jpg",
     date: "2021",
   },
   {
     title: "Într-o zi obisnuita...",
     text: "timpul parcă s-a oprit, iar întrebarea aceea simplă a devenit începutul unui nou capitol.",
-    image: "/assets/images/couple/couple-placeholder02.png",
+    image: "/assets/images/couple/couple-placeholder02.jpg",
     date: "2024",
   },
   {
     title: "O lume construita împreuna",
     text: "Nu doar noi doi, ci toți cei care ne sunt alături. O familie, o poveste, o viață care crește în fiecare zi.",
-    image: "/assets/images/couple/couple-placeholder03.png",
+    image: "/assets/images/couple/couple-placeholder03.jpg",
     date: "2026",
   },
   // 📍 CEREMONIE
@@ -38,7 +38,7 @@ export const storyData: StoryItemType[] = [
     location: "Biserica X",
     date: "22 August 2026",
     time: "16:00",
-    image: "/images/church.jpg",
+    image: "/images/locatii/church.jpg",
     mapLink: "https://maps.google.com",
   },
 
@@ -50,7 +50,7 @@ export const storyData: StoryItemType[] = [
     location: "Pădurile Regale",
     date: "22 August 2026",
     time: "19:00",
-    image: "/images/padurile-regale.jpg",
+    image: "/images/locatii/padurile-regale.jpg",
     mapLink: "https://maps.google.com",
   },
 ];

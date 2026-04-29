@@ -1,19 +1,15 @@
-// src/components/PaperImage.tsx
+import { cn } from "@/utils/cn";
 
 type Props = {
   src: string;
   alt: string;
+  className?: string;
 };
 
-export default function PaperImage({ src, alt }: Props) {
+export default function PaperImage({ src, alt, className }: Props) {
   return (
-    <div
-      className="relative inline-block bg-[#f4f1ea] p-2 shadow-[0_10px_30px_rgba(0,0,0,0.18)]"
-      style={{
-        transform: "rotate(-1.2deg)",
-      }}
-    >
-      <img src={src} alt={alt} className="block w-full object-cover" />
+    <div className={cn("relative h-full w-full", className)}>
+      <img src={src} alt={alt} className="h-full w-full object-cover object-center" />
 
       {/* grain subtil */}
       <div
