@@ -33,7 +33,7 @@ type StepRendererProps = {
   onBack: () => void;
   form: RSVPFormData;
   setForm: React.Dispatch<React.SetStateAction<RSVPFormData>>;
-  onSelectGroup: (group: GuestGroup) => Promise<void>; // 🔥 adaugă asta
+  onSelectGroup: (group: GuestGroup) => Promise<void>;
 };
 
 /* 🔥 STEP RENDERER */
@@ -47,7 +47,7 @@ function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: St
         <StepName
           value={form.groupId}
           onSelectGroup={onSelectGroup}
-          onNext={onNext} // 🔥 nu mai face transition aici
+          onNext={onNext}
           onBack={onBack}
         />
       );
@@ -77,8 +77,13 @@ function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: St
       return (
         <StepTransport
           value={form.transport!}
-          onChange={(transport) => setForm((prev) => ({ ...prev, transport }))}
-          onNext={onNext} // 🔥 nu mai face transition aici
+          onChange={(transport) =>
+            setForm((prev) => ({
+              ...prev,
+              transport,
+            }))
+          }
+          onNext={onNext}
           onBack={onBack}
         />
       );
@@ -87,17 +92,19 @@ function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: St
       return (
         <StepMessage
           value={form.message || ""}
-          onChange={(message) => setForm((prev) => ({ ...prev, message }))}
-          onNext={onNext} // 🔥 nu mai face transition aici
+          onChange={(message) =>
+            setForm((prev) => ({
+              ...prev,
+              message,
+            }))
+          }
+          onNext={onNext}
           onBack={onBack}
         />
       );
 
     case "success":
       return <StepSuccess />;
-
-    case "submitting":
-      return <div className="py-10 text-center">Se trimite RSVP...</div>;
 
     case "done":
       return null;
@@ -111,17 +118,16 @@ export default function RsvpModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>("welcome");
   const [form, setForm] = useState<RSVPFormData>(defaultRSVP);
   const [direction, setDirection] = useState(1);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  /* ---------------- SELECT GROUP ---------------- */
 
   const handleSelectGroup = async (group: GuestGroup) => {
-    setHasSubmitted(false); // 🔥 ADD THIS
     const rsvpRef = doc(db, "rsvps", group.id);
     const rsvpSnap = await getDoc(rsvpRef);
 
     if (rsvpSnap.exists()) {
       const rsvp = rsvpSnap.data();
 
-      // 🔥 EDIT MODE
       setForm({
         groupId: group.id,
         guests: rsvp.guests || [],
@@ -133,9 +139,8 @@ export default function RsvpModal({ open, onClose }: Props) {
         attending: true,
       });
 
-      setStep(rsvpSnap.exists() ? "guests" : "guests");
+      setStep("guests");
     } else {
-      // 🔥 CREATE MODE
       setForm((prev) => ({
         ...prev,
         groupId: group.id,
@@ -145,57 +150,56 @@ export default function RsvpModal({ open, onClose }: Props) {
           dietary: "none",
         })),
         extraGuests: [],
-        maxGuests: group.maxGuests, // 🔥 HERE
+        maxGuests: group.maxGuests,
       }));
     }
   };
 
-  const handleClose = () => {
-    setStep("welcome");
-    setForm(defaultRSVP);
-    setHasSubmitted(false);
-    onClose();
-  };
+  /* ---------------- NAVIGATION ---------------- */
 
   const handleNext = async (ctx?: { attending?: RSVPStatus }) => {
     setDirection(1);
 
     const next = await transition(step, form, ctx);
-
     setStep(next);
   };
 
   const handleBack = () => {
     const prev = getPrevStep(step);
-
     if (!prev) return;
 
     setDirection(-1);
     setStep(prev);
   };
 
-  useEffect(() => {
-    if (step === "success" && !hasSubmitted) {
-      const t = setTimeout(async () => {
-        setHasSubmitted(true);
+  const handleClose = () => {
+    setStep("welcome");
+    setForm(defaultRSVP);
+    onClose();
+  };
 
-        const next = await transition("success", form);
-        setStep(next);
-      }, 1500);
+  /* ---------------- AUTO CLOSE ---------------- */
 
-      return () => clearTimeout(t);
-    }
-  }, [step, hasSubmitted]);
-
-  // 🔥 auto close după done
   useEffect(() => {
     if (step === "done") {
-      const t = setTimeout(handleClose, 1500);
+      const t = setTimeout(handleClose, 100); // 🔥 faster close
       return () => clearTimeout(t);
     }
   }, [step]);
 
-  // 🔐 ESC
+  useEffect(() => {
+    if (step === "success") {
+      const t = setTimeout(async () => {
+        const next = await transition("success", form);
+        setStep(next);
+      }, 1200); // let success breathe
+
+      return () => clearTimeout(t);
+    }
+  }, [step]);
+
+  /* ---------------- ESC ---------------- */
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") handleClose();
@@ -209,6 +213,8 @@ export default function RsvpModal({ open, onClose }: Props) {
   }, [open]);
 
   if (!open) return null;
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center">
@@ -233,23 +239,25 @@ export default function RsvpModal({ open, onClose }: Props) {
 
         {/* STEPS */}
         <AnimatePresence mode="wait" custom={direction} initial={false}>
-          <motion.div
-            key={step}
-            variants={stepVariants}
-            custom={direction}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            <StepRenderer
-              step={step}
-              onNext={handleNext}
-              onBack={handleBack}
-              form={form}
-              setForm={setForm}
-              onSelectGroup={handleSelectGroup}
-            />
-          </motion.div>
+          {step !== "done" && (
+            <motion.div
+              key={step}
+              variants={stepVariants}
+              custom={direction}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <StepRenderer
+                step={step}
+                onNext={handleNext}
+                onBack={handleBack}
+                form={form}
+                setForm={setForm}
+                onSelectGroup={handleSelectGroup}
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
       </motion.div>
     </div>

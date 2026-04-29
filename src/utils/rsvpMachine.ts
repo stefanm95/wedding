@@ -8,7 +8,6 @@ export type Step =
   | "transport"
   | "message"
   | "success"
-  | "submitting"
   | "regret"
   | "done";
 
@@ -51,9 +50,6 @@ export const rsvpMachine: Record<Step, StateConfig> = {
   },
   // 🔥 AICI SE ÎNTÂMPLĂ MAGIA
   success: {
-    next: () => "submitting",
-  },
-  submitting: {
     next: () => "done",
 
     onEnter: async (form) => {
