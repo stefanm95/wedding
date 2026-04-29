@@ -43,7 +43,7 @@
       "Arion Felicia",
       "Stan Dragoș-Nicolae"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Arion Felicia",
     "hasResponded": false
   },
@@ -76,9 +76,10 @@
       "Botezat-Antonescu Mircea",
       "Botezat-Antonescu Maria",
       "Botezat-Antonescu Ileana",
-      "Botezat-Antonescu Liviu"
+      "Botezat-Antonescu Liviu",
+      "Vasilescu Maria"
     ],
-    "maxGuests": 9,
+    "maxGuests": 8,
     "representative": "Botezat-Antonescu Alexandra Daniela",
     "hasResponded": false
   },
@@ -89,7 +90,7 @@
       "Băjenaru Teodor",
       "Băjenaru Daria"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Băjenaru Teodor",
     "hasResponded": false
   },
@@ -101,7 +102,7 @@
       "Bancuță George",
       "Bancuță Firița"
     ],
-    "maxGuests": 3,
+    "maxGuests": 4,
     "representative": "Bancuță George",
     "hasResponded": false
   },
@@ -125,7 +126,7 @@
       "Condrea Flavius",
       "Condrea David"
     ],
-    "maxGuests": 5,
+    "maxGuests": 4,
     "representative": "Condrea Laura",
     "hasResponded": false
   },
@@ -184,7 +185,7 @@
       "Cristea Miruna",
       "Cristea George"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Cristea George",
     "hasResponded": false
   },
@@ -207,7 +208,7 @@
       "Dobre Răzvan Leonard",
       "Murgeanu Daniela Georgiana"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Dobre Răzvan Leonard",
     "hasResponded": false
   },
@@ -222,7 +223,7 @@
       "Dragomir Alexia",
       "Dragomir Vlad"
     ],
-    "maxGuests": 9,
+    "maxGuests": 10,
     "representative": "Dragomir Cristi",
     "hasResponded": false
   },
@@ -233,7 +234,7 @@
       "Enache Stefan",
       "Enache Lavinia"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Enache Stefan",
     "hasResponded": false
   },
@@ -254,7 +255,7 @@
       "Ghinescu Razvan Gabriel",
       "Gusatu Claudia Andreea"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Ghinescu Razvan Gabriel",
     "hasResponded": false
   },
@@ -265,7 +266,7 @@
       "Ganescu Ovidiu",
       "Ganescu Iuliana"
     ],
-    "maxGuests": 4,
+    "maxGuests": 3,
     "representative": "Ganescu Ovidiu",
     "hasResponded": false
   },
@@ -306,7 +307,7 @@
       "Lazăr Alexandru",
       "Tautu Raluca"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Lazăr Alexandru",
     "hasResponded": false
   },
@@ -400,13 +401,13 @@
     "id": "olteanu",
     "familyLabel": "Olteanu",
     "members": [
-      "Daniel George Olteanu",
-      "Dana Olteanu",
-      "Gica Olteanu",
-      "Adina Olteanu"
+      "Olteanu Daniel George",
+      "Olteanu Dana",
+      "Olteanu Gica",
+      "Olteanu Adina"
     ],
     "maxGuests": 5,
-    "representative": "Daniel George Olteanu",
+    "representative": "Olteanu Daniel George",
     "hasResponded": false
   },
   {
@@ -436,7 +437,7 @@
       "Petrescu Zorina",
       "Petre Daniel"
     ],
-    "maxGuests": 2,
+    "maxGuests": 3,
     "representative": "Petrescu Zorina",
     "hasResponded": false
   },
@@ -524,17 +525,17 @@
     "hasResponded": false
   },
   {
-    "id": "untesu",
+    "id": "untesu-gherghina",
     "familyLabel": "Untesu Gherghina",
     "members": [
       "Unteșu Gherghina"
     ],
-    "maxGuests": 2,
+    "maxGuests": 1,
     "representative": "Untesu Gherghina",
     "hasResponded": false
   },
   {
-    "id": "untesu",
+    "id": "untesu-cristian",
     "familyLabel": "Untesu Cristian",
     "members": [
       "Untesu Stefan Cristian"
@@ -547,9 +548,12 @@
     "id": "vasilescu",
     "familyLabel": "Vasilescu Ioana",
     "members": [
-      "Vasilescu Ioana"
+      "Vasilescu Ioana",
+      "Matei",
+      "Andrei",
+      "George"
     ],
-    "maxGuests": 2,
+    "maxGuests": 6,
     "representative": "Vasilescu Ioana",
     "hasResponded": false
   },
@@ -658,14 +662,23 @@
     "hasResponded": false
   },
   {
-    "id": "iacob",
-    "familyLabel": "Iacob",
+    "id": "iacob-bianca",
+    "familyLabel": "Iacob Bianca",
     "members": [
-      "Iacob Bianca",
-      "Iacob Madalina"
+      "Iacob Bianca"
     ],
     "maxGuests": 4,
     "representative": "Iacob Bianca",
+    "hasResponded": false
+  },
+  {
+    "id": "iacob-madalina",
+    "familyLabel": "Iacob Madalina",
+    "members": [
+      "Iacob Madalina"
+    ],
+    "maxGuests": 4,
+    "representative": "Iacob Madalina",
     "hasResponded": false
   },
   {
@@ -693,10 +706,41 @@
     "id": "demea",
     "familyLabel": "Demea",
     "members": [
-      "..."
+      "Demea de completat",
+      "Demea de completat"
     ],
     "maxGuests": 4,
-    "representative": "Onuta",
+    "representative": "Deamea demea",
+    "hasResponded": false
+  },
+  {
+    "id": "serban-alexandra",
+    "familyLabel": "Serban Alexandra",
+    "members": [
+      "Serban Alexandra"
+    ],
+    "maxGuests": 2,
+    "representative": "Serban Alexandra",
+    "hasResponded": false
+  },
+  {
+    "id": "pantea",
+    "familyLabel": "Pantea",
+    "members": [
+      "Pantea Andreea"
+    ],
+    "maxGuests": 2,
+    "representative": "Pantea Andreea",
+    "hasResponded": false
+  },
+  {
+    "id": "dumitrescu",
+    "familyLabel": "Dumitrescu",
+    "members": [
+      "Dumitrescu Adelana"
+    ],
+    "maxGuests": 2,
+    "representative": "Dumitrescu Adelana",
     "hasResponded": false
   }
 ]

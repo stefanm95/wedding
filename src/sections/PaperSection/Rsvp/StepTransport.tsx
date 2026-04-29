@@ -1,7 +1,8 @@
-import { motion } from "framer-motion";
-import { cn } from "@utils/cn";
-import { stepVariants } from "./stepVariants";
 import type { RSVPTransport, TransportType } from "@/types/rsvp";
+import { cn } from "@utils/cn";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { stepVariants } from "./stepVariants";
 
 type Props = {
   value: RSVPTransport;
@@ -17,6 +18,8 @@ const OPTIONS: { label: string; value: TransportType }[] = [
 ];
 
 export default function StepTransport({ value, onChange, onNext, onBack }: Props) {
+  const [showInfo, setShowInfo] = useState(false);
+
   const isSelected = (type: TransportType) => value?.type === type;
 
   return (
@@ -42,36 +45,49 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
       {/* OPTIONS */}
       <div className="space-y-4">
         {OPTIONS.map((opt) => (
-          <button
-            key={opt.value}
-            onClick={() =>
-              onChange({
-                type: opt.value,
-              })
-            }
-            className={cn(
-              "w-full border px-6 py-4 text-left transition",
-              isSelected(opt.value)
-                ? "border-[#c9a46c] bg-[#c9a46c]/10 text-[#6b1f2b]"
-                : "border-[#6b1f2b]/20 text-[#6b1f2b]/70 hover:border-[#6b1f2b]",
-            )}
-          >
-            {opt.label}
-          </button>
-        ))}
+          <div key={opt.value}>
+            <button
+              onClick={() => {
+                onChange({ type: opt.value });
 
-        {value.type === "bus" && (
-          <input
-            placeholder="Locație preluare"
-            value={value.pickupLocation || ""}
-            onChange={(e) =>
-              onChange({
-                ...value,
-                pickupLocation: e.target.value,
-              })
-            }
-          />
-        )}
+                // 🔥 show info automatically when bus is selected
+                if (opt.value === "bus") {
+                  setShowInfo(true);
+                } else {
+                  setShowInfo(false);
+                }
+              }}
+              className={cn(
+                "w-full border px-6 py-4 text-left transition",
+                isSelected(opt.value)
+                  ? "border-[#c9a46c] bg-[#c9a46c]/10 text-[#6b1f2b]"
+                  : "border-[#6b1f2b]/20 text-[#6b1f2b]/70 hover:border-[#6b1f2b]",
+              )}
+            >
+              {opt.label}
+            </button>
+
+            {/* 🚌 BUS INFO */}
+            {opt.value === "bus" && isSelected("bus") && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: showInfo ? 1 : 0, height: showInfo ? "auto" : 0 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-3 rounded-md border border-[#6b1f2b]/10 bg-[#6b1f2b]/5 p-4 text-sm text-[#6b1f2b]/80">
+                  <p className="font-medium">🚌 Transport organizat</p>
+
+                  <p className="mt-2">
+                    Plecarea va avea loc din <strong>Piața Unirii</strong> la ora{" "}
+                    <strong>15:30</strong>.
+                  </p>
+
+                  <p className="mt-1">Vă rugăm să fiți prezenți cu 10 minute înainte.</p>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        ))}
       </div>
 
       {/* CTA */}

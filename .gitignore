@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 public/assets/video/hero.mp4*
+src/lib/serviceAccountKey.json
 
 node_modules
 dist
