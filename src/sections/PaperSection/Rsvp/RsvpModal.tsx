@@ -56,8 +56,16 @@ function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: St
       return (
         <StepGuests
           guests={form.guests}
-          onChange={(guests) => setForm((prev) => ({ ...prev, guests }))}
-          onNext={onNext} // 🔥 nu mai face transition aici
+          extraGuests={form.extraGuests}
+          maxGuests={form.maxGuests}
+          onChange={(guests, extraGuests) =>
+            setForm((prev) => ({
+              ...prev,
+              guests,
+              extraGuests,
+            }))
+          }
+          onNext={onNext}
           onBack={onBack}
         />
       );
@@ -116,6 +124,8 @@ export default function RsvpModal({ open, onClose }: Props) {
       setForm({
         groupId: group.id,
         guests: rsvp.guests || [],
+        extraGuests: rsvp.extraGuests || [],
+        maxGuests: group.maxGuests,
         message: rsvp.message || "",
         transport: rsvp.transport || { type: "none" },
         name: "",
@@ -133,6 +143,8 @@ export default function RsvpModal({ open, onClose }: Props) {
           attending: true,
           dietary: "none",
         })),
+        extraGuests: [],
+        maxGuests: group.maxGuests, // 🔥 HERE
       }));
     }
   };

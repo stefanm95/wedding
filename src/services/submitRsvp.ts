@@ -5,11 +5,18 @@ import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 type SubmitRsvpParams = {
   groupId: string;
   guests: RSVPGuest[];
+  extraGuests: RSVPGuest[];
   message?: string;
   transport?: RSVPTransport;
 };
 
-export async function submitRsvp({ groupId, guests, message, transport }: SubmitRsvpParams) {
+export async function submitRsvp({
+  groupId,
+  guests,
+  extraGuests,
+  message,
+  transport,
+}: SubmitRsvpParams) {
   const groupRef = doc(db, "guestGroups", groupId);
   const groupSnap = await getDoc(groupRef);
 
@@ -30,7 +37,12 @@ export async function submitRsvp({ groupId, guests, message, transport }: Submit
     throw new Error("Invitati invalizi");
   }
 
-  const confirmedCount = guests.filter((g) => g.attending).length;
+  const confirmedCount =
+    guests.filter((g) => g.attending).length + extraGuests.filter((g) => g.attending).length;
+
+  if (confirmedCount > group.maxGuests) {
+    throw new Error("Depasire limita invitati");
+  }
 
   if (confirmedCount > group.maxGuests) {
     throw new Error("Depasire limita invitati");
@@ -39,6 +51,7 @@ export async function submitRsvp({ groupId, guests, message, transport }: Submit
   const data: FirestoreRsvp = {
     groupId,
     guests,
+    extraGuests, // 🔥
     message: message || "",
     transport: transport ?? null,
     createdAt: serverTimestamp(),

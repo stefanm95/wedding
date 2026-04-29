@@ -21,6 +21,9 @@ export type RSVPFormData = {
   attending: RSVPStatus;
 
   guests: RSVPGuest[];
+  extraGuests: RSVPGuest[];
+
+  maxGuests: number;
 
   message?: string;
   transport?: RSVPTransport;
@@ -39,6 +42,7 @@ export type GuestGroup = {
 export type FirestoreRsvp = {
   groupId: string;
   guests: RSVPGuest[];
+  extraGuests: RSVPGuest[];
   message?: string;
   transport?: RSVPTransport | null;
   createdAt: any;
@@ -49,6 +53,8 @@ export const defaultRSVP: RSVPFormData = {
   name: "",
   attending: true,
   guests: [],
+  extraGuests: [],
+  maxGuests: 0,
   message: "",
   transport: {
     type: "none",

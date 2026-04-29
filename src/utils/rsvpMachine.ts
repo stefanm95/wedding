@@ -60,6 +60,7 @@ export const rsvpMachine: Record<Step, StateConfig> = {
       await submitRsvp({
         groupId: form.groupId!,
         guests: form.guests,
+        extraGuests: form.extraGuests,
         message: form.message,
         transport: form.transport,
       });
