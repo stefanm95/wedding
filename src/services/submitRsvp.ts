@@ -1,6 +1,6 @@
 import { db } from "@/lib/firebase";
 import type { FirestoreRsvp, RSVPGuest, RSVPTransport } from "@/types/rsvp";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 type SubmitRsvpParams = {
   groupId: string;
@@ -57,6 +57,10 @@ export async function submitRsvp({
     createdAt: serverTimestamp(),
   };
 
+  // 🔥 UPDATE GROUP FLAG
+  await updateDoc(groupRef, {
+    hasResponded: true,
+  });
   await setDoc(rsvpRef, data, { merge: true });
 
   console.log("SUBMITTING RSVP", data);

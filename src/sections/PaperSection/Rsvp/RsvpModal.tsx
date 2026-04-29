@@ -114,6 +114,7 @@ export default function RsvpModal({ open, onClose }: Props) {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const handleSelectGroup = async (group: GuestGroup) => {
+    setHasSubmitted(false); // 🔥 ADD THIS
     const rsvpRef = doc(db, "rsvps", group.id);
     const rsvpSnap = await getDoc(rsvpRef);
 
