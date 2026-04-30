@@ -1,10 +1,22 @@
 import { storyData } from "./storyData";
 import StoryItem from "./StoryItem";
 
-export default function Story() {
+function StoryFoldSafeArea() {
   return (
-    <section className="relative -mt-10 pt-8 md:pt-16">
-      <div className="mx-auto mb-24 max-w-3xl px-6 text-center md:mb-32">
+    <div
+      aria-hidden="true"
+      className="h-[clamp(260px,34vh,420px)] md:h-[clamp(360px,42vh,560px)] lg:h-[clamp(460px,44vh,680px)]"
+    />
+  );
+}
+
+export default function Story() {
+  const firstGroup = storyData.slice(0, 2);
+  const secondGroup = storyData.slice(2);
+
+  return (
+    <section className="relative pt-8 md:pt-12">
+      <div className="mx-auto mb-28 mt-[4em] h-[12vh] max-w-3xl px-6 text-center md:mb-36 lg:mb-44">
         <p className="mb-4 font-[Castlegar_Caps] uppercase tracking-[0.4em] text-[#6b1f2b]/60">
           Povestea noastră
         </p>
@@ -14,12 +26,18 @@ export default function Story() {
         </h2>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 md:px-12">
-        <div className="space-y-24 md:space-y-32">
-          {storyData.map((item) => (
-            <StoryItem key={item.title} item={item} />
-          ))}
-        </div>
+      <div className="space-y-28 md:space-y-36 lg:space-y-44">
+        {firstGroup.map((item) => (
+          <StoryItem key={item.title} item={item} />
+        ))}
+      </div>
+
+      <StoryFoldSafeArea />
+
+      <div className="space-y-32 md:space-y-40 lg:space-y-48">
+        {secondGroup.map((item) => (
+          <StoryItem key={item.title} item={item} />
+        ))}
       </div>
 
       <p className="script-cormorant-body mt-24 text-center text-[36px] italic text-[#6b1f2b]/70">

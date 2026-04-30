@@ -18,13 +18,13 @@ const reveal: Pick<
 };
 
 const textClass = "max-w-[480px]";
-const imageClass = "w-full max-w-[420px]";
+const imageClass = "w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[420px]";
 
 function StoryImage({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
   if (!item.image) return null;
 
   return (
-    <div className={cn("flex justify-center lg:justify-start", !isLeft && "lg:order-1 lg:justify-end")}>
+    <div className={cn("flex justify-center", !isLeft && "lg:order-1")}>
       <div
         className={imageClass}
         style={{
@@ -43,7 +43,7 @@ function StoryImage({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) 
 
 function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
   return (
-    <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
+    <div className="mx-auto grid max-w-6xl items-center gap-12 md:gap-16 lg:grid-cols-2 lg:gap-20">
       <div className={cn("mx-auto w-full", textClass, !isLeft && "lg:order-2")}>
         <p className="mb-5 text-[12px] uppercase tracking-[0.45em] text-[#5a1e28]/55">
           {item.date}
@@ -83,7 +83,7 @@ function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
 
 function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
   return (
-    <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
+    <div className="mx-auto grid max-w-6xl items-center gap-12 md:gap-16 lg:grid-cols-2 lg:gap-28">
       <div className={cn("mx-auto w-full text-left", textClass, !isLeft && "lg:order-2")}>
         {item.date && (
           <p className="mb-5 text-[12px] tracking-[0.45em] text-[#5a1e28]/60">{item.date}</p>
