@@ -1,111 +1,118 @@
 import PaperImage from "@components/PaperImage";
-import { useSectionScroll } from "@hooks/useSectionScroll";
 import { cn } from "@utils/cn";
-import { motion, useTransform } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import type { StoryItemType } from "./storyData";
 
 type Props = {
   item: StoryItemType;
-  index: number;
 };
 
-export default function StoryItem({ item, index }: Props) {
-  const isLeft = index % 2 === 0;
+const reveal: Pick<
+  HTMLMotionProps<"div">,
+  "initial" | "whileInView" | "viewport" | "transition"
+> = {
+  initial: { opacity: 0, y: 40 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-100px" },
+  transition: { duration: 0.8, ease: "easeOut" },
+};
 
-  const { ref, progress } = useSectionScroll({
-    offset: ["start 85%", "end 20%"],
-  });
+const textClass = "max-w-[480px]";
+const imageClass = "w-full max-w-[420px]";
 
-  const y = useTransform(progress, [0, 1], [50, 0]);
-  const opacity = useTransform(progress, [0, 0.4], [0, 1]);
-
-  const imageSrc: string | null = typeof item.image === "string" ? item.image : null;
+function StoryImage({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
+  if (!item.image) return null;
 
   return (
-    <motion.div ref={ref} style={{ y, opacity }} className="relative mb-28 md:mb-32 lg:mb-44">
-      <div className="mx-auto max-w-[1400px] px-6 md:px-10 lg:px-16">
-        {/* ========================= */}
-        {/* 📱 MOBILE + TABLET (STACKED) */}
-        {/* ========================= */}
-        <div className="flex flex-col gap-10 md:gap-12 lg:hidden">
-          {/* TEXT */}
-          <div className={cn("max-w-[520px]", isLeft ? "mr-auto text-left" : "ml-auto text-right")}>
-            {item.date && (
-              <p className="mb-4 text-[12px] tracking-[0.4em] text-[#5a1e28]/60">{item.date}</p>
-            )}
-
-            <h3 className="script-castlegar-title mb-4 text-[26px] leading-[1.3] text-[#5a1e28]">
-              {item.title}
-            </h3>
-
-            <p className="script-cormorant-display text-[24px] leading-[1.8] text-[#5a1e28]/75">
-              {item.text}
-            </p>
+    <div className={cn("flex justify-center lg:justify-start", !isLeft && "lg:order-1 lg:justify-end")}>
+      <div
+        className={imageClass}
+        style={{
+          transform: `rotate(${isLeft ? "0.5deg" : "-0.5deg"})`,
+        }}
+      >
+        <div className="bg-transparent p-3 shadow-[0_30px_80px_rgba(0,0,0,0.1)]">
+          <div className="aspect-square overflow-hidden">
+            <PaperImage src={item.image} alt={item.title} />
           </div>
-
-          {/* IMAGE */}
-          {imageSrc && (
-            <div className={cn("flex", isLeft ? "justify-start" : "order-1 justify-center")}>
-              <div
-                className="w-full max-w-[400px] xl:max-w-[460px]"
-                style={{
-                  transform: `rotate(${isLeft ? "1deg" : "-1deg"})`,
-                }}
-              >
-                {/* frame tip hârtie */}
-                <div className="bg-transparent p-3 shadow-[0_30px_80px_rgba(0,0,0,0.1)]">
-                  {/* 🔥 CONTROL REAL DIMENSIUNE */}
-                  <div className="aspect-[4/4] overflow-hidden">
-                    <PaperImage src={imageSrc} alt={item.title} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* ========================= */}
-        {/* 🖥 DESKTOP (GRID) */}
-        {/* ========================= */}
-        <div className="hidden items-center gap-24 lg:grid lg:grid-cols-2">
-          {/* TEXT */}
-          <div className={cn(isLeft ? "pr-20" : "order-2 pl-20")}>
-            <div className="max-w-[640px]">
-              {item.date && (
-                <p className="mb-6 text-[12px] tracking-[0.5em] text-[#5a1e28]/60">{item.date}</p>
-              )}
+function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
+  return (
+    <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
+      <div className={cn("mx-auto w-full", textClass, !isLeft && "lg:order-2")}>
+        <p className="mb-5 text-[12px] uppercase tracking-[0.45em] text-[#5a1e28]/55">
+          {item.date}
+        </p>
 
-              <h3 className="script-castlegar-title mb-6 text-[38px] leading-[1.35] text-[#5a1e28]">
-                {item.title}
-              </h3>
+        <div className="border-y border-[#5a1e28]/15 py-8">
+          <h3 className="script-castlegar-title mb-5 text-[30px] leading-[1.25] text-[#5a1e28] md:text-[36px]">
+            {item.title}
+          </h3>
 
-              <p className="script-cormorant-display text-[19px] leading-[2.0] text-[#5a1e28]/75">
-                {item.text}
-              </p>
-            </div>
+          <p className="script-cormorant-display mb-7 text-[20px] leading-[1.8] text-[#5a1e28]/75">
+            {item.text}
+          </p>
+
+          <div className="space-y-2 text-[15px] uppercase tracking-[0.18em] text-[#5a1e28]/70">
+            {item.time && <p>{item.time}</p>}
+            {item.location && <p>{item.location}</p>}
           </div>
 
-          {/* IMAGE */}
-          {imageSrc && (
-            <div className={cn("flex", isLeft ? "justify-start" : "order-1 justify-end")}>
-              <div
-                className="w-full max-w-[400px] xl:max-w-[460px]"
-                style={{
-                  transform: `rotate(${isLeft ? "1deg" : "-1deg"})`,
-                }}
-              >
-                {/* frame tip hârtie */}
-                <div className="bg-transparent p-3 shadow-[0_30px_80px_rgba(0,0,0,0.1)]">
-                  {/* 🔥 CONTROL REAL DIMENSIUNE */}
-                  <div className="aspect-[4/4] overflow-hidden">
-                    <PaperImage src={imageSrc} alt={item.title} />
-                  </div>
-                </div>
-              </div>
-            </div>
+          {item.mapLink && (
+            <a
+              href={item.mapLink}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex border border-[#c9a46c] px-6 py-3 text-xs uppercase tracking-[0.3em] text-[#5a1e28] transition hover:bg-[#5a1e28] hover:text-white"
+            >
+              Vezi harta
+            </a>
           )}
         </div>
       </div>
+
+      <StoryImage item={item} isLeft={isLeft} />
+    </div>
+  );
+}
+
+function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
+  return (
+    <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
+      <div className={cn("mx-auto w-full text-left", textClass, !isLeft && "lg:order-2")}>
+        {item.date && (
+          <p className="mb-5 text-[12px] tracking-[0.45em] text-[#5a1e28]/60">{item.date}</p>
+        )}
+
+        <h3 className="script-castlegar-title mb-5 text-[30px] leading-[1.3] text-[#5a1e28] md:text-[38px]">
+          {item.title}
+        </h3>
+
+        <p className="script-cormorant-display text-[22px] leading-[1.8] text-[#5a1e28]/75 lg:text-[19px] lg:leading-[2]">
+          {item.text}
+        </p>
+      </div>
+
+      <StoryImage item={item} isLeft={isLeft} />
+    </div>
+  );
+}
+
+export default function StoryItem({ item }: Props) {
+  const isLeft = item.side !== "right";
+
+  return (
+    <motion.div {...reveal} className="relative">
+      {item.type === "event" ? (
+        <EventItem item={item} isLeft={isLeft} />
+      ) : (
+        <NarrativeItem item={item} isLeft={isLeft} />
+      )}
     </motion.div>
   );
 }

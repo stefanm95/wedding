@@ -2,6 +2,7 @@ export type ItemType = "story" | "transition" | "event";
 
 export type StoryItemType = {
   type?: ItemType;
+  side?: "left" | "right";
   title: string;
   text: string;
   image?: string;
@@ -13,6 +14,7 @@ export type StoryItemType = {
 
 export const storyData: StoryItemType[] = [
   {
+    side: "left",
     title: "Totul a început...",
     text: "fără să știm, nu a fost o întâlnire planificată. Nu a fost un moment spectaculos. Dar dintr-o întâmplare simplă, a început ceva ce avea să devină totul.",
     image:
@@ -20,6 +22,7 @@ export const storyData: StoryItemType[] = [
     date: "2021",
   },
   {
+    side: "right",
     title: "Într-o zi obisnuita...",
     text: "timpul parcă s-a oprit, iar întrebarea aceea simplă a devenit începutul unui nou capitol.",
     image:
@@ -27,6 +30,7 @@ export const storyData: StoryItemType[] = [
     date: "2024",
   },
   {
+    side: "left",
     title: "O lume construita împreuna",
     text: "Nu doar noi doi, ci toți cei care ne sunt alături. O familie, o poveste, o viață care crește în fiecare zi.",
     image:
@@ -36,6 +40,7 @@ export const storyData: StoryItemType[] = [
   // 📍 CEREMONIE
   {
     type: "event",
+    side: "right",
     title: "Ceremonia religioasa",
     text: "Vom spune „DA” în fața lui Dumnezeu, într-un loc plin de liniște și binecuvântare.",
     location: "Biserica X",
@@ -48,6 +53,7 @@ export const storyData: StoryItemType[] = [
   // 🌿 PETRECERE
   {
     type: "event",
+    side: "left",
     title: "Petrecerea",
     text: "Vom sărbători iubirea noastră într-un cadru natural de poveste.",
     location: "Pădurile Regale",
