@@ -1,18 +1,32 @@
+import { motion, useTransform, type MotionValue } from "framer-motion";
 import { paperThemes, type PaperVariant } from "@utils/paperThemes";
 
 type PaperTexture = "premium" | "premium2";
 
 type Props = {
-  variant?: PaperVariant;
+  progress: MotionValue<number>;
   texture?: PaperTexture;
 };
 
-const PaperBackground = ({ variant = "golden" }: Props) => {
+const variants: PaperVariant[] = ["day", "golden", "evening"];
+
+const PaperBackgroundLayer = ({
+  variant,
+  opacity,
+}: {
+  variant: PaperVariant;
+  opacity: MotionValue<number> | number;
+}) => {
   const theme = paperThemes[variant];
 
   return (
-    <div className="absolute inset-0 z-0">
-      {/* 🧻 BASE PAPER */}
+    <motion.div
+      className="absolute inset-0"
+      style={{
+        opacity,
+        filter: theme.filter,
+      }}
+    >
       <div
         className="absolute inset-0"
         style={{
@@ -24,7 +38,6 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
         }}
       />
 
-      {/* ✨ LIGHT */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -33,7 +46,6 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
         }}
       />
 
-      {/* 🌫 DEPTH LIGHT */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -48,29 +60,42 @@ const PaperBackground = ({ variant = "golden" }: Props) => {
         }}
       />
 
-      {/* 🎞 GRAIN */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: "url('/assets/base-grain/grai1.jpg')",
-          opacity: 0.08,
+          backgroundImage: "url('/assets/base-grain/grain1.jpg')",
+          backgroundSize: theme.grainSize,
+          opacity: theme.grainOpacity,
           mixBlendMode: "overlay",
         }}
       />
 
-      {/* 🌑 VIGNETTE */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: `
-            radial-gradient(
-              ellipse at center,
-              transparent 55%,
-              rgba(0,0,0,0.15) 100%
-            )
-          `,
+          background: theme.vignette,
         }}
       />
+    </motion.div>
+  );
+};
+
+const PaperBackground = ({ progress, texture = "premium" }: Props) => {
+  const dayOpacity = useTransform(progress, [0, 0.3, 0.5], [1, 0.35, 0]);
+  const goldenOpacity = useTransform(progress, [0.15, 0.45, 0.75], [0, 1, 0]);
+  const eveningOpacity = useTransform(progress, [0.5, 0.8, 1], [0, 0.75, 1]);
+
+  const opacities = {
+    day: dayOpacity,
+    golden: goldenOpacity,
+    evening: eveningOpacity,
+  };
+
+  return (
+    <div data-paper-texture={texture} className="absolute inset-0 z-0 bg-[#f4efe6]">
+      {variants.map((layer) => (
+        <PaperBackgroundLayer key={layer} variant={layer} opacity={opacities[layer]} />
+      ))}
     </div>
   );
 };

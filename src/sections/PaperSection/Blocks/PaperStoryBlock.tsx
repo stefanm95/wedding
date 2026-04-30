@@ -1,8 +1,9 @@
 import Story from "@paper/Story/Story";
+import type { PaperBlockProps } from "@/types/paper";
 
-export default function PaperStoryBlock() {
+export default function PaperStoryBlock({ variant }: PaperBlockProps) {
   return (
-    <section className="relative pb-8 pt-12 md:pb-12 md:pt-16">
+    <section data-paper-variant={variant} className="relative pb-8 pt-12 md:pb-12 md:pt-16">
       <div className="flex flex-col">
         {/* 🔥 FOCUS ELEMENT */}
         <div className="pointer-events-none absolute inset-0 flex justify-center">

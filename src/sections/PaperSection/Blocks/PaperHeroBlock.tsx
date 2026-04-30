@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import { useCountdown } from "@hooks/useCountdown";
 import Countdown from "@paper/Countdown/Countdown";
 import PolaroidCard from "@paper/Countdown/PolaroidCard";
+import type { PaperBlockProps } from "@/types/paper";
 
-export default function PaperHeroBlock() {
+export default function PaperHeroBlock({ variant }: PaperBlockProps) {
   const time = useCountdown(new Date("2026-08-22T16:00:00"));
 
   return (
-    <section className="relative py-28 text-center md:py-36">
+    <section data-paper-variant={variant} className="relative py-28 text-center md:py-36">
       <div className="mx-auto max-w-4xl px-6">
         {/* 📸 POLAROID — HERO EMOTIONAL */}
         <motion.div

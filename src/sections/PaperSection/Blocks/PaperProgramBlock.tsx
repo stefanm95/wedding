@@ -1,8 +1,9 @@
 import Program from "@paper/Program/Program";
+import type { PaperBlockProps } from "@/types/paper";
 
-export default function PaperProgramBlock() {
+export default function PaperProgramBlock({ variant }: PaperBlockProps) {
   return (
-    <section className="relative mt-[35vh] overflow-hidden">
+    <section data-paper-variant={variant} className="relative overflow-hidden">
       {/* 🧻 BACKGROUND TEXTURE */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <img
