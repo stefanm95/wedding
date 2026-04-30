@@ -1,6 +1,7 @@
 import { db } from "@/lib/firebase";
 import type { FirestoreRsvp, RSVPGuest, RSVPTransport } from "@/types/rsvp";
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
+import { getMemberId, normalizeGuests } from "@/utils/rsvpValidation";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 
 type SubmitRsvpParams = {
   groupId: string;
@@ -18,50 +19,56 @@ export async function submitRsvp({
   transport,
 }: SubmitRsvpParams) {
   const groupRef = doc(db, "guestGroups", groupId);
-  const groupSnap = await getDoc(groupRef);
-
-  if (!groupSnap.exists()) {
-    throw new Error("Grup inexistent");
-  }
-
-  const group = groupSnap.data();
-
   const rsvpRef = doc(db, "rsvps", groupId);
 
-  // VALIDARE
-  const validMembers: string[] = group.members || [];
+  await runTransaction(db, async (tx) => {
+    const groupSnap = await tx.get(groupRef);
 
-  const invalidGuests = guests.filter((g) => !validMembers.includes(g.name));
+    if (!groupSnap.exists()) {
+      throw new Error("Grup inexistent");
+    }
 
-  if (invalidGuests.length > 0) {
-    throw new Error("Invitati invalizi");
-  }
+    const group = groupSnap.data();
+    const cleanGuests = normalizeGuests(guests);
+    const cleanExtraGuests = normalizeGuests(extraGuests).filter(
+      (guest) => guest.name || guest.attending,
+    );
 
-  const confirmedCount =
-    guests.filter((g) => g.attending).length + extraGuests.filter((g) => g.attending).length;
+    const validMemberIds = new Set((group.members || []).map(getMemberId));
+    const invalidGuests = cleanGuests.filter((guest) => !validMemberIds.has(guest.id));
 
-  if (confirmedCount > group.maxGuests) {
-    throw new Error("Depasire limita invitati");
-  }
+    if (invalidGuests.length > 0) {
+      throw new Error("Invitati invalizi");
+    }
 
-  if (confirmedCount > group.maxGuests) {
-    throw new Error("Depasire limita invitati");
-  }
+    if (cleanExtraGuests.some((guest) => guest.attending && !guest.name)) {
+      throw new Error("Invitati suplimentari incompleti");
+    }
 
-  const data: FirestoreRsvp = {
-    groupId,
-    guests,
-    extraGuests, // 🔥
-    message: message || "",
-    transport: transport ?? null,
-    createdAt: serverTimestamp(),
-  };
+    const confirmedCount =
+      cleanGuests.filter((guest) => guest.attending).length +
+      cleanExtraGuests.filter((guest) => guest.attending).length;
 
-  // 🔥 UPDATE GROUP FLAG
-  await updateDoc(groupRef, {
-    hasResponded: true,
+    if (confirmedCount === 0) {
+      throw new Error("Niciun participant confirmat");
+    }
+
+    if (confirmedCount > group.maxGuests) {
+      throw new Error("Depasire limita invitati");
+    }
+
+    const data: FirestoreRsvp = {
+      groupId,
+      guests: cleanGuests,
+      extraGuests: cleanExtraGuests,
+      message: message?.trim() || "",
+      transport: transport ?? null,
+      createdAt: serverTimestamp(),
+    };
+
+    tx.set(rsvpRef, data, { merge: true });
+    tx.update(groupRef, {
+      hasResponded: true,
+    });
   });
-  await setDoc(rsvpRef, data, { merge: true });
-
-  console.log("SUBMITTING RSVP", data);
 }

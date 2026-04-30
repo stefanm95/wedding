@@ -5,6 +5,7 @@ export type TransportType = "none" | "bus" | "personal";
 export type DietaryOption = "none" | "vegetarian" | "vegan" | "gluten-free" | "other";
 
 export type RSVPGuest = {
+  id: string;
   name: string;
   attending: RSVPStatus;
   dietary?: DietaryOption;
@@ -34,11 +35,18 @@ export type RSVPFormData = {
 export type GuestGroup = {
   id: string;
   familyLabel: string;
-  members: string[];
+  members: GuestGroupMember[];
   maxGuests: number;
   hasResponded: boolean;
   representative?: string;
 };
+
+export type GuestGroupMember =
+  | string
+  | {
+      id?: string;
+      name: string;
+    };
 export type FirestoreRsvp = {
   groupId: string;
   guests: RSVPGuest[];

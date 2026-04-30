@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { stepVariants } from "./stepVariants";
 
 import type { GuestGroup } from "@/types/rsvp";
+import { getMemberName } from "@/utils/rsvpValidation";
 
 /* ---------------- DEBOUNCE HOOK ---------------- */
 
@@ -68,12 +69,12 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
         const startsMatch =
           group.familyLabel.toLowerCase().startsWith(q) ||
           group.representative?.toLowerCase().startsWith(q) ||
-          group.members.some((m) => m.toLowerCase().startsWith(q));
+          group.members.some((m) => getMemberName(m).toLowerCase().startsWith(q));
 
         const includesMatch =
           group.familyLabel.toLowerCase().includes(q) ||
           group.representative?.toLowerCase().includes(q) ||
-          group.members.some((m) => m.toLowerCase().includes(q));
+          group.members.some((m) => getMemberName(m).toLowerCase().includes(q));
 
         // 🔥 progressive filtering
         return q.length < 4 ? startsMatch : includesMatch;
@@ -84,7 +85,7 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
 
           if (g.familyLabel.toLowerCase().startsWith(q)) s += 3;
           if (g.representative?.toLowerCase().startsWith(q)) s += 2;
-          if (g.members.some((m) => m.toLowerCase().startsWith(q))) s += 1;
+          if (g.members.some((m) => getMemberName(m).toLowerCase().startsWith(q))) s += 1;
 
           return s;
         };
@@ -156,7 +157,7 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
               <div className="text-sm text-[#6b1f2b]/60">{group.representative}</div>
 
               <div className="text-xs text-[#6b1f2b]/40">
-                {group.members.slice(0, 2).join(", ")}
+                {group.members.slice(0, 2).map(getMemberName).join(", ")}
               </div>
             </button>
           ))}

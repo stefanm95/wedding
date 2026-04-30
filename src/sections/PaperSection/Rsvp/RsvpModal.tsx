@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+import StepConfirm from "./StepConfirm";
 import StepGuests from "./StepGuests";
 import StepMessage from "./StepMessage";
 import StepName from "./StepName";
@@ -16,6 +17,7 @@ import type { GuestGroup, RSVPFormData, RSVPStatus } from "@/types/rsvp";
 import { defaultRSVP } from "@/types/rsvp";
 
 import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
+import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -103,6 +105,9 @@ function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: St
         />
       );
 
+    case "confirm":
+      return <StepConfirm form={form} onNext={onNext} onBack={onBack} />;
+
     case "success":
       return <StepSuccess />;
 
@@ -118,6 +123,7 @@ export default function RsvpModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>("welcome");
   const [form, setForm] = useState<RSVPFormData>(defaultRSVP);
   const [direction, setDirection] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   /* ---------------- SELECT GROUP ---------------- */
 
@@ -130,8 +136,14 @@ export default function RsvpModal({ open, onClose }: Props) {
 
       setForm({
         groupId: group.id,
-        guests: rsvp.guests || [],
-        extraGuests: rsvp.extraGuests || [],
+        guests: (rsvp.guests || []).map((guest: any) => ({
+          ...guest,
+          id: guest.id || toGuestId(guest.name || ""),
+        })),
+        extraGuests: (rsvp.extraGuests || []).map((guest: any) => ({
+          ...guest,
+          id: guest.id || `extra-${toGuestId(guest.name || "")}`,
+        })),
         maxGuests: group.maxGuests,
         message: rsvp.message || "",
         transport: rsvp.transport || { type: "none" },
@@ -144,11 +156,16 @@ export default function RsvpModal({ open, onClose }: Props) {
       setForm((prev) => ({
         ...prev,
         groupId: group.id,
-        guests: group.members.map((name: string) => ({
-          name,
-          attending: true,
-          dietary: "none",
-        })),
+        guests: group.members.map((member) => {
+          const name = getMemberName(member);
+
+          return {
+            id: getMemberId(member),
+            name,
+            attending: true,
+            dietary: "none",
+          };
+        }),
         extraGuests: [],
         maxGuests: group.maxGuests,
       }));
@@ -158,10 +175,17 @@ export default function RsvpModal({ open, onClose }: Props) {
   /* ---------------- NAVIGATION ---------------- */
 
   const handleNext = async (ctx?: { attending?: RSVPStatus }) => {
-    setDirection(1);
+    if (isTransitioning) return;
 
-    const next = await transition(step, form, ctx);
-    setStep(next);
+    setDirection(1);
+    setIsTransitioning(true);
+
+    try {
+      const next = await transition(step, form, ctx);
+      setStep(next);
+    } finally {
+      setIsTransitioning(false);
+    }
   };
 
   const handleBack = () => {

@@ -1,4 +1,5 @@
 import type { DietaryOption, RSVPGuest, RSVPStatus } from "@/types/rsvp";
+import { toGuestId } from "@/utils/rsvpValidation";
 import { cn } from "@utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { stepVariants } from "./stepVariants";
@@ -41,12 +42,17 @@ export default function StepGuests({
   const addExtraGuest = () => {
     if (!canAddMore) return;
 
-    onChange(guests, [...extraGuests, { name: "", attending: true, dietary: "none" }]);
+    onChange(guests, [
+      ...extraGuests,
+      { id: `extra-${Date.now()}`, name: "", attending: true, dietary: "none" },
+    ]);
   };
 
   const updateExtraGuest = (index: number, field: keyof RSVPGuest, value: any) => {
     const updated = [...extraGuests];
-    updated[index] = { ...updated[index], [field]: value };
+    const nextGuest = { ...updated[index], [field]: value };
+    updated[index] =
+      field === "name" ? { ...nextGuest, id: `extra-${toGuestId(String(value))}` } : nextGuest;
     onChange(guests, updated);
   };
 

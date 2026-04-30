@@ -1,5 +1,6 @@
 import { submitRsvp } from "@/services/submitRsvp";
 import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
+import { validateGuests, validateRsvpForm, validateSelectedGroup } from "@/utils/rsvpValidation";
 
 export type Step =
   | "welcome"
@@ -7,6 +8,7 @@ export type Step =
   | "guests"
   | "transport"
   | "message"
+  | "confirm"
   | "success"
   | "regret"
   | "done";
@@ -37,24 +39,34 @@ export const rsvpMachine: Record<Step, StateConfig> = {
   guests: {
     next: () => "transport",
     prev: "name",
+    canEnter: (form) => validateSelectedGroup(form).ok,
   },
 
   transport: {
     next: () => "message",
     prev: "guests",
+    canEnter: (form) => validateGuests(form).ok,
   },
 
   message: {
-    next: () => "success",
+    next: () => "confirm",
     prev: "transport",
+  },
+
+  confirm: {
+    next: () => "success",
+    prev: "message",
+    canEnter: (form) => validateRsvpForm(form).ok,
   },
   // 🔥 AICI SE ÎNTÂMPLĂ MAGIA
   success: {
     next: () => "done",
 
+    canEnter: (form) => validateRsvpForm(form).ok,
+
     onEnter: async (form) => {
       await submitRsvp({
-        groupId: form.groupId!,
+        groupId: form.groupId,
         guests: form.guests,
         extraGuests: form.extraGuests,
         message: form.message,
