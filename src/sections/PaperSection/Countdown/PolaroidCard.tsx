@@ -24,7 +24,7 @@ export default function PolaroidCard() {
         <div className="overflow-hidden">
           <img
             alt="prima amintire"
-            src="/assets/miri/lavanda.jpg"
+            src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777520576/lavanda_zokn81.jpg"
             className="h-[220px] w-full object-cover md:h-[420px]"
           />
         </div>

@@ -45,14 +45,20 @@ export default function StoryItem({ item, index }: Props) {
 
           {/* IMAGE */}
           {imageSrc && (
-            <div className={cn("flex", isLeft ? "justify-start" : "justify-end")}>
+            <div className={cn("flex", isLeft ? "justify-start" : "order-1 justify-center")}>
               <div
-                className="aspect-[3/4] w-full overflow-hidden shadow-xl"
+                className="w-full max-w-[400px] xl:max-w-[460px]"
                 style={{
                   transform: `rotate(${isLeft ? "1deg" : "-1deg"})`,
                 }}
               >
-                <PaperImage src={imageSrc} alt={item.title} />
+                {/* frame tip hârtie */}
+                <div className="bg-transparent p-3 shadow-[0_30px_80px_rgba(0,0,0,0.1)]">
+                  {/* 🔥 CONTROL REAL DIMENSIUNE */}
+                  <div className="aspect-[4/4] overflow-hidden">
+                    <PaperImage src={imageSrc} alt={item.title} />
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -83,13 +89,13 @@ export default function StoryItem({ item, index }: Props) {
           {imageSrc && (
             <div className={cn("flex", isLeft ? "justify-start" : "order-1 justify-end")}>
               <div
-                className="w-full max-w-[360px] xl:max-w-[400px]"
+                className="w-full max-w-[400px] xl:max-w-[460px]"
                 style={{
                   transform: `rotate(${isLeft ? "1deg" : "-1deg"})`,
                 }}
               >
                 {/* frame tip hârtie */}
-                <div className="bg-[#f4f1ea] p-3 shadow-[0_30px_80px_rgba(0,0,0,0.2)]">
+                <div className="bg-transparent p-3 shadow-[0_30px_80px_rgba(0,0,0,0.1)]">
                   {/* 🔥 CONTROL REAL DIMENSIUNE */}
                   <div className="aspect-[4/4] overflow-hidden">
                     <PaperImage src={imageSrc} alt={item.title} />

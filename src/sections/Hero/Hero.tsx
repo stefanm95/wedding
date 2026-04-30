@@ -47,7 +47,10 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
             willChange: "filter, transform",
           }}
         >
-          <source src="/assets/video/hero.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/dswwhzem5/video/upload/v1777522323/hero_mxclim.mp4"
+            type="video/mp4"
+          />
         </motion.video>
       </motion.div>
 
