@@ -5,7 +5,7 @@ function StoryFoldSafeArea() {
   return (
     <div
       aria-hidden="true"
-      className="h-[clamp(260px,34vh,420px)] md:h-[clamp(360px,42vh,560px)] lg:h-[clamp(460px,44vh,680px)]"
+      className="h-[clamp(260px,34vh,420px)] md:h-[clamp(360px,42vh,560px)] min-[768px]:max-[820px]:h-[520px] lg:h-[clamp(460px,44vh,680px)]"
     />
   );
 }
