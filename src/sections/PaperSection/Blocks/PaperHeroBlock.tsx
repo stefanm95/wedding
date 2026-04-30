@@ -8,11 +8,14 @@ export default function PaperHeroBlock({ variant }: PaperBlockProps) {
   const time = useCountdown(new Date("2026-08-22T16:00:00"));
 
   return (
-    <section data-paper-variant={variant} className="relative py-28 text-center md:py-36">
+    <section
+      data-paper-variant={variant}
+      className="relative py-28 text-center md:py-36 lg:py-44"
+    >
       <div className="mx-auto max-w-4xl px-6">
         {/* 📸 POLAROID — HERO EMOTIONAL */}
         <motion.div
-          className="-mt-10 flex justify-center md:-mt-20"
+          className="flex justify-center"
           initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -23,7 +26,7 @@ export default function PaperHeroBlock({ variant }: PaperBlockProps) {
 
         {/* 🌫 SHADOW LINK (ancoră vizuală) */}
         <div
-          className="mx-auto -mt-6 h-[40px] w-[220px] opacity-20 blur-xl md:w-[420px]"
+          className="mx-auto mt-4 h-[40px] w-[220px] opacity-20 blur-xl md:mt-6 md:w-[420px]"
           style={{
             background: "radial-gradient(circle, rgba(0,0,0,0.25), transparent 70%)",
           }}

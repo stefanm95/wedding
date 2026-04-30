@@ -8,7 +8,7 @@ export default function PolaroidCard() {
       whileHover={{ rotate: -1.5, scale: 1.02 }}
       transition={{ duration: 0.9, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="relative -mt-16"
+      className="relative"
     >
       {/* 🌑 SHADOW */}
       <div className="absolute inset-0 translate-y-8 bg-black opacity-25 blur-xl" />

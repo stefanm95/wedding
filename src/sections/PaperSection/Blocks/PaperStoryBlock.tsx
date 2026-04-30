@@ -4,7 +4,10 @@ import { cn } from "@/utils/cn";
 
 export default function PaperStoryBlock({ variant }: PaperBlockProps) {
   return (
-    <section data-paper-variant={variant} className="relative py-20 md:py-32">
+    <section
+      data-paper-variant={variant}
+      className="relative pb-24 pt-20 md:pb-32 md:pt-32 lg:pb-40"
+    >
       {/* 🧻 BACKGROUND ELEMENT */}
       <div className="pointer-events-none absolute inset-0 flex justify-center">
         <img

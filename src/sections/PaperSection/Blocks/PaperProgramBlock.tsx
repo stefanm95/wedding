@@ -3,7 +3,10 @@ import type { PaperBlockProps } from "@/types/paper";
 
 export default function PaperProgramBlock({ variant }: PaperBlockProps) {
   return (
-    <section data-paper-variant={variant} className="relative overflow-hidden">
+    <section
+      data-paper-variant={variant}
+      className="relative overflow-hidden pt-24 md:pt-32 lg:pt-40"
+    >
       {/* 🧻 BACKGROUND TEXTURE */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <img

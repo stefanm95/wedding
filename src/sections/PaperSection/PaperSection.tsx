@@ -44,8 +44,8 @@ const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ classNam
       </div>
 
       <PaperStack>
-        <PaperHeroBlock variant={variant} />
         <PaperStoryBlock variant={variant} />
+        <PaperHeroBlock variant={variant} />
         <PaperProgramBlock variant={variant} />
       </PaperStack>
     </PaperShell>
