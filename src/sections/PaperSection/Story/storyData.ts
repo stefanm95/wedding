@@ -46,7 +46,7 @@ export const storyData: StoryItemType[] = [
     location: "Biserica X",
     date: "22 August 2026",
     time: "16:00",
-    image: "/images/locatii/church.jpg",
+    image: "https://res.cloudinary.com/dswwhzem5/image/upload/v1777536840/biserica_vyxt5q.jpg",
     mapLink: "https://maps.google.com",
   },
 
@@ -59,7 +59,7 @@ export const storyData: StoryItemType[] = [
     location: "Pădurile Regale",
     date: "22 August 2026",
     time: "19:00",
-    image: "/images/locatii/padurile-regale.jpg",
+    image: "https://res.cloudinary.com/dswwhzem5/image/upload/v1777536840/restaurant_dog2ak.jpg",
     mapLink: "https://maps.google.com",
   },
 ];

@@ -33,11 +33,11 @@ export default function Countdown({ months, days, hours, minutes, seconds }: Ext
           show: { opacity: 1, y: 0 },
         }}
       >
-        PÂNĂ LA ZIUA NOASTRĂ
+        FIECARE ZI NE ADUCE MAI APROAPE
       </motion.p>
 
       {/* ⏳ GRID RESPONSIVE */}
-      <div className="grid grid-cols-5 items-end justify-center gap-4 md:gap-10">
+      <div className="grid grid-cols-5 items-center justify-center gap-4 md:gap-10">
         {items.map((value, i) => (
           <motion.div
             key={i}
@@ -69,9 +69,7 @@ export default function Countdown({ months, days, hours, minutes, seconds }: Ext
       />
 
       {/* ✍️ SUBTEXT */}
-      <motion.p className="mt-4 text-sm italic text-[#6b1f2b]/70">
-        fiecare zi ne aduce mai aproape
-      </motion.p>
+      <motion.p className="mt-4 text-sm italic text-[#6b1f2b]/70"></motion.p>
     </motion.div>
   );
 }

@@ -34,7 +34,7 @@ export default function PolaroidCard() {
           className="script-castlegar mt-6 text-center text-2xl tracking-[0.08em] text-[#6b1f2b] md:text-3xl"
           style={{ transform: "rotate(-0.8deg)" }}
         >
-          Prima noastra amintire
+          Prima amintire
         </p>
       </div>
     </motion.div>
