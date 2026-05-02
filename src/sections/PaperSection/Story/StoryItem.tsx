@@ -31,7 +31,7 @@ function StoryImage({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) 
           transform: `rotate(${isLeft ? "0.5deg" : "-0.5deg"})`,
         }}
       >
-        <div className="bg-transparent p-3 shadow-[0_30px_80px_rgba(0,0,0,0.1)]">
+        <div className="p-3">
           <div className="aspect-square overflow-hidden">
             <PaperImage src={item.image} alt={item.title} />
           </div>
@@ -104,10 +104,22 @@ function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean 
 
 export default function StoryItem({ item }: Props) {
   const isLeft = item.side !== "right";
+  const isEvent = item.type === "event";
 
   return (
-    <motion.div {...reveal} className="relative">
-      {item.type === "event" ? (
+    <motion.div
+      {...reveal}
+      className={cn(
+        "relative",
+
+        // 🎯 BASE rhythm (narrative)
+        "mt-20 md:mt-28 lg:mt-32",
+
+        // 🔥 EVENTS → stronger separation
+        isEvent && "mt-32 md:mt-44 lg:mt-56",
+      )}
+    >
+      {isEvent ? (
         <EventItem item={item} isLeft={isLeft} />
       ) : (
         <NarrativeItem item={item} isLeft={isLeft} />

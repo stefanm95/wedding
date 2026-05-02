@@ -9,15 +9,15 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
       className="relative bg-transparent pb-24 pt-20 opacity-90 md:pb-32 md:pt-32 lg:pb-40"
     >
       {/* 🧻 BACKGROUND ELEMENT */}
-      <div className="pointer-events-none absolute inset-0 flex justify-center">
+      <div className="pointer-events-none absolute inset-0 flex justify-center opacity-90">
         <img
           alt="paper"
           src="/assets/paper/paper-split6.avif"
           className={cn(
             "w-full max-w-[1400px] mix-blend-multiply",
-            variant === "day" && "opacity-40",
-            variant === "golden" && "opacity-50",
-            variant === "evening" && "opacity-60",
+            variant === "day" && "opacity-20",
+            variant === "golden" && "opacity-30",
+            variant === "evening" && "opacity-40",
           )}
         />
       </div>
