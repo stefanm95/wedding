@@ -11,11 +11,13 @@ type DeviceState = {
   isDesktop: boolean;
   isTouch: boolean;
   orientation: "portrait" | "landscape";
+  width: number;
 };
 
 function getDeviceState(): DeviceState {
   if (typeof window === "undefined") {
     return {
+      width: 0,
       isMobile: false,
       isTablet: false,
       isDesktop: true,
@@ -27,6 +29,7 @@ function getDeviceState(): DeviceState {
   const width = window.innerWidth;
 
   return {
+    width,
     isMobile: width < BREAKPOINTS.mobile,
     isTablet: width >= BREAKPOINTS.mobile && width < BREAKPOINTS.tablet,
     isDesktop: width >= BREAKPOINTS.tablet,

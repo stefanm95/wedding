@@ -1,13 +1,39 @@
 import { cn } from "@utils/cn";
 import { motion } from "framer-motion";
 import type { ProgramItemType } from "./programData";
+import { useDevice } from "@/hooks/useDevice";
 
 type Variant = "cinematic" | "mobile";
 
-type Props = {
-  item: ProgramItemType;
-  index: number;
-  variant: Variant;
+type LayoutPreset = {
+  X: string[];
+  Y: string[];
+  content: string;
+};
+
+/* ========================= */
+/* 🎯 PRESETS */
+/* ========================= */
+
+const presets: Record<"desktop" | "laptop" | "tablet", LayoutPreset> = {
+  desktop: {
+    X: ["0%", "22%", "62%", "80%"],
+    Y: ["0%", "30%", "52%", "28%"],
+    content: "max-w-[320px]",
+  },
+
+  laptop: {
+    // 🔥 1024–1279
+    X: ["0%", "20%", "58%", "80%"],
+    Y: ["0%", "38%", "68%", "24%"],
+    content: "max-w-[260px]",
+  },
+
+  tablet: {
+    X: ["0%", "0", "30%", "70%"],
+    Y: ["15%", "35%", "55%", "70%"],
+    content: "max-w-[240px]",
+  },
 };
 
 /* ========================= */
@@ -26,15 +52,34 @@ const itemAnim = {
     },
   }),
 };
+
+type Props = {
+  item: ProgramItemType;
+  index: number;
+  variant: Variant;
+};
+
 export default function ProgramItem({ item, index, variant }: Props) {
   const isTransport = item.type === "transport";
+  const device = useDevice();
 
   /* ========================= */
-  /* 🎬 CINEMATIC (desktop + tablet) */
+  /* 🎯 PRESET SELECTION */
   /* ========================= */
 
-  const X = [0, 260, 660, 960];
-  const Y = [0, 220, 260, 120];
+  const preset = device.isDesktop
+    ? device.isTablet
+      ? presets.laptop // fallback safety (rare)
+      : presets.desktop
+    : device.isTablet
+      ? presets.laptop
+      : presets.tablet;
+
+  const { X, Y, content } = preset;
+
+  /* ========================= */
+  /* 🎬 CINEMATIC */
+  /* ========================= */
 
   if (variant === "cinematic") {
     return (
@@ -47,9 +92,10 @@ export default function ProgramItem({ item, index, variant }: Props) {
         style={{
           left: X[index],
           top: Y[index],
+          transform: "translate(-50%, -50%)",
         }}
       >
-        <ItemBlock item={item} isTransport={isTransport} />
+        <ItemBlock item={item} isTransport={isTransport} contentClass={content} />
       </motion.div>
     );
   }
@@ -71,7 +117,7 @@ export default function ProgramItem({ item, index, variant }: Props) {
     >
       <Dot isTransport={isTransport} />
 
-      <div className="max-w-[260px]">
+      <div className={cn("pl-4", content)}>
         <Content item={item} isTransport={isTransport} />
       </div>
     </motion.div>
@@ -82,10 +128,18 @@ export default function ProgramItem({ item, index, variant }: Props) {
 /* 🎯 ITEM BLOCK */
 /* ========================= */
 
-function ItemBlock({ item, isTransport }: { item: ProgramItemType; isTransport: boolean }) {
+function ItemBlock({
+  item,
+  isTransport,
+  contentClass,
+}: {
+  item: ProgramItemType;
+  isTransport: boolean;
+  contentClass: string;
+}) {
   return (
     <div className="relative">
-      {/* subtle anchor line */}
+      {/* line */}
       <div className="absolute left-0 top-[14px] h-[1px] w-10 bg-[#6b1f2b]/20" />
 
       {/* dot */}
@@ -94,7 +148,7 @@ function ItemBlock({ item, isTransport }: { item: ProgramItemType; isTransport: 
       </div>
 
       {/* content */}
-      <div className="max-w-[320px] pl-12">
+      <div className={cn("pl-12", contentClass)}>
         <Content item={item} isTransport={isTransport} />
       </div>
     </div>
@@ -123,26 +177,30 @@ function Dot({ isTransport }: { isTransport: boolean }) {
 function Content({ item, isTransport }: { item: ProgramItemType; isTransport: boolean }) {
   return (
     <>
-      <p className="text-[13px] text-[#6b1f2b]/70">{item.time}</p>
+      <p className="text-[12px] text-[#6b1f2b]/70 lg:text-[13px]">{item.time}</p>
 
-      <p className="mt-2 text-[11px] uppercase tracking-[0.35em] text-[#6b1f2b]/60">
+      <p className="mt-2 text-[10px] uppercase tracking-[0.35em] text-[#6b1f2b]/60 lg:text-[11px]">
         {isTransport ? "Transport" : "Eveniment"}
       </p>
 
-      <h3 className="script-cormorant-display mt-2 text-[30px] leading-tight text-[#3d2b1f]">
+      <h3 className="script-cormorant-display mt-2 text-[24px] leading-tight text-[#3d2b1f] lg:text-[30px]">
         {item.title}
       </h3>
 
-      {item.location && <p className="mt-1 text-[15px] text-[#3d2b1f]/75">{item.location}</p>}
+      {item.location && (
+        <p className="mt-1 text-[13px] text-[#3d2b1f]/75 lg:text-[15px]">{item.location}</p>
+      )}
 
-      {item.note && <p className="mt-1 text-[12px] italic text-[#6b1f2b]/60">{item.note}</p>}
+      {item.note && (
+        <p className="mt-1 text-[11px] italic text-[#6b1f2b]/60 lg:text-[12px]">{item.note}</p>
+      )}
 
       {item.mapLink && (
         <a
           href={item.mapLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-block text-[10px] uppercase tracking-[0.25em] text-[#4a1c24] hover:text-[#6b1f2b]"
+          className="mt-3 inline-block text-[9px] uppercase tracking-[0.25em] text-[#4a1c24] hover:text-[#6b1f2b] lg:text-[10px]"
         >
           ◆ Vezi pe hartă
         </a>

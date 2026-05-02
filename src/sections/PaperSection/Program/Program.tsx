@@ -1,10 +1,16 @@
 import { useState } from "react";
+import { useDevice } from "@hooks/useDevice";
+
 import RsvpModal from "@paper/Rsvp/RsvpModal";
 import { programData } from "./programData";
 import ProgramItem from "./ProgramItem";
 
 export default function Program() {
   const [open, setOpen] = useState(false);
+  const { width } = useDevice();
+
+  // ✅ cinematic starts at tablet landscape / small desktop
+  const isCinematic = width >= 768;
 
   return (
     <>
@@ -32,25 +38,23 @@ export default function Program() {
             </button>
           </div>
 
-          {/* ========================= */}
-          {/* 🖥 + 📱 TABLET (same logic) */}
-          {/* ========================= */}
-          <div className="relative mt-24 hidden h-[720px] md:block">
-            {programData.map((item, index) => (
-              <ProgramItem key={index} item={item} index={index} variant="cinematic" />
-            ))}
-          </div>
+          {/* 🎬 CINEMATIC (1024+) */}
+          {isCinematic ? (
+            <div className="relative mt-24 h-[600px] md:h-[650px] lg:h-[700px] xl:h-[780px]">
+              {programData.map((item, index) => (
+                <ProgramItem key={index} item={item} index={index} variant="cinematic" />
+              ))}
+            </div>
+          ) : (
+            /* 📱 MOBILE */
+            <div className="relative mt-12 space-y-10 pl-8">
+              <div className="absolute bottom-0 left-[12px] top-0 w-[1px] bg-[#6b1f2b]/20" />
 
-          {/* ========================= */}
-          {/* 📱 MOBILE */}
-          {/* ========================= */}
-          <div className="relative mt-12 space-y-10 pl-8 md:hidden">
-            <div className="absolute bottom-0 left-[12px] top-0 w-[1px] bg-[#6b1f2b]/20" />
-
-            {programData.map((item, index) => (
-              <ProgramItem key={index} item={item} index={index} variant="mobile" />
-            ))}
-          </div>
+              {programData.map((item, index) => (
+                <ProgramItem key={index} item={item} index={index} variant="mobile" />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
