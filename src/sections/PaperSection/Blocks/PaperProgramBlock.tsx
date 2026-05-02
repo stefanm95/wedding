@@ -30,7 +30,7 @@ export default function PaperProgramBlock({ variant, onOpenRsvp, progress }: Pro
       {/* EMBOSS */}
       <EmbossSeal
         progress={progress}
-        className="absolute left-[70%] top-[100%] z-[5] -translate-x-1/2 -translate-y-1/2"
+        className="absolute right-[55%] top-[100%] z-[5] -translate-x-1/2 -translate-y-1/2"
       />
 
       {/* GRAIN */}

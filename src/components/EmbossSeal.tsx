@@ -3,16 +3,16 @@ import { cn } from "@utils/cn";
 
 type Props = {
   className?: string;
-  progress: MotionValue<number>; // 👈 IMPORTANT
+  progress: MotionValue<number>;
 };
 
 export default function EmbossSeal({ className, progress }: Props) {
-  /* 🎬 PARALLAX (moves slower than content) */
   const y = useTransform(progress, [0, 1], [40, -40]);
 
-  /* 💡 LIGHT SWEEP (left → right) */
   const lightX = useTransform(progress, [0, 1], [-120, 120]);
   const lightOpacity = useTransform(progress, [0, 0.5, 1], [0.15, 0.3, 0.15]);
+
+  const mask = "[mask-image:url('/assets/crest/image-1.png')]";
 
   return (
     <motion.div
@@ -22,13 +22,12 @@ export default function EmbossSeal({ className, progress }: Props) {
         className,
       )}
     >
-      {/* 🪶 BASE EMBOSS IMAGE */}
+      {/* 🪶 BASE */}
       <div
         className={cn(
           "absolute h-[420px] w-[420px]",
           "md:h-[520px] md:w-[520px]",
-          "bg-contain bg-center bg-no-repeat",
-          "opacity-40",
+          "bg-contain bg-center bg-no-repeat opacity-40",
         )}
         style={{
           backgroundImage: "url('/assets/crest/image-1.png')",
@@ -36,7 +35,41 @@ export default function EmbossSeal({ className, progress }: Props) {
         }}
       />
 
-      {/* 💡 MOVING LIGHT (cinematic sweep) */}
+      {/* 🌑 SHADOW (shape-based) */}
+      <div
+        className={cn(
+          "absolute h-[420px] w-[420px]",
+          "md:h-[520px] md:w-[520px]",
+          "bg-black/25",
+          "translate-x-[4px] translate-y-[4px]",
+          "blur-[6px]",
+          "opacity-40",
+          "mix-blend-multiply",
+          mask,
+          "[mask-position:center]",
+          "[mask-repeat:no-repeat]",
+          "[mask-size:contain]",
+        )}
+      />
+
+      {/* ✨ HIGHLIGHT (shape-based) */}
+      <div
+        className={cn(
+          "absolute h-[420px] w-[420px]",
+          "md:h-[520px] md:w-[520px]",
+          "bg-white/40",
+          "-translate-x-[3px] -translate-y-[3px]",
+          "blur-[4px]",
+          "opacity-30",
+          "mix-blend-overlay",
+          mask,
+          "[mask-position:center]",
+          "[mask-repeat:no-repeat]",
+          "[mask-size:contain]",
+        )}
+      />
+
+      {/* 💡 MOVING LIGHT */}
       <motion.div
         style={{
           x: lightX,
@@ -48,32 +81,10 @@ export default function EmbossSeal({ className, progress }: Props) {
           "bg-gradient-to-r from-white/40 via-white/10 to-transparent",
           "blur-[20px]",
           "mix-blend-soft-light",
-        )}
-      />
-
-      {/* 🌑 DEPTH SHADOW */}
-      <div
-        className={cn(
-          "absolute h-[420px] w-[420px]",
-          "md:h-[520px] md:w-[520px]",
-          "bg-black/20",
-          "blur-[12px]",
-          "translate-x-[6px] translate-y-[6px]",
-          "opacity-30",
-          "mix-blend-multiply",
-        )}
-      />
-
-      {/* ✨ TOP HIGHLIGHT */}
-      <div
-        className={cn(
-          "absolute h-[420px] w-[420px]",
-          "md:h-[520px] md:w-[520px]",
-          "bg-white/30",
-          "blur-[10px]",
-          "-translate-x-[4px] -translate-y-[4px]",
-          "opacity-25",
-          "mix-blend-overlay",
+          mask,
+          "[mask-position:center]",
+          "[mask-repeat:no-repeat]",
+          "[mask-size:contain]",
         )}
       />
     </motion.div>

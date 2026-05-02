@@ -12,6 +12,7 @@ import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
 import { stepVariants } from "./stepVariants";
 import StepRenderer from "./StepRenderer";
 import PaperGrain from "@/components/PaperGrain";
+import PeonyEmboss from "/assets/art/bujorr.png";
 
 type Props = {
   onComplete?: () => void; // 🔥 înlocuiește onClose
@@ -118,6 +119,15 @@ export default function RsvpLayerInline({ onComplete }: Props) {
 
   return (
     <section className="relative flex w-full justify-center px-4 py-32">
+      {/* 🌸 PEONY EMBOSS (background decorative) */}
+      <div className="pointer-events-none absolute right-[2%] z-0 opacity-40 md:-right-[10%] md:top-[20%] lg:right-[2%] lg:top-[2%]">
+        <img
+          src={PeonyEmboss}
+          alt="peonyemboss"
+          className="w-[360px] select-none object-contain md:w-[340px] lg:w-[520px]"
+        />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 0.8, y: 0 }}
