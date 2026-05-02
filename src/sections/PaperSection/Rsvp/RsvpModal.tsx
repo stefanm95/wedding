@@ -3,6 +3,7 @@ import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import StepConfirm from "./StepConfirm";
 import StepGuests from "./StepGuests";
@@ -236,54 +237,75 @@ export default function RsvpModal({ open, onClose }: Props) {
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
-  if (!open) return null;
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   /* ---------------- UI ---------------- */
 
-  return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center">
-      {/* BACKDROP */}
-      <div onClick={handleClose} className="absolute inset-0 bg-black/40 backdrop-blur-md" />
+  return createPortal(
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center">
+          {/* BACKDROP */}
+          <motion.div
+            onClick={handleClose}
+            className="absolute inset-0 bg-black/40 backdrop-blur-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
 
-      {/* MODAL */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative z-10 mx-4 w-full max-w-[640px] bg-[#f4f1ea] p-10 shadow-[0_40px_120px_rgba(0,0,0,0.25)]"
-      >
-        {/* CLOSE */}
-        <button
-          onClick={handleClose}
-          className="absolute right-6 top-6 text-[#6b1f2b]/60 hover:text-[#6b1f2b]"
-        >
-          ✕
-        </button>
-
-        {/* STEPS */}
-        <AnimatePresence mode="wait" custom={direction} initial={false}>
-          {step !== "done" && (
-            <motion.div
-              key={step}
-              variants={stepVariants}
-              custom={direction}
-              initial="initial"
-              animate="animate"
-              exit="exit"
+          {/* MODAL */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 20 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="relative z-10 mx-4 w-full max-w-[640px] bg-[#f4f1ea] p-10 shadow-[0_40px_120px_rgba(0,0,0,0.25)]"
+          >
+            {/* CLOSE */}
+            <button
+              onClick={handleClose}
+              className="absolute right-6 top-6 text-[#6b1f2b]/60 hover:text-[#6b1f2b]"
             >
-              <StepRenderer
-                step={step}
-                onNext={handleNext}
-                onBack={handleBack}
-                form={form}
-                setForm={setForm}
-                onSelectGroup={handleSelectGroup}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-    </div>
+              ✕
+            </button>
+
+            {/* STEPS */}
+            <AnimatePresence mode="wait" custom={direction} initial={false}>
+              {step !== "done" && (
+                <motion.div
+                  key={step}
+                  variants={stepVariants}
+                  custom={direction}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <StepRenderer
+                    step={step}
+                    onNext={handleNext}
+                    onBack={handleBack}
+                    form={form}
+                    setForm={setForm}
+                    onSelectGroup={handleSelectGroup}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>,
+    document.body,
   );
 }
