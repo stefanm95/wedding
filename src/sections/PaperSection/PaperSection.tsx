@@ -1,4 +1,5 @@
-import { forwardRef, useRef } from "react";
+import { forwardRef, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import PaperBackground from "@paper/Blocks/PaperBackground";
 import PaperHeroBlock from "@paper/Blocks/PaperHeroBlock";
@@ -6,6 +7,7 @@ import PaperProgramBlock from "@paper/Blocks/PaperProgramBlock";
 import PaperStoryBlock from "@paper/Blocks/PaperStoryBlock";
 import PaperShell from "@paper/PaperShell";
 import PaperStack from "@paper/PaperStack";
+import RsvpLayer from "@paper/Rsvp/RsvpLayer";
 
 import { useMergedRefs } from "@hooks/useMergedRefs";
 import { usePaperScroll } from "@hooks/usePaperScroll";
@@ -13,6 +15,7 @@ import { usePaperScroll } from "@hooks/usePaperScroll";
 const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ className }, ref) => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const mergedRef = useMergedRefs(sectionRef, ref);
+  const [isRsvpOpen, setIsRsvpOpen] = useState(false);
 
   const { progress, variant, y, scale, shadow } = usePaperScroll(sectionRef);
 
@@ -42,12 +45,28 @@ const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ classNam
       </div>
 
       {/* 📄 CONTENT STACK */}
-      <PaperStack>
-        {/* 🔥 pass progress down (this is the key change) */}
-        <PaperHeroBlock variant={variant} progress={progress} />
-        <PaperStoryBlock variant={variant} progress={progress} />
-        <PaperProgramBlock variant={variant} progress={progress} />
-      </PaperStack>
+      <motion.div
+        animate={{
+          scale: isRsvpOpen ? 0.96 : 1,
+          y: isRsvpOpen ? -40 : 0,
+        }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <PaperStack>
+          {/* 🔥 pass progress down (this is the key change) */}
+          <PaperHeroBlock variant={variant} progress={progress} />
+          <PaperStoryBlock variant={variant} progress={progress} />
+          <PaperProgramBlock
+            variant={variant}
+            progress={progress}
+            onOpenRsvp={() => setIsRsvpOpen(true)}
+          />
+        </PaperStack>
+      </motion.div>
+
+      <AnimatePresence>
+        {isRsvpOpen && <RsvpLayer onClose={() => setIsRsvpOpen(false)} />}
+      </AnimatePresence>
     </PaperShell>
   );
 });

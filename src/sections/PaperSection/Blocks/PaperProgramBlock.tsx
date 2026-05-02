@@ -1,7 +1,11 @@
 import Program from "@paper/Program/Program";
 import type { PaperBlockProps } from "@/types/paper";
 
-export default function PaperProgramBlock({ variant }: PaperBlockProps) {
+type Props = PaperBlockProps & {
+  onOpenRsvp: () => void;
+};
+
+export default function PaperProgramBlock({ variant, onOpenRsvp }: Props) {
   return (
     <section data-paper-variant={variant} className="relative overflow-hidden pt-2 md:pt-4 lg:pt-4">
       {/* 🧻 BACKGROUND TEXTURE */}
@@ -15,7 +19,7 @@ export default function PaperProgramBlock({ variant }: PaperBlockProps) {
 
       {/* 📄 CONTENT */}
       <div className="max-w-8xl relative z-10 mx-auto px-6 pb-2">
-        <Program />
+        <Program onOpenRsvp={onOpenRsvp} />
       </div>
     </section>
   );

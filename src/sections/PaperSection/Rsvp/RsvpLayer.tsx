@@ -3,7 +3,6 @@ import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 
 import StepConfirm from "./StepConfirm";
 import StepGuests from "./StepGuests";
@@ -22,7 +21,6 @@ import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
-  open: boolean;
   onClose: () => void;
 };
 
@@ -120,7 +118,7 @@ function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: St
   }
 }
 
-export default function RsvpModal({ open, onClose }: Props) {
+export default function RsvpLayer({ onClose }: Props) {
   const [step, setStep] = useState<Step>("welcome");
   const [form, setForm] = useState<RSVPFormData>(defaultRSVP);
   const [direction, setDirection] = useState(1);
@@ -230,82 +228,64 @@ export default function RsvpModal({ open, onClose }: Props) {
       if (e.key === "Escape") handleClose();
     };
 
-    if (open) {
-      document.addEventListener("keydown", handleKey);
-    }
+    document.addEventListener("keydown", handleKey);
 
     return () => document.removeEventListener("keydown", handleKey);
-  }, [open]);
-
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  }, []);
 
   /* ---------------- UI ---------------- */
 
-  return createPortal(
-    <AnimatePresence>
-      {open && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center">
-          {/* BACKDROP */}
-          <motion.div
-            onClick={handleClose}
-            className="absolute inset-0 bg-black/40 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          />
+  return (
+    <div className="absolute inset-0 z-50 flex items-start justify-center overflow-y-auto px-4 pb-24 pt-24 md:pt-32">
+      {/* BACKDROP */}
+      <motion.div
+        onClick={handleClose}
+        className="absolute inset-0 bg-[#f4f1ea]/80 backdrop-blur-[2px]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
 
-          {/* MODAL */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 20 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="relative z-10 mx-4 w-full max-w-[640px] bg-[#f4f1ea] p-10 shadow-[0_40px_120px_rgba(0,0,0,0.25)]"
-          >
-            {/* CLOSE */}
-            <button
-              onClick={handleClose}
-              className="absolute right-6 top-6 text-[#6b1f2b]/60 hover:text-[#6b1f2b]"
+      {/* PAPER LAYER */}
+      <motion.div
+        initial={{ opacity: 0, y: 60, scale: 0.98, rotate: -0.4 }}
+        animate={{ opacity: 1, y: 0, scale: 1, rotate: -0.4 }}
+        exit={{ opacity: 0, y: 40, scale: 0.98 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 w-full max-w-[640px] border border-black/5 bg-[#f4f1ea] p-10 shadow-[0_30px_80px_rgba(0,0,0,0.15)] md:p-12"
+      >
+        {/* CLOSE */}
+        <button
+          onClick={handleClose}
+          aria-label="Inchide RSVP"
+          className="absolute right-6 top-6 text-[#6b1f2b]/60 transition hover:text-[#6b1f2b]"
+        >
+          ✕
+        </button>
+
+        {/* STEPS */}
+        <AnimatePresence mode="wait" custom={direction} initial={false}>
+          {step !== "done" && (
+            <motion.div
+              key={step}
+              variants={stepVariants}
+              custom={direction}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
-              ✕
-            </button>
-
-            {/* STEPS */}
-            <AnimatePresence mode="wait" custom={direction} initial={false}>
-              {step !== "done" && (
-                <motion.div
-                  key={step}
-                  variants={stepVariants}
-                  custom={direction}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <StepRenderer
-                    step={step}
-                    onNext={handleNext}
-                    onBack={handleBack}
-                    form={form}
-                    setForm={setForm}
-                    onSelectGroup={handleSelectGroup}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>,
-    document.body,
+              <StepRenderer
+                step={step}
+                onNext={handleNext}
+                onBack={handleBack}
+                form={form}
+                setForm={setForm}
+                onSelectGroup={handleSelectGroup}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
   );
 }

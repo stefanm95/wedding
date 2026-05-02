@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -12,24 +13,20 @@ export function StepWelcome({ onNext }: Props) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-10 text-center"
+      className={rsvpStyles.step}
     >
-      <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-        Veți fi alături de noi?
-      </h2>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Confirmare</p>
+        <h2 className={rsvpStyles.title}>Veți fi alături de noi?</h2>
+        <p className={rsvpStyles.body}>Ne-ar bucura să știm dacă veți fi parte din ziua noastră.</p>
+      </div>
 
-      <div className="flex flex-col gap-4">
-        <button
-          onClick={() => onNext(true)}
-          className="border border-[#c9a46c] px-8 py-4 uppercase tracking-[0.3em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white"
-        >
+      <div className="flex flex-col gap-4 pt-2">
+        <button onClick={() => onNext(true)} className={rsvpStyles.primaryButton}>
           Da, vom fi prezenți
         </button>
 
-        <button
-          onClick={() => onNext(false)}
-          className="border border-[#6b1f2b]/20 px-8 py-4 uppercase tracking-[0.3em] text-[#6b1f2b]/70 transition hover:bg-[#6b1f2b] hover:text-white"
-        >
+        <button onClick={() => onNext(false)} className={rsvpStyles.secondaryButton}>
           Nu putem ajunge
         </button>
       </div>

@@ -2,6 +2,7 @@ import type { DietaryOption, RSVPGuest, RSVPStatus } from "@/types/rsvp";
 import { toGuestId } from "@/utils/rsvpValidation";
 import { cn } from "@utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -83,36 +84,34 @@ export default function StepGuests({
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-12"
+      className={rsvpStyles.step}
     >
-      {/* BACK */}
-      <button onClick={onBack} className="text-sm text-[#6b1f2b]/60 hover:text-[#6b1f2b]">
-        ← Înapoi
+      <button onClick={onBack} className={rsvpStyles.backButton}>
+        Înapoi
       </button>
 
       {/* HEADER */}
-      <div className="space-y-4 text-center">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-          Confirmați participanții
-        </h2>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Participanți</p>
+        <h2 className={rsvpStyles.title}>Confirmați participanții</h2>
 
-        <p className="text-sm text-[#6b1f2b]/60">
-          {confirmedCount} confirmați • mai puteți adăuga {remaining} invitați
+        <p className={rsvpStyles.body}>
+          {confirmedCount} confirmați · mai puteți adăuga {remaining} invitați
         </p>
       </div>
 
       {/* MEMBERS */}
-      <div className="space-y-6">
+      <div className="space-y-5">
         {guests.map((guest, index) => (
-          <div key={index} className="space-y-3 border-b border-[#6b1f2b]/10 pb-4">
-            <div className="flex items-center justify-between">
-              <span className="text-[#6b1f2b]">{guest.name}</span>
+          <div key={index} className="space-y-4 border-b border-[#6b1f2b]/10 pb-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-[16px] text-[#3d2b1f]">{guest.name}</span>
 
               <div className="flex gap-2">
                 <button
                   onClick={() => toggleAttending(index, true)}
                   className={cn(
-                    "border px-3 py-1 text-sm",
+                    "border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition",
                     guest.attending
                       ? "bg-[#6b1f2b] text-white"
                       : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
@@ -124,7 +123,7 @@ export default function StepGuests({
                 <button
                   onClick={() => toggleAttending(index, false)}
                   className={cn(
-                    "border px-3 py-1 text-sm",
+                    "border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition",
                     !guest.attending
                       ? "bg-[#6b1f2b] text-white"
                       : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
@@ -140,7 +139,7 @@ export default function StepGuests({
                 title="dietary options"
                 value={guest.dietary || "none"}
                 onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
-                className="border-b border-[#6b1f2b]/20 bg-transparent text-sm text-[#6b1f2b]/70 outline-none"
+                className={rsvpStyles.select}
               >
                 <option value="none">Fără restricții</option>
                 <option value="vegetarian">Vegetarian</option>
@@ -154,10 +153,8 @@ export default function StepGuests({
       </div>
 
       {/* EXTRA GUESTS */}
-      <div className="space-y-4">
-        <h3 className="text-center text-sm uppercase tracking-widest text-[#6b1f2b]/70">
-          Invitați suplimentari
-        </h3>
+      <div className="space-y-4 pt-2">
+        <h3 className={rsvpStyles.label}>Invitați suplimentari</h3>
 
         <AnimatePresence>
           {extraGuests.map((guest, index) => (
@@ -172,15 +169,15 @@ export default function StepGuests({
                 value={guest.name}
                 onChange={(e) => updateExtraGuest(index, "name", e.target.value)}
                 placeholder="Nume invitat"
-                className="w-full border-b border-[#6b1f2b]/20 bg-transparent py-2 text-[#6b1f2b] outline-none"
+                className={rsvpStyles.input}
               />
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <select
                   title="dietary"
                   value={guest.dietary || "none"}
                   onChange={(e) => updateExtraGuest(index, "dietary", e.target.value)}
-                  className="border-b border-[#6b1f2b]/20 bg-transparent text-sm text-[#6b1f2b]/70 outline-none"
+                  className={rsvpStyles.select}
                 >
                   <option value="none">Fără restricții</option>
                   <option value="vegetarian">Vegetarian</option>
@@ -189,7 +186,10 @@ export default function StepGuests({
                   <option value="other">Altceva</option>
                 </select>
 
-                <button onClick={() => removeExtraGuest(index)} className="text-xs text-red-500">
+                <button
+                  onClick={() => removeExtraGuest(index)}
+                  className="text-[11px] uppercase tracking-[0.2em] text-[#6b1f2b]/50 transition hover:text-[#6b1f2b]"
+                >
                   Șterge
                 </button>
               </div>
@@ -203,10 +203,10 @@ export default function StepGuests({
             onClick={addExtraGuest}
             disabled={!canAddMore}
             className={cn(
-              "border px-6 py-2 text-sm uppercase tracking-widest transition",
+              rsvpStyles.secondaryButton,
               canAddMore
-                ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-                : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
+                ? "border-[#c9a46c]"
+                : `${rsvpStyles.disabledButton} hover:bg-transparent hover:text-[#6b1f2b]/30`,
             )}
           >
             + Adaugă invitat
@@ -215,15 +215,15 @@ export default function StepGuests({
       </div>
 
       {/* CTA */}
-      <div className="flex justify-center">
+      <div className={rsvpStyles.actionsEnd}>
         <button
           onClick={onNext}
           disabled={!isValid}
           className={cn(
-            "border px-10 py-4 uppercase tracking-[0.3em] transition",
+            rsvpStyles.primaryButton,
             isValid
-              ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
+              ? "border-[#c9a46c]"
+              : `${rsvpStyles.disabledButton} hover:bg-transparent hover:text-[#6b1f2b]/30`,
           )}
         >
           Continuă

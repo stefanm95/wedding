@@ -2,6 +2,7 @@ import type { RSVPTransport, TransportType } from "@/types/rsvp";
 import { cn } from "@utils/cn";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -28,18 +29,17 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-12"
+      className={rsvpStyles.step}
     >
-      {/* BACK */}
-      <button onClick={onBack} className="text-sm text-[#6b1f2b]/60 hover:text-[#6b1f2b]">
-        ← Înapoi
+      <button onClick={onBack} className={rsvpStyles.backButton}>
+        Înapoi
       </button>
 
       {/* HEADER */}
-      <div className="space-y-6 text-center">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-          Transport pentru cei care participă
-        </h2>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Transport</p>
+        <h2 className={rsvpStyles.title}>Cum veți ajunge?</h2>
+        <p className={rsvpStyles.body}>Alegeți varianta potrivită pentru seara evenimentului.</p>
       </div>
 
       {/* OPTIONS */}
@@ -58,10 +58,10 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
                 }
               }}
               className={cn(
-                "w-full border px-6 py-4 text-left transition",
+                rsvpStyles.option,
                 isSelected(opt.value)
-                  ? "border-[#c9a46c] bg-[#c9a46c]/10 text-[#6b1f2b]"
-                  : "border-[#6b1f2b]/20 text-[#6b1f2b]/70 hover:border-[#6b1f2b]",
+                  ? "border-[#c9a46c] bg-white/25 text-[#3d2b1f]"
+                  : "border-[#6b1f2b]/15",
               )}
             >
               {opt.label}
@@ -74,8 +74,10 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
                 animate={{ opacity: showInfo ? 1 : 0, height: showInfo ? "auto" : 0 }}
                 className="overflow-hidden"
               >
-                <div className="mt-3 rounded-md border border-[#6b1f2b]/10 bg-[#6b1f2b]/5 p-4 text-sm text-[#6b1f2b]/80">
-                  <p className="font-medium">🚌 Transport organizat</p>
+                <div className="mt-3 border-l border-[#c9a46c] py-2 pl-4 text-[14px] leading-relaxed text-[#3d2b1f]/80">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-[#6b1f2b]/60">
+                    Transport organizat
+                  </p>
 
                   <p className="mt-2">
                     Plecarea va avea loc din <strong>Piața Unirii</strong> la ora{" "}
@@ -91,11 +93,8 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
       </div>
 
       {/* CTA */}
-      <div className="flex justify-center">
-        <button
-          onClick={onNext}
-          className="border border-[#c9a46c] px-10 py-4 uppercase tracking-[0.3em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white"
-        >
+      <div className={rsvpStyles.actionsEnd}>
+        <button onClick={onNext} className={rsvpStyles.primaryButton}>
           Continuă
         </button>
       </div>

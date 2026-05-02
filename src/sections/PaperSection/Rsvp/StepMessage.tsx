@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { cn } from "@utils/cn";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -18,21 +19,19 @@ export default function StepMessage({ value, onChange, onNext, onBack }: Props) 
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-12"
+      className={rsvpStyles.step}
     >
-      {/* BACK */}
-      <button onClick={onBack} className="text-sm text-[#6b1f2b]/60 hover:text-[#6b1f2b]">
-        ← Înapoi
+      <button onClick={onBack} className={rsvpStyles.backButton}>
+        Înapoi
       </button>
 
       {/* HEADER */}
-      <div className="space-y-6 text-center">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-          Vrei să ne lași un mesaj?
-        </h2>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Mesaj</p>
+        <h2 className={rsvpStyles.title}>Vrei să ne lași un mesaj?</h2>
 
-        <p className="text-sm text-[#6b1f2b]/60">
-          Dacă vrei să ne transmiți ceva în plus, ne bucurăm să citim 🤍
+        <p className={rsvpStyles.body}>
+          Dacă vrei să ne transmiți ceva în plus, ne bucurăm să citim.
         </p>
       </div>
 
@@ -42,19 +41,19 @@ export default function StepMessage({ value, onChange, onNext, onBack }: Props) 
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Scrie aici mesajul tău..."
-          className="min-h-[140px] w-full resize-none border border-[#6b1f2b]/20 bg-transparent p-4 text-[#6b1f2b] outline-none transition placeholder:text-[#6b1f2b]/40 focus:border-[#6b1f2b]"
+          className="min-h-[150px] w-full resize-none border-b border-[#6b1f2b]/30 bg-transparent pb-2 text-[16px] text-[#3d2b1f] outline-none transition placeholder:text-[#6b1f2b]/35 focus:border-[#6b1f2b]"
         />
       </div>
 
       {/* CTA */}
-      <div className="flex justify-center">
+      <div className={rsvpStyles.actionsEnd}>
         <button
           onClick={onNext}
           className={cn(
-            "border px-10 py-4 uppercase tracking-[0.3em] transition",
+            rsvpStyles.primaryButton,
             isValid
-              ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
+              ? "border-[#c9a46c]"
+              : `${rsvpStyles.disabledButton} hover:bg-transparent hover:text-[#6b1f2b]/30`,
           )}
         >
           Trimite RSVP

@@ -1,5 +1,6 @@
 import type { RSVPFormData } from "@/types/rsvp";
 import { motion } from "framer-motion";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -17,43 +18,41 @@ export default function StepConfirm({ form, onNext, onBack }: Props) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-10"
+      className={rsvpStyles.step}
     >
-      <button onClick={onBack} className="text-sm text-[#6b1f2b]/60 hover:text-[#6b1f2b]">
+      <button onClick={onBack} className={rsvpStyles.backButton}>
         Inapoi
       </button>
 
-      <div className="space-y-5 text-center">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-          Confirmare RSVP
-        </h2>
-        <p className="text-sm text-[#6b1f2b]/60">Verifica raspunsul inainte de trimitere.</p>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Ultimul pas</p>
+        <h2 className={rsvpStyles.title}>Confirmare RSVP</h2>
+        <p className={rsvpStyles.body}>Verifica raspunsul inainte de trimitere.</p>
       </div>
 
-      <div className="space-y-4 border-y border-[#6b1f2b]/10 py-6 text-[#6b1f2b]">
+      <div className="space-y-5 border-y border-[#6b1f2b]/10 py-6 text-[#3d2b1f]">
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#6b1f2b]/50">Participanti</p>
-          <p className="mt-1 text-lg">{attendingGuests.map((guest) => guest.name).join(", ")}</p>
+          <p className={rsvpStyles.label}>Participanti</p>
+          <p className="mt-2 text-[17px] leading-relaxed">
+            {attendingGuests.map((guest) => guest.name).join(", ")}
+          </p>
         </div>
 
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#6b1f2b]/50">Transport</p>
-          <p className="mt-1 text-lg">{form.transport?.type || "none"}</p>
+          <p className={rsvpStyles.label}>Transport</p>
+          <p className="mt-2 text-[17px]">{form.transport?.type || "none"}</p>
         </div>
 
         {form.message && (
           <div>
-            <p className="text-xs uppercase tracking-widest text-[#6b1f2b]/50">Mesaj</p>
-            <p className="mt-1 text-lg">{form.message}</p>
+            <p className={rsvpStyles.label}>Mesaj</p>
+            <p className="mt-2 text-[17px] leading-relaxed">{form.message}</p>
           </div>
         )}
       </div>
 
-      <div className="flex justify-center">
-        <button
-          onClick={onNext}
-          className="border border-[#c9a46c] px-10 py-4 uppercase tracking-[0.3em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white"
-        >
+      <div className={rsvpStyles.actionsEnd}>
+        <button onClick={onNext} className={rsvpStyles.primaryButton}>
           Confirma si trimite
         </button>
       </div>

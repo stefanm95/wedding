@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
@@ -12,23 +13,19 @@ export default function StepRegret({ onClose }: Props) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-10 text-center"
+      className={`${rsvpStyles.step} text-center`}
     >
-      <div className="space-y-6">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">
-          Ne pare rău că nu poți ajunge
-        </h2>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Răspuns primit</p>
+        <h2 className={rsvpStyles.title}>Ne pare rău că nu poți ajunge</h2>
 
-        <p className="mx-auto max-w-[420px] leading-relaxed text-[#6b1f2b]/70">
+        <p className={`${rsvpStyles.body} mx-auto max-w-[420px]`}>
           Îți vom simți lipsa în această zi specială, dar îți mulțumim că ne-ai anunțat. Sperăm să
-          ne revedem curând 🤍
+          ne revedem curând.
         </p>
       </div>
 
-      <button
-        onClick={onClose}
-        className="border border-[#c9a46c] px-10 py-4 uppercase tracking-[0.3em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white"
-      >
+      <button onClick={onClose} className={`${rsvpStyles.primaryButton} self-center`}>
         Închide
       </button>
     </motion.div>

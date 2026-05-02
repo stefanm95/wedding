@@ -2,6 +2,7 @@ import { db } from "@/lib/firebase";
 import { cn } from "@utils/cn";
 import { collection, getDocs } from "firebase/firestore";
 import { motion } from "framer-motion";
+import { rsvpStyles } from "./rsvpStyles";
 import { useEffect, useMemo, useState } from "react";
 import { stepVariants } from "./stepVariants";
 
@@ -107,37 +108,42 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
       initial="initial"
       animate="animate"
       exit="exit"
-      className="space-y-12"
+      className={rsvpStyles.step}
     >
-      {/* BACK */}
-      <button onClick={onBack} className="text-sm text-[#6b1f2b]/60 hover:text-[#6b1f2b]">
-        ← Înapoi
+      <button onClick={onBack} className={rsvpStyles.backButton}>
+        Înapoi
       </button>
 
-      <div className="space-y-8 text-center">
-        <h2 className="font-serif text-[28px] text-[#6b1f2b] md:text-[34px]">Cum vă numiți?</h2>
+      <div className={rsvpStyles.header}>
+        <p className={rsvpStyles.label}>Invitație</p>
+        <h2 className={rsvpStyles.title}>Cum vă numiți?</h2>
+        <p className={rsvpStyles.body}>Caută numele sau familia trecută pe invitație.</p>
+      </div>
 
+      <div className={rsvpStyles.content}>
         {/* INPUT */}
         <input
           autoFocus
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Scrie numele tău"
-          className="w-full border-b border-[#6b1f2b]/20 bg-transparent py-4 text-center text-[20px] text-[#6b1f2b] outline-none"
+          className={`${rsvpStyles.input} text-center`}
         />
 
         {/* STATES */}
-        <div className="space-y-2">
-          {loading && <p className="text-sm text-[#6b1f2b]/40">Se încarcă invitații...</p>}
+        <div className="space-y-3 pt-2">
+          {loading && (
+            <p className="text-center text-[13px] text-[#6b1f2b]/45">Se încarcă invitații...</p>
+          )}
 
           {!loading && query.length > 0 && query.length < 3 && (
-            <p className="text-sm text-[#6b1f2b]/40">
+            <p className="text-center text-[13px] text-[#6b1f2b]/45">
               Mai scrie puțin pentru rezultate mai precise
             </p>
           )}
 
           {!loading && query.length >= 3 && results.length === 0 && (
-            <p className="text-sm text-[#6b1f2b]/40">Nu am găsit nimic 🤍</p>
+            <p className="text-center text-[13px] text-[#6b1f2b]/45">Nu am găsit nimic</p>
           )}
 
           {/* RESULTS */}
@@ -146,17 +152,17 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
               key={group.id}
               onClick={() => onSelectGroup(group)}
               className={cn(
-                "w-full border px-4 py-3 text-left transition",
+                rsvpStyles.option,
                 value === group.id
-                  ? "border-[#c9a46c] bg-[#6b1f2b]/5"
-                  : "border-[#6b1f2b]/20 hover:bg-[#6b1f2b]/5",
+                  ? "border-[#c9a46c] bg-white/25"
+                  : "border-[#6b1f2b]/15 hover:bg-white/20",
               )}
             >
-              <div className="font-medium text-[#6b1f2b]">{group.familyLabel}</div>
+              <div className="text-[16px] text-[#3d2b1f]">{group.familyLabel}</div>
 
-              <div className="text-sm text-[#6b1f2b]/60">{group.representative}</div>
+              <div className="mt-1 text-[13px] text-[#6b1f2b]/60">{group.representative}</div>
 
-              <div className="text-xs text-[#6b1f2b]/40">
+              <div className="mt-1 text-[12px] text-[#6b1f2b]/45">
                 {group.members.slice(0, 2).map(getMemberName).join(", ")}
               </div>
             </button>
@@ -165,15 +171,15 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
       </div>
 
       {/* CTA */}
-      <div className="flex justify-center">
+      <div className={rsvpStyles.actionsEnd}>
         <button
           onClick={onNext}
           disabled={!isValid}
           className={cn(
-            "border px-10 py-4 uppercase tracking-[0.3em]",
+            rsvpStyles.primaryButton,
             isValid
-              ? "border-[#c9a46c] text-[#6b1f2b] hover:bg-[#6b1f2b] hover:text-white"
-              : "cursor-not-allowed border-[#6b1f2b]/20 text-[#6b1f2b]/30",
+              ? "border-[#c9a46c]"
+              : `${rsvpStyles.disabledButton} hover:bg-transparent hover:text-[#6b1f2b]/30`,
           )}
         >
           Continuă
