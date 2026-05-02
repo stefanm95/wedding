@@ -8,10 +8,20 @@ export default function PaperHeroBlock({ variant }: PaperBlockProps) {
   const time = useCountdown(new Date("2026-08-22T16:00:00"));
 
   return (
-    <section
-      data-paper-variant={variant}
-      className="relative py-28 text-center md:py-36 lg:py-44"
-    >
+    <section data-paper-variant={variant} className="relative py-28 text-center md:py-36 lg:py-44">
+      {/* 🔥 FOCUS LAYER */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background: `
+        radial-gradient(
+          circle at 50% 40%,
+          rgba(0,0,0,0.06),
+          transparent 65%
+        )
+      `,
+        }}
+      />
       <div className="mx-auto max-w-4xl px-6">
         {/* 📸 POLAROID — HERO EMOTIONAL */}
         <motion.div

@@ -62,7 +62,7 @@ export default function Countdown({ months, days, hours, minutes, seconds }: Ext
 
       {/* ✨ LINE */}
       <motion.div
-        className="mx-auto mt-6 h-[1px] w-[160px]"
+        className="mx-auto mt-6 h-[1px] w-[320px]"
         style={{
           background: "linear-gradient(to right, transparent, rgba(107,31,43,0.5), transparent)",
         }}
