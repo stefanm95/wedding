@@ -1,5 +1,6 @@
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { paperThemes, type PaperVariant } from "@utils/paperThemes";
+import { useHeroLight } from "@/hooks/useHeroLight";
 
 type Props = {
   progress: MotionValue<number>;
@@ -15,6 +16,16 @@ const PaperBackgroundLayer = ({
   opacity: MotionValue<number>;
 }) => {
   const theme = paperThemes[variant];
+
+  const light = useHeroLight();
+  const boosted = light + Math.pow(light, 2) * 0.4;
+
+  // 🔥 clamp (foarte important)
+  const safeLight = Math.min(Math.max(boosted, 0), 2);
+
+  // 🎯 poziție light fake (simplu dar stabil)
+  const lightX = 55 + safeLight * 10;
+  const lightY = 40 - safeLight * 5;
 
   return (
     <motion.div
@@ -39,8 +50,15 @@ const PaperBackgroundLayer = ({
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background: theme.lightGradient,
-          opacity: 0.25,
+          opacity: 0.12 + safeLight * 0.15,
+          background: `
+      radial-gradient(
+        circle at ${lightX}% ${lightY}%,
+        rgba(255,255,255,0.12),
+        transparent 60%
+      )
+    `,
+          mixBlendMode: "soft-light",
         }}
       />
     </motion.div>

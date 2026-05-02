@@ -1,5 +1,8 @@
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { cn } from "@utils/cn";
+import { useHeroLight } from "@/hooks/useHeroLight";
+import { useHeroLightDir } from "@/hooks/useHeroLightDir";
+import { useState } from "react";
 
 type Props = {
   className?: string;
@@ -7,6 +10,7 @@ type Props = {
 };
 
 export default function EmbossSeal({ className, progress }: Props) {
+  const [hovered, setHovered] = useState(false);
   const y = useTransform(progress, [0, 1], [40, -40]);
 
   const lightX = useTransform(progress, [0, 1], [-120, 120]);
@@ -14,9 +18,40 @@ export default function EmbossSeal({ className, progress }: Props) {
 
   const mask = "[mask-image:url('/assets/crest/image-1.png')]";
 
+  const light = useHeroLight();
+  const dir = useHeroLightDir();
+
+  // boost cinematic
+  const boosted = light + Math.pow(light, 2) * 0.4;
+
+  // 🔥 map direction → movement
+  const offsetX = dir.x * 12;
+  const offsetY = dir.y * 12;
+
+  const pulseScale = hovered ? 1.2 : 1;
+  const pulseLight = hovered ? 1.4 : 1;
+  const pulseDepth = hovered ? 1.6 : 1;
+
   return (
     <motion.div
-      style={{ y }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onTouchStart={() => setHovered(true)}
+      onTouchEnd={() => setHovered(false)}
+      animate={{
+        scale: pulseScale,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 80,
+        damping: 14,
+        mass: 0.6,
+      }}
+      style={{
+        x: offsetX,
+        y: offsetY,
+        opacity: 0.2 + boosted * 0.3,
+      }}
       className={cn(
         "pointer-events-none absolute inset-0 flex items-center justify-center",
         className,
@@ -36,7 +71,13 @@ export default function EmbossSeal({ className, progress }: Props) {
       />
 
       {/* 🌑 SHADOW (shape-based) */}
-      <div
+      <motion.div
+        animate={{
+          x: 4 * pulseDepth,
+          y: 4 * pulseDepth,
+          opacity: 0.4 * pulseLight,
+        }}
+        transition={{ duration: 0.25 }}
         className={cn(
           "absolute h-[420px] w-[420px]",
           "md:h-[520px] md:w-[520px]",
@@ -53,7 +94,13 @@ export default function EmbossSeal({ className, progress }: Props) {
       />
 
       {/* ✨ HIGHLIGHT (shape-based) */}
-      <div
+      <motion.div
+        animate={{
+          x: -3 * pulseDepth,
+          y: -3 * pulseDepth,
+          opacity: 0.3 * pulseLight,
+        }}
+        transition={{ duration: 0.25 }}
         className={cn(
           "absolute h-[420px] w-[420px]",
           "md:h-[520px] md:w-[520px]",
@@ -75,6 +122,10 @@ export default function EmbossSeal({ className, progress }: Props) {
           x: lightX,
           opacity: lightOpacity,
         }}
+        animate={{
+          opacity: (lightOpacity.get() || 0.2) * pulseLight,
+        }}
+        transition={{ duration: 0.3 }}
         className={cn(
           "absolute h-[420px] w-[420px]",
           "md:h-[520px] md:w-[520px]",
