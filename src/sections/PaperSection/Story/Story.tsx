@@ -39,10 +39,6 @@ export default function Story() {
           <StoryItem key={item.title} item={item} />
         ))}
       </div>
-
-      <p className="script-cormorant-body mt-24 text-center text-[36px] italic text-[#6b1f2b]/70">
-        Vă invităm să fiți alături de noi!
-      </p>
     </section>
   );
 }

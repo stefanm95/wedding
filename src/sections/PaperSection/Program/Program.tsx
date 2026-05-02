@@ -8,48 +8,48 @@ export default function Program() {
 
   return (
     <>
-      <section className="relative flex min-h-screen items-center">
-        <div className="relative mx-auto w-full max-w-[1400px] px-6 md:px-16">
-          {/* 🔥 RSVP TOP RIGHT */}
-          <div className="absolute right-6 top-6 md:right-16 md:top-10">
+      <section className="relative min-h-screen pt-16 md:pt-20 xl:pt-28">
+        <div className="relative mx-auto w-full max-w-[1500px] px-5 sm:px-6 md:px-12">
+          {/* HEADER */}
+          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+            <div>
+              <h2 className="script-cormorant-display text-[30px] tracking-[0.08em] text-[#6b1f2b] sm:text-[34px] md:text-[40px]">
+                PROGRAMUL ZILEI
+              </h2>
+
+              <div className="mt-3 flex items-center gap-3">
+                <div className="h-[1px] w-10 bg-[#c9a46c]" />
+                <div className="h-2 w-2 rotate-45 bg-[#c9a46c]" />
+                <div className="h-[1px] w-10 bg-[#c9a46c]" />
+              </div>
+            </div>
+
             <button
               onClick={() => setOpen(true)}
-              className="group relative border border-[#c9a46c] px-8 py-3 text-[12px] uppercase tracking-[0.25em] text-[#6b1f2b] transition-all duration-300 hover:bg-[#6b1f2b] hover:text-white"
+              className="self-start border border-[#c9a46c] px-6 py-3 text-[10px] uppercase tracking-[0.2em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white sm:text-[11px]"
             >
               Confirmă prezența
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-[#c9a46c]/20 to-transparent opacity-0 transition group-hover:opacity-100" />
             </button>
           </div>
 
-          {/* HEADER */}
-          <div className="mb-10 text-center md:text-left">
-            <h2
-              className="script-cormorant-display text-[32px] tracking-[0.15em] text-[#6b1f2b] md:text-[40px]"
-              style={{ textShadow: "1px 1px 0 rgba(0,0,0,0.2)" }}
-            >
-              PROGRAMUL ZILEI
-            </h2>
-
-            <div className="mt-4 flex items-center justify-center gap-3 md:justify-start">
-              <div className="h-[1px] w-14 bg-[#c9a46c]" />
-              <div className="h-2 w-2 rotate-45 bg-[#c9a46c]" />
-              <div className="h-[1px] w-14 bg-[#c9a46c]" />
-            </div>
+          {/* ========================= */}
+          {/* 🖥 + 📱 TABLET (same logic) */}
+          {/* ========================= */}
+          <div className="relative mt-24 hidden h-[720px] md:block">
+            {programData.map((item, index) => (
+              <ProgramItem key={index} item={item} index={index} variant="cinematic" />
+            ))}
           </div>
 
-          {/* 🔥 MAIN */}
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-            {/* LEFT → TIMELINE */}
-            <div className="relative pl-10">
-              {/* vertical line */}
-              <div className="absolute bottom-2 left-[18px] top-2 w-[1px] bg-[#6b1f2b]/20" />
+          {/* ========================= */}
+          {/* 📱 MOBILE */}
+          {/* ========================= */}
+          <div className="relative mt-12 space-y-10 pl-8 md:hidden">
+            <div className="absolute bottom-0 left-[12px] top-0 w-[1px] bg-[#6b1f2b]/20" />
 
-              <div className="space-y-8">
-                {programData.map((item, index) => (
-                  <ProgramItem key={index} item={item} index={index} />
-                ))}
-              </div>
-            </div>
+            {programData.map((item, index) => (
+              <ProgramItem key={index} item={item} index={index} variant="mobile" />
+            ))}
           </div>
         </div>
       </section>
