@@ -13,7 +13,7 @@ type Props = {
 
 export default function PaperShell({ sectionRef, className, y, scale, shadow, children }: Props) {
   return (
-    <section ref={sectionRef} className={cn("relative z-20", className)}>
+    <section ref={sectionRef} className={cn("relative z-30", className)}>
       <motion.div
         className="relative min-h-full overflow-hidden"
         style={{

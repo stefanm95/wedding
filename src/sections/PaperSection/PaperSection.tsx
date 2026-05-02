@@ -11,6 +11,7 @@ import PaperStack from "@paper/PaperStack";
 import { useMergedRefs } from "@hooks/useMergedRefs";
 import { usePaperScroll } from "@hooks/usePaperScroll";
 import RsvpLayerInline from "@paper/Rsvp/RsvpLayer";
+import PaperGrain from "@/components/PaperGrain";
 
 const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ className }, ref) => {
   const [showRsvp, setShowRsvp] = useState(false);
@@ -56,6 +57,7 @@ const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ classNam
           }}
         />
       </div>
+      <PaperGrain />
 
       {/* 📄 CONTENT STACK */}
       <motion.div transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}>

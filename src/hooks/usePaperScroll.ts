@@ -27,7 +27,7 @@ export const usePaperScroll = (target: RefObject<HTMLElement | null>) => {
   });
 
   // 🎬 cinematic transforms
-  const y = useTransform(scrollYProgress, [0, 1], [100, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.4, 1], [180, 40, 0]);
   const scale = useTransform(scrollYProgress, [0, 1], [0.96, 1]);
 
   const shadow = useTransform(

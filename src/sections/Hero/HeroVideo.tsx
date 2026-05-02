@@ -12,16 +12,16 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   });
 
   // 🎬 TEXT MOVE
-  const y = useTransform(scrollYProgress, [0, 1], [0, 220]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, -180]);
 
   // 🎬 FADE OUT
-  const opacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.4, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6, 0.9], [1, 0.7, 0]);
 
   // 🎬 SCALE
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
 
   // 🎬 TEXT BLUR
-  const blurText = useTransform(scrollYProgress, [0.6, 1], ["blur(0px)", "blur(10px)"]);
+  const blurText = useTransform(scrollYProgress, [0.7, 1], ["blur(0px)", "blur(14px)"]);
 
   // 🔥 păstrăm glow-ul tău
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const boosted = light + Math.pow(light, 3) * 0.5;
 
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div className="pointer-events-none absolute inset-0 z-20">
       <div className="absolute inset-0 flex items-center justify-center text-center">
         <motion.div
           style={{
