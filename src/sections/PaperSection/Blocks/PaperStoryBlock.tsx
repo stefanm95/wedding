@@ -6,18 +6,18 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
   return (
     <section
       data-paper-variant={variant}
-      className="relative pb-24 pt-20 md:pb-32 md:pt-32 lg:pb-40"
+      className="relative bg-transparent pb-24 pt-20 opacity-90 md:pb-32 md:pt-32 lg:pb-40"
     >
       {/* 🧻 BACKGROUND ELEMENT */}
       <div className="pointer-events-none absolute inset-0 flex justify-center">
         <img
           alt="paper"
-          src="/assets/paper/paper-mid-split.jpg"
+          src="/assets/paper/paper-split6.avif"
           className={cn(
             "w-full max-w-[1400px] mix-blend-multiply",
-            variant === "day" && "opacity-30",
-            variant === "golden" && "opacity-40",
-            variant === "evening" && "opacity-50",
+            variant === "day" && "opacity-40",
+            variant === "golden" && "opacity-50",
+            variant === "evening" && "opacity-60",
           )}
         />
       </div>

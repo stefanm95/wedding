@@ -3,36 +3,34 @@ import { motion } from "framer-motion";
 export default function PolaroidCard() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 80, rotate: -4 }}
-      whileInView={{ opacity: 1, y: 0, rotate: -2 }}
-      whileHover={{ rotate: -1.5, scale: 1.02 }}
-      transition={{ duration: 0.9, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: "easeOut" }}
       viewport={{ once: true }}
       className="relative"
     >
-      {/* 🌑 SHADOW */}
-      <div className="absolute inset-0 translate-y-8 bg-black opacity-25 blur-xl" />
-
-      {/* 📄 POLAROID */}
-      <div
-        className="relative w-full max-w-[320px] bg-[#f4f1ea] p-4 pb-12 shadow-[0_25px_70px_rgba(0,0,0,0.18)] md:max-w-[720px] md:p-8 md:pb-16"
-        style={{
-          transform: "rotate(-2deg)",
-        }}
-      >
-        {/* 🖼 IMAGE */}
-        <div className="overflow-hidden">
+      {/* 📄 PRINTED AREA (no shadow, no card feel) */}
+      <div className="relative w-full max-w-[340px] md:max-w-[520px]">
+        {/* 🖼 IMAGE - PRINTED INTO PAPER */}
+        <div className="relative overflow-hidden">
+          {/* image */}
           <img
             alt="prima amintire"
             src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777520576/lavanda_zokn81.jpg"
-            className="h-[220px] w-full object-cover md:h-[420px]"
+            className="/* 🔥 KEY: kill digital sharpness */ h-[240px] w-full object-cover brightness-[0.98] contrast-[0.92] saturate-[0.9] md:h-[420px]"
           />
+
+          {/* 🔥 PRINT FADE (edges slightly absorbed in paper) */}
+          <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.15)]" />
+
+          {/* 🔥 PAPER BLEED LIGHT */}
+          <div className="pointer-events-none absolute inset-0 bg-[#f4f1ea]/20 mix-blend-multiply" />
         </div>
 
-        {/* ✍️ TITLE (IMPORTANT) */}
+        {/* ✍️ HANDWRITTEN CAPTION */}
         <p
-          className="script-castlegar mt-6 text-center text-2xl tracking-[0.08em] text-[#6b1f2b] md:text-3xl"
-          style={{ transform: "rotate(-0.8deg)" }}
+          className="script-castlegar mt-5 text-center text-[22px] text-[#6b1f2b]/90 md:text-3xl"
+          style={{ transform: "rotate(-0.6deg)" }}
         >
           Prima amintire
         </p>
