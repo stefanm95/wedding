@@ -13,13 +13,7 @@ export default function PaperHeroBlock({ variant }: PaperBlockProps) {
       <div
         className="absolute inset-0 -z-10"
         style={{
-          background: `
-        radial-gradient(
-          circle at 50% 40%,
-          rgba(0,0,0,0.06),
-          transparent 65%
-        )
-      `,
+          backgroundImage: `/assets/paper/paper-cards.jpg`,
         }}
       />
       <div className="mx-auto max-w-4xl px-6">

@@ -11,7 +11,7 @@ export default function PaperProgramBlock({ variant }: PaperBlockProps) {
       <div className="pointer-events-none absolute inset-0 z-0">
         <img
           alt="paper"
-          src="/assets/paper/paper-mid-split.jpg"
+          src="/assets/paper/paper-cards.jpg"
           className="h-full w-full object-cover object-[center_30%] opacity-50 md:object-[center_35%] lg:object-[center_40%]"
         />
       </div>
