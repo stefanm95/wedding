@@ -1,112 +1,64 @@
-import { motion, useMotionTemplate, useTransform } from "framer-motion";
-import { useEmbossLight } from "@hooks/useEmbossLight";
 import { cn } from "@utils/cn";
 import type { ProgramItemType } from "./programData";
 
 type Props = {
   item: ProgramItemType;
+  index: number;
 };
 
-export default function ProgramItem({ item }: Props) {
+export default function ProgramItem({ item, index }: Props) {
   const isTransport = item.type === "transport";
 
-  const { x, y } = useEmbossLight();
-
-  const shadowMain = useMotionTemplate`
-    ${x}px ${y}px 0 rgba(0,0,0,0.18)
-  `;
-
-  const shadowSoft = useMotionTemplate`
-    ${x}px ${y}px 0 rgba(0,0,0,0.12)
-  `;
-
-  const xInverse = useTransform(x, (v) => -v);
-  const yInverse = useTransform(y, (v) => -v);
-
-  const shadowDeboss = useMotionTemplate`
-  ${xInverse}px ${yInverse}px 0 rgba(255,255,255,0.4)
-`;
+  // 🔥 stair offset (safe for responsiveness)
+  const offset = Math.min(index * 32, 96);
 
   return (
-    <div className="relative flex items-start gap-8">
+    <div
+      className="relative flex items-start gap-6"
+      style={{
+        marginLeft: offset,
+      }}
+    >
       {/* TIME */}
-      <div className="w-[70px] text-right">
-        <motion.p
-          style={{ textShadow: shadowMain }}
-          className="font-serif text-[15px] tracking-wide text-[#6b1f2b]/80"
-        >
-          {item.time}
-        </motion.p>
+      <div className="w-[65px] text-right">
+        <p className="font-serif text-[14px] text-[#6b1f2b]/70">{item.time}</p>
       </div>
 
       {/* DOT */}
       <div
-        className={cn("h-3 w-3 rotate-45", isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]")}
-        style={{
-          boxShadow: "0.5px 0.5px 1px rgba(0,0,0,0.25)",
-        }}
+        className={cn("mt-[6px] h-3 w-3 rotate-45", isTransport ? "bg-[#c9a46c]" : "bg-[#6b1f2b]")}
       />
 
       {/* CONTENT */}
       <div className="max-w-[420px]">
         {/* TYPE */}
-        <motion.p
-          style={{ textShadow: shadowSoft }}
-          className="mb-3 text-[10px] uppercase tracking-[0.5em] text-[#6b1f2b]"
-        >
+        <p className="mb-2 text-[9px] uppercase tracking-[0.45em] text-[#6b1f2b]/70">
           {isTransport ? "Transport" : "Eveniment"}
-        </motion.p>
+        </p>
 
         {/* TITLE */}
-        <motion.h3
-          style={{ textShadow: shadowMain }}
-          className="script-cormorant-display mb-2 text-[26px] leading-snug text-[#3d2b1f]"
-        >
-          {item.title}
-        </motion.h3>
+        <h3 className="script-cormorant-display mb-1 text-[24px] text-[#3d2b1f]">{item.title}</h3>
 
         {/* LOCATION */}
-        {item.location && (
-          <motion.p
-            style={{ textShadow: shadowSoft }}
-            className="mb-3 text-[15px] text-[#3d2b1f]/80"
-          >
-            {item.location}
-          </motion.p>
-        )}
+        {item.location && <p className="mb-2 text-[14px] text-[#3d2b1f]/70">{item.location}</p>}
 
         {/* NOTE */}
-        {item.note && (
-          <motion.p
-            style={{ textShadow: shadowDeboss }}
-            className="mb-3 text-[14px] italic text-[#6b1f2b]/60"
-          >
-            {item.note}
-          </motion.p>
-        )}
+        {item.note && <p className="mb-2 text-[13px] italic text-[#6b1f2b]/60">{item.note}</p>}
 
-        {/* MAP LINK (🔥 refined) */}
+        {/* MAP */}
         {item.mapLink && (
           <a
             href={item.mapLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.3em] text-[#4a1c24] transition"
+            className="group relative inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-[#4a1c24]"
           >
-            {/* mic marker tipografic */}
-            <span className="translate-y-[-1px] text-[9px] text-[#c9a46c]">◆</span>
+            <span className="text-[8px] text-[#c9a46c]">◆</span>
 
-            {/* TEXT */}
-            <span
-              className="relative z-10 transition group-hover:tracking-[0.35em] group-hover:text-[#6b1f2b]"
-              style={{
-                textShadow: "0.3px 0.3px 0 rgba(0,0,0,0.15)", // 🔥 emboss feel
-              }}
-            >
+            <span className="transition group-hover:tracking-[0.3em] group-hover:text-[#6b1f2b]">
               Vezi pe hartă
             </span>
 
-            {/* 🔥 underline premium (nu mai mișcă layout) */}
             <span className="absolute bottom-0 left-0 h-[1px] w-full origin-left scale-x-0 bg-[#c9a46c]/70 transition-transform duration-300 group-hover:scale-x-100" />
           </a>
         )}
