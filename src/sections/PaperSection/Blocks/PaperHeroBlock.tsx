@@ -8,44 +8,34 @@ export default function PaperHeroBlock({ variant }: PaperBlockProps) {
   const time = useCountdown(new Date("2026-08-22T16:00:00"));
 
   return (
-    <section data-paper-variant={variant} className="relative py-28 text-center md:py-36 lg:py-44">
-      {/* 🔥 FOCUS LAYER */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          backgroundImage: `/assets/paper/paper-cards.jpg`,
-        }}
-      />
-      <div className="mx-auto max-w-4xl px-6">
-        {/* 📸 POLAROID — HERO EMOTIONAL */}
-        <motion.div
-          className="flex justify-center"
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: "easeOut" }}
+    <section data-paper-variant={variant} className="relative py-28 md:py-36 lg:py-44">
+      <div className="mx-auto max-w-3xl px-6">
+        {/* 📄 HERO SHEET (this is the missing piece) */}
+        <div
+          className="relative border border-black/5 bg-[#f8f6f2]/90 p-10 shadow-[0_30px_80px_rgba(0,0,0,0.08)] backdrop-blur-[2px] md:p-14"
+          style={{
+            transform: "rotate(-0.4deg)",
+          }}
         >
-          <PolaroidCard />
-        </motion.div>
+          {/* 📸 POLAROID */}
+          <motion.div
+            className="flex justify-center"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+          >
+            <PolaroidCard />
+          </motion.div>
 
-        {/* 🌫 SHADOW LINK (ancoră vizuală) */}
-        <div
-          className="mx-auto mt-4 h-[40px] w-[220px] opacity-20 blur-xl md:mt-6 md:w-[420px]"
-          style={{
-            background: "radial-gradient(circle, rgba(0,0,0,0.25), transparent 70%)",
-          }}
-        />
-
-        {/* ⏳ COUNTDOWN (secundar, integrat) */}
-        <div className="mt-8 opacity-90 md:mt-10">
-          <Countdown {...time} />
+          {/* ⏳ COUNTDOWN */}
+          <div className="mt-10 text-center">
+            <Countdown {...time} />
+          </div>
         </div>
-        <div
-          className="mx-auto mt-10 h-12 w-[1px] opacity-20"
-          style={{
-            background: "linear-gradient(to bottom, #6b1f2b, transparent)",
-          }}
-        />
+
+        {/* subtle separation from next section */}
+        <div className="mx-auto mt-16 h-10 w-[1px] bg-black opacity-10" />
       </div>
     </section>
   );

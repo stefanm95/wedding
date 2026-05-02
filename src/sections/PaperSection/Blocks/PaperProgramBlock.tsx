@@ -12,7 +12,7 @@ export default function PaperProgramBlock({ variant }: PaperBlockProps) {
         <img
           alt="paper"
           src="/assets/paper/paper-cards.jpg"
-          className="h-full w-full object-cover object-[center_30%] opacity-50 md:object-[center_35%] lg:object-[center_40%]"
+          className="h-full w-full object-cover object-[center_30%] opacity-10 md:object-[center_35%] lg:object-[center_40%]"
         />
       </div>
 
