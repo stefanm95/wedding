@@ -13,21 +13,38 @@ export function StepWelcome({ onNext }: Props) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className={rsvpStyles.step}
+      className={`${rsvpStyles.step} text-center`}
     >
-      <div className={rsvpStyles.header}>
-        <p className={rsvpStyles.label}>Confirmare</p>
-        <h2 className={rsvpStyles.title}>Veți fi alături de noi?</h2>
-        <p className={rsvpStyles.body}>Ne-ar bucura să știm dacă veți fi parte din ziua noastră.</p>
+      {/* ✨ INTRO (nu label de form) */}
+      <div className="space-y-6">
+        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Denisa & Iuli</p>
+
+        <h2 className="script-cormorant-display text-[36px] leading-tight text-[#3d2b1f]">
+          Ne vei fi alături
+          <br />
+          în această zi?
+        </h2>
+
+        <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-[#3d2b1f]/75">
+          Pentru noi, prezența ta înseamnă mai mult decât putem pune în cuvinte.
+        </p>
       </div>
 
-      <div className="flex flex-col gap-4 pt-2">
+      {/* ✨ DIVIDER (foarte important pentru vibe) */}
+      <div className="flex items-center justify-center gap-3 pt-4">
+        <div className="h-[1px] w-10 bg-[#c9a46c]/60" />
+        <div className="h-2 w-2 rotate-45 bg-[#c9a46c]/60" />
+        <div className="h-[1px] w-10 bg-[#c9a46c]/60" />
+      </div>
+
+      {/* 🎯 ACTIONS */}
+      <div className="flex flex-col gap-4 pt-6">
         <button onClick={() => onNext(true)} className={rsvpStyles.primaryButton}>
-          Da, vom fi prezenți
+          Vom fi acolo
         </button>
 
         <button onClick={() => onNext(false)} className={rsvpStyles.secondaryButton}>
-          Nu putem ajunge
+          Din păcate nu putem ajunge
         </button>
       </div>
     </motion.div>

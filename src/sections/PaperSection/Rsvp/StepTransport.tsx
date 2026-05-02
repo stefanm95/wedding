@@ -15,7 +15,7 @@ type Props = {
 const OPTIONS: { label: string; value: TransportType }[] = [
   { label: "Nu avem nevoie", value: "none" },
   { label: "Transport organizat", value: "bus" },
-  { label: "Mașină personală", value: "personal" },
+  { label: "Venim cu mașina", value: "personal" },
 ];
 
 export default function StepTransport({ value, onChange, onNext, onBack }: Props) {
@@ -29,36 +29,44 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
       initial="initial"
       animate="animate"
       exit="exit"
-      className={rsvpStyles.step}
+      className={`${rsvpStyles.step} relative pt-8`}
     >
-      <button onClick={onBack} className={rsvpStyles.backButton}>
+      {/* 🔙 BACK */}
+      <button
+        onClick={onBack}
+        className="absolute left-0 top-0 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#6b1f2b]/55 transition hover:text-[#6b1f2b]"
+      >
+        <span className="text-[14px] leading-none">←</span>
         Înapoi
       </button>
 
-      {/* HEADER */}
-      <div className={rsvpStyles.header}>
-        <p className={rsvpStyles.label}>Transport</p>
-        <h2 className={rsvpStyles.title}>Cum veți ajunge?</h2>
-        <p className={rsvpStyles.body}>Alegeți varianta potrivită pentru seara evenimentului.</p>
+      {/* ✨ HEADER */}
+      <div className="space-y-6 text-center">
+        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Organizare</p>
+
+        <h2 className="script-cormorant-display text-[34px] leading-tight text-[#3d2b1f]">
+          Cum ajungi la eveniment?
+        </h2>
+
+        <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-[#3d2b1f]/75">
+          Pentru a ne organiza mai bine, spune-ne cum plănuiești să ajungi.
+        </p>
       </div>
 
-      {/* OPTIONS */}
-      <div className="space-y-4">
+      {/* ✨ OPTIONS */}
+      <div className="space-y-4 pt-6">
         {OPTIONS.map((opt) => (
           <div key={opt.value}>
             <button
               onClick={() => {
                 onChange({ type: opt.value });
 
-                // 🔥 show info automatically when bus is selected
-                if (opt.value === "bus") {
-                  setShowInfo(true);
-                } else {
-                  setShowInfo(false);
-                }
+                if (opt.value === "bus") setShowInfo(true);
+                else setShowInfo(false);
               }}
               className={cn(
                 rsvpStyles.option,
+                "text-center",
                 isSelected(opt.value)
                   ? "border-[#c9a46c] bg-white/25 text-[#3d2b1f]"
                   : "border-[#6b1f2b]/15",
@@ -67,24 +75,27 @@ export default function StepTransport({ value, onChange, onNext, onBack }: Props
               {opt.label}
             </button>
 
-            {/* 🚌 BUS INFO */}
+            {/* 🚌 INFO */}
             {opt.value === "bus" && isSelected("bus") && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: showInfo ? 1 : 0, height: showInfo ? "auto" : 0 }}
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: showInfo ? 1 : 0, y: showInfo ? 0 : -5 }}
+                transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="mt-3 border-l border-[#c9a46c] py-2 pl-4 text-[14px] leading-relaxed text-[#3d2b1f]/80">
+                <div className="mt-4 border-l border-[#c9a46c] pl-4 text-left">
                   <p className="text-[11px] uppercase tracking-[0.25em] text-[#6b1f2b]/60">
-                    Transport organizat
+                    Detalii transport
                   </p>
 
-                  <p className="mt-2">
+                  <p className="mt-2 text-[14px] text-[#3d2b1f]/80">
                     Plecarea va avea loc din <strong>Piața Unirii</strong> la ora{" "}
                     <strong>15:30</strong>.
                   </p>
 
-                  <p className="mt-1">Vă rugăm să fiți prezenți cu 10 minute înainte.</p>
+                  <p className="mt-1 text-[14px] text-[#3d2b1f]/70">
+                    Te rugăm să fii acolo cu 10 minute înainte.
+                  </p>
                 </div>
               </motion.div>
             )}

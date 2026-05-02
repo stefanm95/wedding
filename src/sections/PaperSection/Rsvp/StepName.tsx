@@ -9,7 +9,7 @@ import { stepVariants } from "./stepVariants";
 import type { GuestGroup } from "@/types/rsvp";
 import { getMemberName } from "@/utils/rsvpValidation";
 
-/* ---------------- DEBOUNCE HOOK ---------------- */
+/* ---------------- DEBOUNCE ---------------- */
 
 function useDebounce<T>(value: T, delay: number) {
   const [debounced, setDebounced] = useState(value);
@@ -22,7 +22,7 @@ function useDebounce<T>(value: T, delay: number) {
   return debounced;
 }
 
-/* ---------------- TYPES ---------------- */
+/* ---------------- COMPONENT ---------------- */
 
 type Props = {
   value: string;
@@ -30,8 +30,6 @@ type Props = {
   onNext: () => void;
   onBack: () => void;
 };
-
-/* ---------------- COMPONENT ---------------- */
 
 export default function StepName({ value, onSelectGroup, onNext, onBack }: Props) {
   const [query, setQuery] = useState("");
@@ -63,40 +61,18 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
   const results = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
 
-    if (q.length < 3) return [];
+    if (q.length < 2) return [];
 
     return groups
       .filter((group) => {
-        const startsMatch =
-          group.familyLabel.toLowerCase().startsWith(q) ||
-          group.representative?.toLowerCase().startsWith(q) ||
-          group.members.some((m) => getMemberName(m).toLowerCase().startsWith(q));
-
-        const includesMatch =
+        return (
           group.familyLabel.toLowerCase().includes(q) ||
           group.representative?.toLowerCase().includes(q) ||
-          group.members.some((m) => getMemberName(m).toLowerCase().includes(q));
-
-        // 🔥 progressive filtering
-        return q.length < 4 ? startsMatch : includesMatch;
-      })
-      .sort((a, b) => {
-        const score = (g: GuestGroup) => {
-          let s = 0;
-
-          if (g.familyLabel.toLowerCase().startsWith(q)) s += 3;
-          if (g.representative?.toLowerCase().startsWith(q)) s += 2;
-          if (g.members.some((m) => getMemberName(m).toLowerCase().startsWith(q))) s += 1;
-
-          return s;
-        };
-
-        return score(b) - score(a);
+          group.members.some((m) => getMemberName(m).toLowerCase().includes(q))
+        );
       })
       .slice(0, 6);
   }, [debouncedQuery, groups]);
-
-  /* ---------------- DISPLAY ---------------- */
 
   const isValid = !!value;
 
@@ -108,59 +84,71 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
       initial="initial"
       animate="animate"
       exit="exit"
-      className={rsvpStyles.step}
+      className={`${rsvpStyles.step} text-center`}
     >
-      <button onClick={onBack} className={rsvpStyles.backButton}>
+      {/* BACK */}
+      <button
+        onClick={onBack}
+        className="absolute left-0 top-0 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#6b1f2b]/55 transition hover:text-[#6b1f2b]"
+      >
+        <span className="text-[14px] leading-none">←</span>
         Înapoi
       </button>
+      {/* ✨ HEADER */}
+      <div className="space-y-6">
+        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Invitația ta</p>
 
-      <div className={rsvpStyles.header}>
-        <p className={rsvpStyles.label}>Invitație</p>
-        <h2 className={rsvpStyles.title}>Cum vă numiți?</h2>
-        <p className={rsvpStyles.body}>Caută numele sau familia trecută pe invitație.</p>
+        <h2 className="script-cormorant-display text-[34px] leading-tight text-[#3d2b1f]">
+          Cum te regăsim pe listă?
+        </h2>
+
+        <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-[#3d2b1f]/75">
+          Scrie numele tău sau al familiei, exact cum apare pe invitație.
+        </p>
       </div>
 
-      <div className={rsvpStyles.content}>
-        {/* INPUT */}
+      {/* ✨ INPUT */}
+      <div className="pt-12">
         <input
           autoFocus
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Scrie numele tău"
-          className={`${rsvpStyles.input} text-center`}
+          placeholder="ex: Popescu"
+          className={cn(rsvpStyles.input, "text-center")}
         />
+      </div>
 
-        {/* STATES */}
-        <div className="space-y-3 pt-2">
-          {loading && (
-            <p className="text-center text-[13px] text-[#6b1f2b]/45">Se încarcă invitații...</p>
-          )}
+      {/* ✨ STATES */}
+      <div className="space-y-3 pt-4">
+        {loading && <p className="text-[13px] text-[#6b1f2b]/45">Pregătim lista de invitați...</p>}
 
-          {!loading && query.length > 0 && query.length < 3 && (
-            <p className="text-center text-[13px] text-[#6b1f2b]/45">
-              Mai scrie puțin pentru rezultate mai precise
-            </p>
-          )}
+        {!loading && query.length > 0 && query.length < 2 && (
+          <p className="text-[13px] text-[#6b1f2b]/45">Mai scrie puțin...</p>
+        )}
 
-          {!loading && query.length >= 3 && results.length === 0 && (
-            <p className="text-center text-[13px] text-[#6b1f2b]/45">Nu am găsit nimic</p>
-          )}
+        {!loading && query.length >= 2 && results.length === 0 && (
+          <p className="text-[13px] text-[#6b1f2b]/45">
+            Nu am găsit nimic — încearcă altă variantă
+          </p>
+        )}
 
-          {/* RESULTS */}
+        {/* RESULTS */}
+        <div className="space-y-3">
           {results.map((group) => (
             <button
               key={group.id}
               onClick={() => onSelectGroup(group)}
               className={cn(
                 rsvpStyles.option,
-                value === group.id
-                  ? "border-[#c9a46c] bg-white/25"
-                  : "border-[#6b1f2b]/15 hover:bg-white/20",
+                "text-left",
+                value === group.id ? "border-[#c9a46c] bg-white/25" : "hover:bg-white/20",
               )}
             >
               <div className="text-[16px] text-[#3d2b1f]">{group.familyLabel}</div>
 
-              <div className="mt-1 text-[13px] text-[#6b1f2b]/60">{group.representative}</div>
+              {group.representative && (
+                <div className="mt-1 text-[13px] text-[#6b1f2b]/60">{group.representative}</div>
+              )}
 
               <div className="mt-1 text-[12px] text-[#6b1f2b]/45">
                 {group.members.slice(0, 2).map(getMemberName).join(", ")}
@@ -175,12 +163,7 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
         <button
           onClick={onNext}
           disabled={!isValid}
-          className={cn(
-            rsvpStyles.primaryButton,
-            isValid
-              ? "border-[#c9a46c]"
-              : `${rsvpStyles.disabledButton} hover:bg-transparent hover:text-[#6b1f2b]/30`,
-          )}
+          className={cn(rsvpStyles.primaryButton, !isValid && rsvpStyles.disabledButton)}
         >
           Continuă
         </button>
