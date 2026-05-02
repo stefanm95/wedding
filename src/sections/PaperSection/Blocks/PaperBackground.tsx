@@ -31,10 +31,9 @@ const PaperBackgroundLayer = ({
         className="absolute inset-0"
         style={{
           backgroundColor: theme.baseColor,
-          backgroundImage: "url('/assets/paper/paper.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "20% 20%",
-          backgroundRepeat: "no-repeat",
+          backgroundImage: "url('/assets/paper/paper-white.avif')",
+          backgroundSize: "full",
+          backgroundPosition: "center",
         }}
       />
 
