@@ -1,13 +1,23 @@
 import Program from "@paper/Program/Program";
 import type { PaperBlockProps } from "@/types/paper";
+import EmbossSeal from "@/components/EmbossSeal";
+import PaperGrain from "@/components/PaperGrain";
+import PaperLight from "@/components/PaperLight";
+import { MotionValue } from "framer-motion";
+import type { PaperVariant } from "@/utils/paperThemes";
 
 type Props = PaperBlockProps & {
+  variant: PaperVariant;
   onOpenRsvp: () => void;
+  progress: MotionValue<number>;
 };
 
-export default function PaperProgramBlock({ variant, onOpenRsvp }: Props) {
+export default function PaperProgramBlock({ variant, onOpenRsvp, progress }: Props) {
   return (
-    <section data-paper-variant={variant} className="relative overflow-hidden pt-2 md:pt-4 lg:pt-4">
+    <section
+      data-paper-variant={variant}
+      className="relative z-20 overflow-visible pt-2 md:pt-4 lg:pt-4"
+    >
       {/* 🧻 BACKGROUND TEXTURE */}
       <div className="pointer-events-none absolute inset-0 z-0">
         <img
@@ -17,8 +27,20 @@ export default function PaperProgramBlock({ variant, onOpenRsvp }: Props) {
         />
       </div>
 
+      {/* EMBOSS */}
+      <EmbossSeal
+        progress={progress}
+        className="absolute left-[70%] top-[100%] z-[5] -translate-x-1/2 -translate-y-1/2"
+      />
+
+      {/* GRAIN */}
+      <PaperGrain />
+
+      {/* LIGHT */}
+      <PaperLight />
+
       {/* 📄 CONTENT */}
-      <div className="max-w-8xl relative z-10 mx-auto px-6 pb-2">
+      <div className="max-w-8xl relative z-30 mx-auto px-6 pb-2">
         <Program onOpenRsvp={onOpenRsvp} />
       </div>
     </section>

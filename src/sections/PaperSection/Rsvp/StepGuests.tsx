@@ -1,5 +1,4 @@
 import type { DietaryOption, RSVPGuest, RSVPStatus } from "@/types/rsvp";
-import { toGuestId } from "@/utils/rsvpValidation";
 import { cn } from "@utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { rsvpStyles } from "./rsvpStyles";
@@ -14,6 +13,28 @@ type Props = {
 
   onNext: () => void;
   onBack: () => void;
+};
+
+/* ---------------- ANIMATIONS ---------------- */
+
+const listVariants = {
+  animate: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  initial: { opacity: 0, y: 14 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
 };
 
 export default function StepGuests({
@@ -38,22 +59,25 @@ export default function StepGuests({
     onChange(updated, extraGuests);
   };
 
-  /* ---------------- EXTRA GUESTS ---------------- */
+  /* ---------------- EXTRA ---------------- */
 
   const addExtraGuest = () => {
-    if (!canAddMore) return;
-
     onChange(guests, [
       ...extraGuests,
-      { id: `extra-${Date.now()}`, name: "", attending: true, dietary: "none" },
+      {
+        id: `extra-${Date.now()}`, // ✅ rămâne stabil
+        name: "",
+        attending: true,
+        dietary: "none",
+      },
     ]);
   };
 
   const updateExtraGuest = (index: number, field: keyof RSVPGuest, value: any) => {
     const updated = [...extraGuests];
     const nextGuest = { ...updated[index], [field]: value };
-    updated[index] =
-      field === "name" ? { ...nextGuest, id: `extra-${toGuestId(String(value))}` } : nextGuest;
+
+    updated[index] = nextGuest;
     onChange(guests, updated);
   };
 
@@ -70,7 +94,6 @@ export default function StepGuests({
   const confirmedExtra = extraGuests.filter((g) => g.attending).length;
 
   const confirmedCount = confirmedMembers + confirmedExtra;
-
   const remaining = maxGuests - confirmedCount;
   const canAddMore = remaining > 0;
 
@@ -86,7 +109,7 @@ export default function StepGuests({
       exit="exit"
       className={`${rsvpStyles.step} relative pt-8`}
     >
-      {/* 🔙 BACK (floating) */}
+      {/* BACK */}
       <button
         onClick={onBack}
         className="absolute left-0 top-0 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#6b1f2b]/55 transition hover:text-[#6b1f2b]"
@@ -95,7 +118,7 @@ export default function StepGuests({
         Înapoi
       </button>
 
-      {/* ✨ HEADER */}
+      {/* HEADER */}
       <div className="space-y-6 text-center">
         <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Participare</p>
 
@@ -105,69 +128,134 @@ export default function StepGuests({
 
         <p className="text-[15px] text-[#3d2b1f]/75">
           {confirmedCount > 0
-            ? `${confirmedCount} confirmați · mai puteți adăuga ${remaining}`
-            : "Alege cine va participa"}
+            ? `${confirmedCount} persoane vor fi alături de noi`
+            : "Spune-ne cine va participa"}
         </p>
       </div>
 
-      {/* ✨ MEMBERS */}
-      <div className="space-y-6 pt-6">
+      {/* DIVIDER */}
+      <div className="flex items-center justify-center gap-3 pt-4">
+        <div className="h-[1px] w-10 bg-[#c9a46c]/60" />
+        <div className="h-2 w-2 rotate-45 bg-[#c9a46c]/60" />
+        <div className="h-[1px] w-10 bg-[#c9a46c]/60" />
+      </div>
+
+      {/* MEMBERS */}
+      <motion.div
+        variants={listVariants}
+        initial="initial"
+        animate="animate"
+        className="space-y-5 pt-6 will-change-transform"
+      >
         {guests.map((guest, index) => (
-          <div key={guest.id} className="space-y-4 border-b border-[#6b1f2b]/10 pb-5">
-            {/* NAME + TOGGLE */}
-            <div className="flex items-center justify-between">
-              <span className="text-[17px] text-[#3d2b1f]">{guest.name}</span>
+          <motion.div
+            key={guest.id}
+            variants={itemVariants}
+            layout
+            whileHover={{ scale: 1.01 }}
+            onClick={() => toggleAttending(index, !guest.attending)}
+            className={cn(
+              "relative cursor-pointer rounded-sm border px-5 py-5 transition-all duration-500",
+              guest.attending
+                ? "border-[#c9a46c]/50 bg-white/30 shadow-[0_20px_60px_rgba(0,0,0,0.08)]"
+                : "border-[#6b1f2b]/10 hover:bg-white/15",
+            )}
+          >
+            {/* ✍️ INK BLOOM */}
+            <motion.div
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={guest.attending ? { scale: 1.4, opacity: 0.12 } : { scale: 0.6, opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,#6b1f2b_0%,transparent_70%)]"
+            />
 
-              <div className="flex gap-2">
-                <button
-                  onClick={() => toggleAttending(index, true)}
-                  className={cn(
-                    "border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition",
-                    guest.attending
-                      ? "border-[#6b1f2b] bg-[#6b1f2b] text-white"
-                      : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
-                  )}
-                >
-                  +
-                </button>
+            <motion.img
+              src="/assets/crest/crest-drop.png"
+              alt=""
+              initial={{ opacity: 0 }}
+              animate={guest.attending ? { opacity: 0.06 } : { opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              className="pointer-events-none absolute right-4 top-4 h-20 w-20 object-contain"
+            />
 
-                <button
-                  onClick={() => toggleAttending(index, false)}
-                  className={cn(
-                    "border px-4 py-2 text-[11px] uppercase tracking-[0.2em] transition",
-                    !guest.attending
-                      ? "border-[#6b1f2b] bg-[#6b1f2b] text-white"
-                      : "border-[#6b1f2b]/30 text-[#6b1f2b]/60",
-                  )}
-                >
-                  -
-                </button>
+            {/* CONTENT */}
+            <div className="relative z-10 flex items-center justify-between">
+              {/* LEFT */}
+              <div>
+                <span className="text-[17px] text-[#3d2b1f]">{guest.name}</span>
+              </div>
+
+              {/* RIGHT */}
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-[#6b1f2b]/40">
+                  {guest.attending ? "prezent" : "atinge"}
+                </span>
+
+                {/* CHECK */}
+                <div className="relative h-8 w-8">
+                  <AnimatePresence>
+                    {guest.attending && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
+                        animate={{ opacity: 1, scale: 1, rotate: -6 }}
+                        exit={{ opacity: 0, scale: 0.6 }}
+                        transition={{ duration: 0.4 }}
+                        className="h-full w-full"
+                      >
+                        {/* CREST SEAL */}
+                        <div className="relative h-10 w-10">
+                          <AnimatePresence>
+                            {guest.attending && (
+                              <motion.img
+                                src="/assets/crest/crest-drop.png"
+                                alt="confirmed"
+                                initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+                                animate={{ opacity: 0.85, scale: 1, rotate: -4 }}
+                                exit={{ opacity: 0, scale: 0.6 }}
+                                transition={{ duration: 0.5 }}
+                                className="h-full w-full object-contain"
+                              />
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
 
             {/* DIETARY */}
-            {guest.attending && (
-              <div className="pt-1">
-                <select
-                  value={guest.dietary || "none"}
-                  onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
-                  className={rsvpStyles.select}
+            <AnimatePresence>
+              {guest.attending && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  className="pt-3"
                 >
-                  <option value="none">Fără restricții</option>
-                  <option value="vegetarian">Vegetarian</option>
-                  <option value="vegan">Vegan</option>
-                  <option value="gluten-free">Fără gluten</option>
-                  <option value="other">Altceva</option>
-                </select>
-              </div>
-            )}
-          </div>
+                  <select
+                    value={guest.dietary || "none"}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
+                    className={rsvpStyles.select}
+                  >
+                    <option value="none">Fără restricții</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="gluten-free">Fără gluten</option>
+                    <option value="other">Altceva</option>
+                  </select>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
-      {/* ✨ EXTRA GUESTS */}
-      <div className="space-y-5 pt-6">
-        <div className="text-center">
+      {/* EXTRA */}
+      <div className="pt-10">
+        <div className="border-t border-[#6b1f2b]/10 pt-6 text-center">
           <p className="text-[11px] uppercase tracking-[0.35em] text-[#6b1f2b]/50">
             Invitați suplimentari
           </p>
@@ -180,13 +268,14 @@ export default function StepGuests({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="space-y-3 border-b border-[#6b1f2b]/10 pb-4"
+              className="mt-4 space-y-3 rounded-sm border border-[#6b1f2b]/10 bg-white/10 px-4 py-4"
             >
               <input
                 value={guest.name}
                 onChange={(e) => updateExtraGuest(index, "name", e.target.value)}
                 placeholder="Nume invitat"
-                className={rsvpStyles.input}
+                className={cn(rsvpStyles.input, "text-center")}
+                onClick={(e) => e.stopPropagation()}
               />
 
               <div className="flex items-center justify-between gap-4">
@@ -213,8 +302,7 @@ export default function StepGuests({
           ))}
         </AnimatePresence>
 
-        {/* ADD */}
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center pt-4">
           <button
             onClick={addExtraGuest}
             disabled={!canAddMore}

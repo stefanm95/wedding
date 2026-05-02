@@ -38,8 +38,6 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
 
   const debouncedQuery = useDebounce(query, 300);
 
-  /* ---------------- FETCH ---------------- */
-
   useEffect(() => {
     const fetchGroups = async () => {
       const snap = await getDocs(collection(db, "guestGroups"));
@@ -55,8 +53,6 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
 
     fetchGroups();
   }, []);
-
-  /* ---------------- SEARCH ---------------- */
 
   const results = useMemo(() => {
     const q = debouncedQuery.trim().toLowerCase();
@@ -76,17 +72,15 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
 
   const isValid = !!value;
 
-  /* ---------------- UI ---------------- */
-
   return (
     <motion.div
       variants={stepVariants}
       initial="initial"
       animate="animate"
       exit="exit"
-      className={`${rsvpStyles.step} text-center`}
+      className={`${rsvpStyles.step} relative pt-10 text-center`}
     >
-      {/* BACK */}
+      {/* 🔙 BACK */}
       <button
         onClick={onBack}
         className="absolute left-0 top-0 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-[#6b1f2b]/55 transition hover:text-[#6b1f2b]"
@@ -94,6 +88,7 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
         <span className="text-[14px] leading-none">←</span>
         Înapoi
       </button>
+
       {/* ✨ HEADER */}
       <div className="space-y-6">
         <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Invitația ta</p>
@@ -107,19 +102,29 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
         </p>
       </div>
 
-      {/* ✨ INPUT */}
-      <div className="pt-12">
+      {/* ✨ DECORATIVE DIVIDER */}
+      <div className="flex items-center justify-center gap-3 pt-6">
+        <div className="h-[1px] w-10 bg-[#c9a46c]/60" />
+        <div className="h-2 w-2 rotate-45 bg-[#c9a46c]/60" />
+        <div className="h-[1px] w-10 bg-[#c9a46c]/60" />
+      </div>
+
+      {/* ✨ INPUT (fix major aici) */}
+      <div className="mx-auto max-w-[320px] pt-8">
         <input
           autoFocus
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="ex: Popescu"
-          className={cn(rsvpStyles.input, "text-center")}
+          className={cn(
+            "w-full border-b border-[#6b1f2b]/25 bg-transparent pb-2 text-center text-[16px] text-[#3d2b1f] outline-none transition",
+            "placeholder:text-[#6b1f2b]/35 focus:border-[#c9a46c]",
+          )}
         />
       </div>
 
       {/* ✨ STATES */}
-      <div className="space-y-3 pt-4">
+      <div className="space-y-3 pt-6">
         {loading && <p className="text-[13px] text-[#6b1f2b]/45">Pregătim lista de invitați...</p>}
 
         {!loading && query.length > 0 && query.length < 2 && (
@@ -131,31 +136,33 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
             Nu am găsit nimic — încearcă altă variantă
           </p>
         )}
+      </div>
 
-        {/* RESULTS */}
-        <div className="space-y-3">
-          {results.map((group) => (
-            <button
-              key={group.id}
-              onClick={() => onSelectGroup(group)}
-              className={cn(
-                rsvpStyles.option,
-                "text-left",
-                value === group.id ? "border-[#c9a46c] bg-white/25" : "hover:bg-white/20",
-              )}
-            >
-              <div className="text-[16px] text-[#3d2b1f]">{group.familyLabel}</div>
+      {/* ✨ RESULTS (aici e upgrade-ul mare) */}
+      <div className="space-y-3 pt-4">
+        {results.map((group) => (
+          <button
+            key={group.id}
+            onClick={() => onSelectGroup(group)}
+            className={cn(
+              rsvpStyles.option,
+              "text-center",
+              value === group.id
+                ? "border-[#c9a46c] bg-white/25"
+                : "border-[#6b1f2b]/15 hover:bg-white/20",
+            )}
+          >
+            <div className="text-[17px] text-[#3d2b1f]">{group.familyLabel}</div>
 
-              {group.representative && (
-                <div className="mt-1 text-[13px] text-[#6b1f2b]/60">{group.representative}</div>
-              )}
+            {group.representative && (
+              <div className="mt-1 text-[13px] text-[#6b1f2b]/60">{group.representative}</div>
+            )}
 
-              <div className="mt-1 text-[12px] text-[#6b1f2b]/45">
-                {group.members.slice(0, 2).map(getMemberName).join(", ")}
-              </div>
-            </button>
-          ))}
-        </div>
+            <div className="mt-1 text-[12px] text-[#6b1f2b]/45">
+              {group.members.slice(0, 2).map(getMemberName).join(", ")}
+            </div>
+          </button>
+        ))}
       </div>
 
       {/* CTA */}
@@ -163,7 +170,10 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
         <button
           onClick={onNext}
           disabled={!isValid}
-          className={cn(rsvpStyles.primaryButton, !isValid && rsvpStyles.disabledButton)}
+          className={cn(
+            rsvpStyles.primaryButton,
+            isValid ? "border-[#c9a46c]" : rsvpStyles.disabledButton,
+          )}
         >
           Continuă
         </button>

@@ -11,6 +11,7 @@ import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
 import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
 import { stepVariants } from "./stepVariants";
 import StepRenderer from "./StepRenderer";
+import PaperGrain from "@/components/PaperGrain";
 
 type Props = {
   onComplete?: () => void; // 🔥 înlocuiește onClose
@@ -145,6 +146,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
             </motion.div>
           )}
         </AnimatePresence>
+        <PaperGrain />
       </motion.div>
     </section>
   );

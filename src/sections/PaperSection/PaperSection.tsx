@@ -67,7 +67,7 @@ const PaperSection = forwardRef<HTMLElement, { className?: string }>(({ classNam
         </PaperStack>
       </motion.div>
 
-      <div ref={rsvpRef} className="relative -top-20 overflow-hidden">
+      <div ref={rsvpRef} className="relative z-10 -mt-24 overflow-visible md:-mt-32">
         <motion.div
           initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
           onViewportEnter={() => setShowRsvp(true)}
