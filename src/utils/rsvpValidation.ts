@@ -64,7 +64,8 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
     form.guests.filter((guest) => guest.attending).length +
     cleanExtraGuests.filter((guest) => guest.attending).length;
 
-  if (confirmedCount === 0) {
+  // 🔥 allow decline ONLY if explicitly chosen
+  if (confirmedCount === 0 && form.attending !== false) {
     return { ok: false, message: "Confirma cel putin un participant." };
   }
 
