@@ -50,15 +50,22 @@ const PaperBackgroundLayer = ({
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          opacity: 0.12 + safeLight * 0.15,
+          opacity: 0.18 + safeLight * 0.25,
           background: `
-      radial-gradient(
-        circle at ${lightX}% ${lightY}%,
-        rgba(255,255,255,0.12),
-        transparent 60%
-      )
-    `,
+  radial-gradient(
+    circle at ${lightX}% ${lightY}%,
+    rgba(255,255,255,0.18),
+    transparent 60%
+  )
+`,
           mixBlendMode: "soft-light",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "rgba(107, 31, 43, 0.06)", // your deep red
+          mixBlendMode: "multiply",
         }}
       />
     </motion.div>

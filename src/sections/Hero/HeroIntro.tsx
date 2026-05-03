@@ -60,7 +60,6 @@ export default function HeroIntro({ onOpen, progress, setProgress }: HeroIntroPr
       className="absolute inset-0 z-[999] cursor-pointer"
       style={{
         pointerEvents: started ? "none" : "auto",
-        position: "absolute",
       }}
     >
       {/* 🎬 peel UI */}
@@ -77,6 +76,10 @@ export default function HeroIntro({ onOpen, progress, setProgress }: HeroIntroPr
           opacity: impact,
         }}
       />
+
+      <div className="script-cormorant-display absolute bottom-10 w-full text-center text-xs tracking-widest text-white/60">
+        TAP TO OPEN
+      </div>
     </div>
   );
 }
