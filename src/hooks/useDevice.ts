@@ -50,7 +50,15 @@ export function useDevice() {
       cancelAnimationFrame(frame);
 
       frame = requestAnimationFrame(() => {
-        setDevice(getDeviceState());
+        const next = getDeviceState();
+
+        setDevice((prev) => {
+          // prevent unnecessary re-renders
+          if (prev.width === next.width && prev.orientation === next.orientation) {
+            return prev;
+          }
+          return next;
+        });
       });
     };
 
