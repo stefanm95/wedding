@@ -11,3 +11,21 @@ canvas {
   height: 100% !important;
   display: block;
 }
+
+/* Chrome / Edge */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(107, 31, 43, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 31, 43, 0.5);
+}

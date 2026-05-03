@@ -15,6 +15,7 @@ type Props = PaperBlockProps & {
 export default function PaperProgramBlock({ variant, onOpenRsvp, progress }: Props) {
   return (
     <section
+      id="program"
       data-paper-variant={variant}
       className="relative z-20 overflow-visible pt-2 md:pt-4 lg:pt-4"
     >

@@ -25,7 +25,7 @@ export default function PaperHeroBlock({ progress }: Props) {
   const countdownY = useTransform(progress, [0.3, 0.4], [20, 0]);
 
   return (
-    <section className="relative py-32 md:py-40 lg:py-52">
+    <section id="hero-block" className="relative pb-16">
       <div className="mx-auto max-w-4xl px-6">
         {/* 📄 PAPER */}
         <div

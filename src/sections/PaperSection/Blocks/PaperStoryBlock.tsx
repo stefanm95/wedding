@@ -5,6 +5,7 @@ import { cn } from "@/utils/cn";
 export default function PaperStoryBlock({ variant }: PaperBlockProps) {
   return (
     <section
+      id="story"
       data-paper-variant={variant}
       className="relative bg-transparent pb-24 pt-20 opacity-90 md:pb-32 md:pt-32 lg:pb-40"
     >

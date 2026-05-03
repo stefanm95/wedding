@@ -2,11 +2,23 @@ import { useEffect, useRef, useState } from "react";
 
 import Hero from "@sections/Hero/Hero";
 import PaperSection from "@paper/PaperSection";
+import FloatingNav from "@/components/FloatingNav";
+
+const sections = [
+  { id: "hero", label: "Hero" },
+  { id: "hero-block", label: "Intro" },
+  { id: "story", label: "Poveste" },
+  { id: "program", label: "Program" },
+  { id: "rsvp", label: "RSVP" },
+];
 
 function Home() {
   const [opened, setOpened] = useState(false);
   const paperRef = useRef<HTMLElement | null>(null);
-  const [isBooting, setIsBooting] = useState(true);
+  const storyRef = useRef(null);
+  const programRef = useRef(null);
+  const rsvpRef = useRef(null);
+  const hasSnapped = useRef(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -39,9 +51,49 @@ function Home() {
       window.history.scrollRestoration = "manual";
     }
   }, []);
+  // 🧲 SNAP SCROLL (optional, can be removed if you prefer free scroll)
+  // useEffect(() => {
+  //   let ticking = false;
+
+  //   const handleScroll = () => {
+  //     if (ticking) return;
+
+  //     requestAnimationFrame(() => {
+  //       const y = window.scrollY;
+  //       const vh = window.innerHeight;
+
+  //       const triggerStart = vh * 0.3;
+  //       const triggerEnd = vh * 0.7;
+
+  //       // 🧲 SNAP (only once)
+  //       if (!hasSnapped.current && y > triggerStart && y < triggerEnd) {
+  //         hasSnapped.current = true;
+
+  //         window.scrollTo({
+  //           top: vh,
+  //           behavior: "smooth",
+  //         });
+  //       }
+
+  //       // 🔄 RESET when user goes back up
+  //       if (y < triggerStart * 0.5) {
+  //         hasSnapped.current = false;
+  //       }
+
+  //       ticking = false;
+  //     });
+
+  //     ticking = true;
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll, { passive: true });
+
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   return (
     <div className="relative">
+      <FloatingNav sections={sections} />
       {/* 🎬 HERO (BACKGROUND GLOBAL) */}
       <div className="fixed inset-0 z-0">
         <Hero opened={opened} setOpened={setOpened} paperRef={paperRef} />

@@ -118,7 +118,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
   /* ---------------- UI ---------------- */
 
   return (
-    <section className="relative flex w-full justify-center px-4 py-32">
+    <section id="rsvp" className="relative flex w-full justify-center px-4 py-32">
       {/* 🌸 PEONY EMBOSS (background decorative) */}
       <div className="pointer-events-none absolute right-[2%] z-0 opacity-40 md:-right-[10%] md:top-[20%] lg:right-[2%] lg:top-[2%]">
         <img
