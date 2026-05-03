@@ -1,5 +1,6 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
+import { getSectionColor } from "@/utils/sectionThemes";
 
 type Section = {
   id: string;
@@ -54,22 +55,6 @@ export default function ScrollProgress() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🎨 smoother theme transitions
-  const getColor = () => {
-    switch (active) {
-      case "paper-hero":
-        return "#6b1f2b"; // wine intro paper
-      case "story":
-        return "#7a2d3a";
-      case "program":
-        return "#b48c5a";
-      case "rsvp":
-        return "#8c6a3c";
-      default:
-        return "#6b1f2b";
-    }
-  };
-
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -91,7 +76,7 @@ export default function ScrollProgress() {
         <motion.div
           style={{
             scaleY: smooth,
-            backgroundColor: getColor(),
+            backgroundColor: getSectionColor(active),
           }}
           className="absolute inset-0 origin-top"
         />

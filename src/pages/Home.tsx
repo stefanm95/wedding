@@ -92,7 +92,7 @@ function Home() {
 
   return (
     <div className="relative">
-      <FloatingNav sections={sections} />
+      <FloatingNav sections={sections} opened={opened} />
       <div className={`transition-opacity duration-700 ${opened ? "opacity-100" : "opacity-0"}`}>
         <ScrollProgress />
       </div>
