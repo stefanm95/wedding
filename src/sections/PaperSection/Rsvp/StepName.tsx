@@ -27,11 +27,11 @@ function useDebounce<T>(value: T, delay: number) {
 type Props = {
   value: string;
   onSelectGroup: (group: GuestGroup) => Promise<void>;
-  onNext: () => void;
+  onConfirm: (attending: boolean) => void;
   onBack: () => void;
 };
 
-export default function StepName({ value, onSelectGroup, onNext, onBack }: Props) {
+export default function StepName({ value, onSelectGroup, onConfirm, onBack }: Props) {
   const [query, setQuery] = useState("");
   const [groups, setGroups] = useState<GuestGroup[]>([]);
   const [loading, setLoading] = useState(true);
@@ -166,16 +166,29 @@ export default function StepName({ value, onSelectGroup, onNext, onBack }: Props
       </div>
 
       {/* CTA */}
-      <div className={rsvpStyles.actionsEnd}>
+      <div className="flex justify-center gap-3 pt-6">
         <button
-          onClick={onNext}
+          onClick={() => onConfirm(true)}
           disabled={!isValid}
           className={cn(
             rsvpStyles.primaryButton,
             isValid ? "border-[#c9a46c]" : rsvpStyles.disabledButton,
           )}
         >
-          Continuă
+          ✔ Vin
+        </button>
+
+        <button
+          onClick={() => onConfirm(false)}
+          disabled={!isValid}
+          className={cn(
+            "border px-5 py-2 text-[13px] uppercase tracking-[0.2em]",
+            isValid
+              ? "border-[#6b1f2b]/40 text-[#6b1f2b] hover:bg-[#6b1f2b]/10"
+              : rsvpStyles.disabledButton,
+          )}
+        >
+          ❌ Nu vin
         </button>
       </div>
     </motion.div>

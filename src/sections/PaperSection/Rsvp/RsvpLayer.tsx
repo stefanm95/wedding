@@ -49,8 +49,6 @@ export default function RsvpLayerInline({ onComplete }: Props) {
         name: "",
         attending: true,
       });
-
-      setStep("guests");
     } else {
       setForm((prev) => ({
         ...prev,

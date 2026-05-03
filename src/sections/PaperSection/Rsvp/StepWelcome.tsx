@@ -3,7 +3,7 @@ import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
-  onNext: (attending: true | false) => void;
+  onNext: () => void;
 };
 
 export function StepWelcome({ onNext }: Props) {
@@ -39,13 +39,7 @@ export function StepWelcome({ onNext }: Props) {
 
       {/* 🎯 ACTIONS */}
       <div className="flex flex-col gap-4 pt-6">
-        <button onClick={() => onNext(true)} className={rsvpStyles.primaryButton}>
-          Vom fi acolo
-        </button>
-
-        <button onClick={() => onNext(false)} className={rsvpStyles.secondaryButton}>
-          Din păcate nu putem ajunge
-        </button>
+        <button onClick={onNext}>Vom fi acolo</button>
       </div>
     </motion.div>
   );

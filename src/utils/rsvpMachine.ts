@@ -1,6 +1,14 @@
+import { db } from "@/lib/firebase";
 import { submitRsvp } from "@/services/submitRsvp";
 import type { RSVPFormData, RSVPStatus } from "@/types/rsvp";
-import { validateGuests, validateRsvpForm, validateSelectedGroup } from "@/utils/rsvpValidation";
+import {
+  getMemberId,
+  getMemberName,
+  validateGuests,
+  validateRsvpForm,
+  validateSelectedGroup,
+} from "@/utils/rsvpValidation";
+import { doc, getDoc } from "firebase/firestore";
 
 export type Step =
   | "welcome"
@@ -28,11 +36,11 @@ type StateConfig = {
 
 export const rsvpMachine: Record<Step, StateConfig> = {
   welcome: {
-    next: (ctx) => (ctx?.attending === false ? "regret" : "name"),
+    next: () => "name",
   },
 
   name: {
-    next: () => "guests",
+    next: (ctx) => (ctx?.attending === false ? "regret" : "guests"),
     prev: "welcome",
   },
 
@@ -77,7 +85,34 @@ export const rsvpMachine: Record<Step, StateConfig> = {
 
   regret: {
     next: () => "done",
-    prev: "welcome",
+    prev: "name",
+
+    onEnter: async (form) => {
+      // 🔥 fetch group again (source of truth)
+      const groupRef = doc(db, "guestGroups", form.groupId);
+      const groupSnap = await getDoc(groupRef);
+
+      if (!groupSnap.exists()) {
+        throw new Error("Grup inexistent");
+      }
+
+      const group = groupSnap.data();
+
+      const guests = (group.members || []).map((member: any) => ({
+        id: getMemberId(member),
+        name: getMemberName(member),
+        attending: false,
+        dietary: "none",
+      }));
+
+      await submitRsvp({
+        groupId: form.groupId,
+        guests,
+        extraGuests: [],
+        message: "declined",
+        transport: undefined,
+      });
+    },
   },
 
   done: {
@@ -104,8 +139,8 @@ export const transition = async (
     }
   } catch (err) {
     console.error("RSVP submit failed:", err);
-
-    return current; // 🔥 rămâi în message
+    alert("Eroare la trimitere RSVP"); // or toast
+    return current;
   }
 
   return next;

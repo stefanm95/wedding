@@ -52,50 +52,41 @@ export async function submitRsvp({
     ];
 
     const confirmedCount = confirmedGuests.length;
+    const totalGuests = cleanGuests.length + cleanExtraGuests.length;
 
-    if (confirmedCount === 0) {
-      throw new Error("Niciun participant confirmat");
-    }
+    // 🔥 allow decline
+    const status = confirmedCount > 0 ? "confirmed" : "declined";
 
     if (confirmedCount > group.maxGuests) {
       throw new Error("Depasire limita invitati");
     }
 
-    // 🔥 NEW: flattened list (admin friendly)
-    const allGuests = [...cleanGuests, ...cleanExtraGuests];
-
-    // 🔥 NEW: total guests declared (not just attending)
-    const totalGuests = allGuests.length;
-
-    // 🔥 NEW: transport flag (queryable)
     const needsTransport = transport?.type === "bus";
 
     const data: FirestoreRsvp & {
       attendingCount: number;
       totalGuests: number;
-      allGuests: RSVPGuest[];
       needsTransport: boolean;
+      status: "confirmed" | "declined";
       respondedAt: any;
     } = {
       groupId,
       guests: cleanGuests,
       extraGuests: cleanExtraGuests,
 
-      // 🔥 NEW FIELDS
-      allGuests,
       attendingCount: confirmedCount,
       totalGuests,
       needsTransport,
+      status,
+      createdAt: serverTimestamp(),
       respondedAt: serverTimestamp(),
 
       message: message?.trim() || "",
       transport: transport ?? null,
-      createdAt: serverTimestamp(),
     };
 
     tx.set(rsvpRef, data, { merge: true });
 
-    // 🔥 Upgrade group index (VERY IMPORTANT FOR ADMIN)
     tx.update(groupRef, {
       hasResponded: true,
       attendingCount: confirmedCount,

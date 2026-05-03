@@ -12,14 +12,14 @@ import type { RSVPFormData } from "@/types/rsvp";
 export default function StepRenderer({ step, onBack, onNext, form, setForm, onSelectGroup }: any) {
   switch (step) {
     case "welcome":
-      return <StepWelcome onNext={(attending: boolean) => onNext({ attending })} />;
+      return <StepWelcome onNext={onNext} />;
 
     case "name":
       return (
         <StepName
           value={form.groupId}
           onSelectGroup={onSelectGroup}
-          onNext={onNext}
+          onConfirm={(attending: boolean) => onNext({ attending })}
           onBack={onBack}
         />
       );
