@@ -8,7 +8,7 @@ export default function FloatingNav({ sections }: Props) {
   const { active, visited, scrollTo } = useScrollSystem(sections);
 
   return (
-    <div className="fixed left-10 top-1/2 z-50 -translate-y-1/2">
+    <div className="fixed bottom-1/4 left-8 z-50 -translate-y-1/4">
       <div className="flex flex-col gap-3">
         {sections.map((s) => {
           const isVisited = visited.includes(s.id);
