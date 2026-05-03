@@ -41,7 +41,7 @@ export default function ScrollProgress({ sections }: Props) {
 
   return (
     <div className="pointer-events-none fixed right-6 top-0 z-[999] flex h-full w-[12px] items-center justify-center">
-      <div className="relative h-[72%] w-[2px] overflow-hidden rounded-full bg-black/10">
+      <div className="relative h-[72%] w-[2px] overflow-hidden rounded-full bg-black/10 opacity-80">
         {/* 🌊 LIQUID PROGRESS */}
         <motion.div
           style={{
