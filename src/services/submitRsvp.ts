@@ -29,6 +29,7 @@ export async function submitRsvp({
     }
 
     const group = groupSnap.data();
+
     const cleanGuests = normalizeGuests(guests);
     const cleanExtraGuests = normalizeGuests(extraGuests).filter(
       (guest) => guest.name || guest.attending,
@@ -45,9 +46,12 @@ export async function submitRsvp({
       throw new Error("Invitati suplimentari incompleti");
     }
 
-    const confirmedCount =
-      cleanGuests.filter((guest) => guest.attending).length +
-      cleanExtraGuests.filter((guest) => guest.attending).length;
+    const confirmedGuests = [
+      ...cleanGuests.filter((g) => g.attending),
+      ...cleanExtraGuests.filter((g) => g.attending),
+    ];
+
+    const confirmedCount = confirmedGuests.length;
 
     if (confirmedCount === 0) {
       throw new Error("Niciun participant confirmat");
@@ -57,18 +61,47 @@ export async function submitRsvp({
       throw new Error("Depasire limita invitati");
     }
 
-    const data: FirestoreRsvp = {
+    // 🔥 NEW: flattened list (admin friendly)
+    const allGuests = [...cleanGuests, ...cleanExtraGuests];
+
+    // 🔥 NEW: total guests declared (not just attending)
+    const totalGuests = allGuests.length;
+
+    // 🔥 NEW: transport flag (queryable)
+    const needsTransport = transport?.type === "bus";
+
+    const data: FirestoreRsvp & {
+      attendingCount: number;
+      totalGuests: number;
+      allGuests: RSVPGuest[];
+      needsTransport: boolean;
+      respondedAt: any;
+    } = {
       groupId,
       guests: cleanGuests,
       extraGuests: cleanExtraGuests,
+
+      // 🔥 NEW FIELDS
+      allGuests,
+      attendingCount: confirmedCount,
+      totalGuests,
+      needsTransport,
+      respondedAt: serverTimestamp(),
+
       message: message?.trim() || "",
       transport: transport ?? null,
       createdAt: serverTimestamp(),
     };
 
     tx.set(rsvpRef, data, { merge: true });
+
+    // 🔥 Upgrade group index (VERY IMPORTANT FOR ADMIN)
     tx.update(groupRef, {
       hasResponded: true,
+      attendingCount: confirmedCount,
+      totalGuests,
+      needsTransport,
+      respondedAt: serverTimestamp(),
     });
   });
 }
