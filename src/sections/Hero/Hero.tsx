@@ -27,7 +27,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
 `;
 
   return (
-    <section className="relative z-0 h-screen overflow-hidden">
+    <section id="hero" className="relative z-0 h-screen overflow-hidden">
       {/* 🎬 VIDEO */}
       <motion.div
         className="absolute inset-0"

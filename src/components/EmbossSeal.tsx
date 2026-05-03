@@ -11,7 +11,7 @@ type Props = {
 
 export default function EmbossSeal({ className, progress }: Props) {
   const [hovered, setHovered] = useState(false);
-  const y = useTransform(progress, [0, 1], [40, -40]);
+  // const y = useTransform(progress, [0, 1], [40, -40]);
 
   const lightX = useTransform(progress, [0, 1], [-120, 120]);
   const lightOpacity = useTransform(progress, [0, 0.5, 1], [0.15, 0.3, 0.15]);

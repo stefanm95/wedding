@@ -3,10 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import Hero from "@sections/Hero/Hero";
 import PaperSection from "@paper/PaperSection";
 import FloatingNav from "@/components/FloatingNav";
+import ScrollProgress from "@/components/ScrollProgress";
 
-const sections = [
-  { id: "hero", label: "Hero" },
-  { id: "hero-block", label: "Intro" },
+type Section = {
+  id: string;
+  label: string;
+};
+
+const sections: Section[] = [
+  { id: "paper-hero", label: "Invitație" },
   { id: "story", label: "Poveste" },
   { id: "program", label: "Program" },
   { id: "rsvp", label: "RSVP" },
@@ -15,10 +20,6 @@ const sections = [
 function Home() {
   const [opened, setOpened] = useState(false);
   const paperRef = useRef<HTMLElement | null>(null);
-  const storyRef = useRef(null);
-  const programRef = useRef(null);
-  const rsvpRef = useRef(null);
-  const hasSnapped = useRef(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -51,6 +52,7 @@ function Home() {
       window.history.scrollRestoration = "manual";
     }
   }, []);
+
   // 🧲 SNAP SCROLL (optional, can be removed if you prefer free scroll)
   // useEffect(() => {
   //   let ticking = false;
@@ -62,10 +64,9 @@ function Home() {
   //       const y = window.scrollY;
   //       const vh = window.innerHeight;
 
-  //       const triggerStart = vh * 0.3;
-  //       const triggerEnd = vh * 0.7;
+  //       const triggerStart = vh * 0.35;
+  //       const triggerEnd = vh * 0.75;
 
-  //       // 🧲 SNAP (only once)
   //       if (!hasSnapped.current && y > triggerStart && y < triggerEnd) {
   //         hasSnapped.current = true;
 
@@ -75,7 +76,6 @@ function Home() {
   //         });
   //       }
 
-  //       // 🔄 RESET when user goes back up
   //       if (y < triggerStart * 0.5) {
   //         hasSnapped.current = false;
   //       }
@@ -87,20 +87,22 @@ function Home() {
   //   };
 
   //   window.addEventListener("scroll", handleScroll, { passive: true });
-
   //   return () => window.removeEventListener("scroll", handleScroll);
   // }, []);
 
   return (
     <div className="relative">
       <FloatingNav sections={sections} />
+      <div className={`transition-opacity duration-700 ${opened ? "opacity-100" : "opacity-0"}`}>
+        <ScrollProgress />
+      </div>
       {/* 🎬 HERO (BACKGROUND GLOBAL) */}
       <div className="fixed inset-0 z-0">
         <Hero opened={opened} setOpened={setOpened} paperRef={paperRef} />
       </div>
 
       {/* 📄 CONTENT FLOW */}
-      <div className="pointer-events-none relative z-20 -mt-[40vh]">
+      <div className="content-flow pointer-events-none relative z-20 -mt-[40vh]">
         {/* spacer = înălțimea hero */}
         <div className="h-screen" />
 

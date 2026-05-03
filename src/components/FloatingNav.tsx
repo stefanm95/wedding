@@ -1,58 +1,85 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSectionProgress, type Section } from "@/hooks/useSectionProgress";
 
-type Section = {
-  id: string;
-  label: string;
-};
-
-type FloatingNavProps = {
+type Props = {
   sections: Section[];
 };
 
-export default function FloatingNav({ sections }: FloatingNavProps) {
-  const [active, setActive] = useState("hero");
+export default function FloatingNav({ sections }: Props) {
+  const { active, visited } = useSectionProgress(sections);
 
+  const [revealed, setRevealed] = useState<string[]>([]);
+  const prevVisited = useRef<string[]>([]);
+
+  // 🎯 detect NEW visited sections
   useEffect(() => {
-    const handleScroll = () => {
-      let current = "hero";
+    const newOnes = visited.filter((id) => !prevVisited.current.includes(id));
 
-      sections.forEach((section) => {
-        const el = document.getElementById(section.id);
-        if (!el) return;
+    if (newOnes.length) {
+      newOnes.forEach((id) => {
+        // add to revealed
+        setRevealed((prev) => [...prev, id]);
 
-        const rect = el.getBoundingClientRect();
-
-        if (rect.top <= window.innerHeight * 0.4) {
-          current = section.id;
-        }
+        // remove after animation
+        setTimeout(() => {
+          setRevealed((prev) => prev.filter((x) => x !== id));
+        }, 1600);
       });
+    }
 
-      setActive(current);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [sections]);
+    prevVisited.current = visited;
+  }, [visited]);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
 
-    el.scrollIntoView({
+    const y = el.getBoundingClientRect().top + window.scrollY;
+
+    window.scrollTo({
+      top: y - 20,
       behavior: "smooth",
-      block: "start",
     });
   };
 
   return (
-    <div className="fixed right-6 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-4">
-      {sections.map((s) => (
-        <button
-          key={s.id}
-          onClick={() => scrollTo(s.id)}
-          className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${active === s.id ? "scale-125 bg-[#6b1f2b]" : "bg-white/40 hover:bg-white/70"} `}
-        />
-      ))}
+    <div className="fixed left-6 top-1/2 z-50 -translate-y-1/2">
+      <div className="flex flex-col gap-6">
+        {sections.map((s) => {
+          const isVisible = visited.includes(s.id);
+          const isActive = active === s.id;
+          const isRevealed = revealed.includes(s.id);
+
+          return (
+            <div key={s.id} className="group relative flex items-center">
+              {/* DOT */}
+              <button
+                onClick={() => isVisible && scrollTo(s.id)}
+                className={`h-2.5 w-2.5 rounded-full transition-all duration-500 ${
+                  isVisible
+                    ? isActive
+                      ? "scale-125 bg-[#6b1f2b]"
+                      : "bg-[#6b1f2b]/40 hover:bg-[#6b1f2b]/70"
+                    : "scale-75 bg-black/10 blur-[1px]"
+                }`}
+              />
+
+              {/* TOOLTIP */}
+              <div
+                className={`pointer-events-none absolute left-6 whitespace-nowrap text-xs uppercase tracking-[0.3em] text-[#6b1f2b]/80 transition-all duration-500 ${
+                  isVisible
+                    ? isRevealed
+                      ? "translate-x-0 opacity-100" // 🔥 auto reveal
+                      : "translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                    : "opacity-0"
+                } `}
+              >
+                {s.label}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
