@@ -9,6 +9,7 @@ export default function EditRsvpModal({ row, onClose, onSave }: any) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (row) setForm(row);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [row?.groupId]);
 
   useEffect(() => {
