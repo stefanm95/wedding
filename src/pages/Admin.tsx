@@ -1,9 +1,10 @@
 import EditRsvpModal from "@/components/EditRsvpModal";
 import { useAdminData } from "@/hooks/useAdminData";
 import { updateRsvpAdmin } from "@/services/updateRsvpAdmin";
-
-import type { AdminRow } from "@/types/admin";
 import { useMemo, useState } from "react";
+import * as XLSX from "xlsx";
+
+import type { AdminRow, ExportRow } from "@/types/admin";
 
 export default function Admin() {
   const { rows, loading, totalInvitedPeople } = useAdminData();
@@ -82,10 +83,10 @@ export default function Admin() {
         </div>
 
         <button
-          onClick={() => exportCSV(sourceRows)}
+          onClick={() => exportExcel(sourceRows)}
           className="rounded-md border border-[#c9a46c] px-5 py-2 text-xs tracking-wide transition hover:bg-[#c9a46c]/10"
         >
-          Export CSV
+          Export Excel
         </button>
       </div>
 
@@ -192,8 +193,9 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-function exportCSV(rows: AdminRow[]) {
-  // ---------------- METRICS ----------------
+function exportExcel(rows: AdminRow[]) {
+  /* ---------------- METRICS ---------------- */
+
   const totalGroups = rows.length;
 
   const totalMaxGuests = rows.reduce((sum, r) => sum + (r.maxGuests ?? r.invitedCount), 0);
@@ -212,9 +214,10 @@ function exportCSV(rows: AdminRow[]) {
 
   const occupancy = `${totalAttendingPeople} / ${totalMaxGuests}`;
 
-  // ---------------- SUMMARY ----------------
-  const summary = [
-    ["=== SUMMARY ==="],
+  /* ---------------- SHEET 1: SUMMARY ---------------- */
+
+  const summaryData = [
+    ["Metric", "Value"],
     ["Total Groups", totalGroups],
     ["Confirmed Groups", confirmedGroups],
     ["Declined Groups", declinedGroups],
@@ -224,31 +227,72 @@ function exportCSV(rows: AdminRow[]) {
     ["Attending People", totalAttendingPeople],
     ["Occupancy", occupancy],
     ["Transport Needed", needingTransport],
-    [], // empty row
   ];
 
-  // ---------------- TABLE HEADER ----------------
-  const header = [["Family", "Invited", "Max Guests", "Attending", "Status", "Transport"]];
+  const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
 
-  // ---------------- ROWS ----------------
-  const data = rows.map((r) => [
-    r.familyLabel,
-    r.invitedCount,
-    r.maxGuests ?? r.invitedCount,
-    r.attendingCount,
-    r.status,
-    r.needsTransport ? "yes" : "no",
-  ]);
+  /* ---------------- SHEET 2: GUESTS ---------------- */
 
-  // ---------------- COMBINE ----------------
-  const csvContent = [...summary, ...header, ...data].map((row) => row.join(",")).join("\n");
+  const guestsData = rows.map((r) => ({
+    Family: r.familyLabel,
+    Invited: r.invitedCount,
+    "Max Guests": r.maxGuests ?? r.invitedCount,
+    Attending: r.attendingCount,
+    Status: r.status,
+    Transport: r.needsTransport ? "yes" : "no",
+  }));
 
-  // ---------------- DOWNLOAD ----------------
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
+  const guestsSheet = XLSX.utils.json_to_sheet(guestsData);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "rsvp-report.csv";
-  a.click();
+  /* ---------------- SHEET 3: MEALS / TRANSPORT ---------------- */
+
+  // 🔥 flatten guests (important for future dietary data)
+  const mealTransportData: ExportRow[] = rows.flatMap((r) => {
+    const baseGuests = r.guests || [];
+    const extraGuests = r.extraGuests || [];
+
+    // 🔥 NORMALIZE extraGuests → same shape as guests
+    const normalizedExtra = extraGuests.map((g) => ({
+      name: g.name || "Invitat +1",
+      attending: g.attending === true,
+      dietary: g.dietary || "—",
+    }));
+
+    const allGuests = [...baseGuests, ...normalizedExtra];
+
+    // fallback dacă nu există nimeni
+    if (allGuests.length === 0) {
+      return [
+        {
+          Family: r.familyLabel,
+          Name: "—",
+          Attending: r.attendingCount > 0 ? "yes" : "no",
+          Dietary: "—",
+          Transport: r.needsTransport ? "yes" : "no",
+        },
+      ];
+    }
+
+    return allGuests.map((g) => ({
+      Family: r.familyLabel,
+      Name: g.name,
+      Attending: g.attending ? "yes" : "no",
+      Dietary: g.dietary || "—",
+      Transport: r.needsTransport ? "yes" : "no",
+    }));
+  });
+
+  const mealTransportSheet = XLSX.utils.json_to_sheet(mealTransportData);
+
+  /* ---------------- WORKBOOK ---------------- */
+
+  const wb = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(wb, summarySheet, "Summary");
+  XLSX.utils.book_append_sheet(wb, guestsSheet, "Guests");
+  XLSX.utils.book_append_sheet(wb, mealTransportSheet, "Meals & Transport");
+
+  /* ---------------- DOWNLOAD ---------------- */
+
+  XLSX.writeFile(wb, "rsvp-report.xlsx");
 }

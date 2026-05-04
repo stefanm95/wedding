@@ -56,3 +56,11 @@ export type AdminUpdatePayload = {
   extraGuests?: any[];
   transport?: any;
 };
+
+export type ExportRow = {
+  Family: string;
+  Name: string;
+  Attending: "yes" | "no";
+  Dietary: string;
+  Transport: "yes" | "no";
+};
