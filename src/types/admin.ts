@@ -4,6 +4,15 @@ export type AdminUser = {
   role: "admin";
 };
 
+export type AdminGuest = {
+  id: string;
+  name: string;
+  attending: boolean;
+  dietary?: string;
+};
+
+export type TransportType = "none" | "bus" | "personal";
+
 export type AdminRow = {
   groupId: string;
   familyLabel: string;
@@ -11,9 +20,27 @@ export type AdminRow = {
   invitedCount: number;
   attendingCount: number;
 
-  status: "pending" | "confirmed" | "declined";
+  status: "confirmed" | "declined" | "pending";
 
   needsTransport: boolean;
 
-  respondedAt: Date | null;
+  transport?: {
+    type: TransportType;
+  };
+
+  guests?: AdminGuest[];
+  extraGuests: AdminGuest[];
+
+  maxGuests?: number;
+};
+
+export type AdminUpdatePayload = {
+  groupId: string;
+  attendingCount: number;
+  status: "confirmed" | "declined" | "pending";
+  needsTransport: boolean;
+
+  guests: any[];
+  extraGuests?: any[];
+  transport?: any;
 };

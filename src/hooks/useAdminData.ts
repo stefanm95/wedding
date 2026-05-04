@@ -2,7 +2,7 @@ import { db } from "@/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
-import type { AdminRow } from "@/types/admin";
+import type { AdminGuest, AdminRow } from "@/types/admin";
 
 export function useAdminData() {
   const [rows, setRows] = useState<AdminRow[]>([]);
@@ -16,21 +16,20 @@ export function useAdminData() {
           getDocs(collection(db, "guestGroups")),
           getDocs(collection(db, "rsvps")),
         ]);
-        const groupsMap = new Map();
+
+        const groupsMap = new Map<string, any>();
         let invitedPeopleCount = 0;
+
+        /* ---------------- GROUPS ---------------- */
 
         groupsSnap.forEach((doc) => {
           const g = doc.data();
 
           groupsMap.set(doc.id, g);
-
-          // 🔥 COUNT REAL INVITED PEOPLE
           invitedPeopleCount += (g.members || []).length;
         });
 
-        groupsSnap.forEach((doc) => {
-          groupsMap.set(doc.id, doc.data());
-        });
+        /* ---------------- RSVPS ---------------- */
 
         const data: AdminRow[] = [];
 
@@ -40,39 +39,73 @@ export function useAdminData() {
 
           if (!g) return;
 
+          // ✅ normalize base guests
+          const guests: AdminGuest[] = (r.guests || []).map((guest: any, i: number) => ({
+            id: guest.id || `guest-${i}`,
+            name: guest.name,
+            attending: !!guest.attending,
+            dietary: guest.dietary || "",
+          }));
+
+          // ✅ normalize extra guests
+          const extraGuests: AdminGuest[] = (r.extraGuests || []).map((guest: any, i: number) => ({
+            id: guest.id || `extra-${i}`,
+            name: guest.name,
+            attending: !!guest.attending,
+            dietary: guest.dietary || "",
+          }));
+
+          const allGuests = [...guests, ...extraGuests];
+
           data.push({
             groupId: doc.id,
             familyLabel: g.familyLabel,
 
-            invitedCount: r.totalGuests || g.maxGuests,
-            attendingCount: r.attendingCount || 0,
+            invitedCount: g.members?.length || g.maxGuests,
+            attendingCount: allGuests.filter((g) => g.attending).length,
 
-            status: r.status,
+            status: r.status || "pending",
             needsTransport: r.needsTransport || false,
 
-            respondedAt: r.respondedAt?.toDate() || null,
+            guests,
+            extraGuests,
+
+            maxGuests: g.maxGuests,
           });
 
+          // ✅ IMPORTANT: remove handled group
           groupsMap.delete(doc.id);
         });
 
+        /* ---------------- NON RESPONDED ---------------- */
+
         groupsMap.forEach((g, id) => {
+          const guests: AdminGuest[] = (g.members || []).map((member: any, index: number) => ({
+            id: member?.id || `guest-${index}`,
+            name: typeof member === "string" ? member : member.name,
+            attending: false,
+            dietary: "",
+          }));
+
           data.push({
             groupId: id,
             familyLabel: g.familyLabel,
 
-            invitedCount: g.maxGuests,
+            invitedCount: g.members?.length || g.maxGuests,
             attendingCount: 0,
 
             status: "pending",
             needsTransport: false,
-            respondedAt: null,
+
+            guests,
+            extraGuests: [], // ✅ ALWAYS PRESENT
+
+            maxGuests: g.maxGuests,
           });
         });
 
         setRows(data);
         setTotalInvitedPeople(invitedPeopleCount);
-        setLoading(false);
       } catch (err) {
         console.error("🔥 Admin fetch failed:", err);
       } finally {
