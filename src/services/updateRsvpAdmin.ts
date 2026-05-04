@@ -1,10 +1,11 @@
 import { db } from "@/lib/firebase";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 import type { AdminRow } from "@/types/admin";
 
 export async function updateRsvpAdmin(data: AdminRow) {
-  const ref = doc(db, "rsvps", data.groupId);
+  const rsvpRef = doc(db, "rsvps", data.groupId);
+  const groupRef = doc(db, "guestGroups", data.groupId);
 
   const guests = data.guests || [];
   const extraGuests = data.extraGuests || [];
@@ -24,13 +25,27 @@ export async function updateRsvpAdmin(data: AdminRow) {
     type: data.needsTransport ? "bus" : "none",
   };
 
+  /* ---------------- BUILD NEW HISTORY ENTRY ---------------- */
+
+  const newHistoryEntry = {
+    editedAt: new Date(),
+    attendingCount,
+    status,
+    snapshot: {
+      guests,
+      extraGuests,
+    },
+  };
+
+  /* ---------------- RSVP WRITE ---------------- */
+
   await setDoc(
-    ref,
+    rsvpRef,
     {
       groupId: data.groupId,
 
-      guests,
-      extraGuests,
+      guests: guests || [],
+      extraGuests: extraGuests || [],
 
       attendingCount,
       status,
@@ -39,7 +54,18 @@ export async function updateRsvpAdmin(data: AdminRow) {
       needsTransport: transport.type !== "none",
 
       respondedAt: serverTimestamp(),
+
+      history: arrayUnion(newHistoryEntry),
     },
     { merge: true },
   );
+
+  /* ---------------- GUEST GROUP ---------------- */
+
+  await updateDoc(groupRef, {
+    hasResponded: true,
+    attendingCount,
+    needsTransport: transport.type !== "none",
+    respondedAt: serverTimestamp(),
+  });
 }

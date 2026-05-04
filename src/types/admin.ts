@@ -13,6 +13,16 @@ export type AdminGuest = {
 
 export type TransportType = "none" | "bus" | "personal";
 
+export type AdminHistoryEntry = {
+  editedAt: any;
+  attendingCount: number;
+  status: "confirmed" | "declined" | "pending";
+  snapshot: {
+    guests: AdminGuest[];
+    extraGuests: AdminGuest[];
+  };
+};
+
 export type AdminRow = {
   groupId: string;
   familyLabel: string;
@@ -32,6 +42,8 @@ export type AdminRow = {
   extraGuests: AdminGuest[];
 
   maxGuests?: number;
+
+  history?: AdminHistoryEntry[]; // ✅ ADD THIS
 };
 
 export type AdminUpdatePayload = {

@@ -71,6 +71,8 @@ export function useAdminData() {
             extraGuests,
 
             maxGuests: g.maxGuests,
+
+            history: r.history || [],
           });
 
           // ✅ IMPORTANT: remove handled group
@@ -98,9 +100,11 @@ export function useAdminData() {
             needsTransport: false,
 
             guests,
-            extraGuests: [], // ✅ ALWAYS PRESENT
+            extraGuests: [],
 
             maxGuests: g.maxGuests,
+
+            history: [], // ✅ FIX HERE
           });
         });
 
