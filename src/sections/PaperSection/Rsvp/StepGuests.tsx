@@ -235,6 +235,7 @@ export default function StepGuests({
                   className="pt-3"
                 >
                   <select
+                    title="dietary"
                     value={guest.dietary || "none"}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
@@ -280,6 +281,7 @@ export default function StepGuests({
 
               <div className="flex items-center justify-between gap-4">
                 <select
+                  title="dietary options"
                   value={guest.dietary || "none"}
                   onChange={(e) => updateExtraGuest(index, "dietary", e.target.value)}
                   className={rsvpStyles.select}

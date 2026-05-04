@@ -7,11 +7,11 @@ import { useEffect, useRef, useState } from "react";
 import type { GuestGroup, RSVPFormData, RSVPStatus } from "@/types/rsvp";
 import { defaultRSVP } from "@/types/rsvp";
 
+import PaperGrain from "@/components/PaperGrain";
 import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
 import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
-import { stepVariants } from "./stepVariants";
 import StepRenderer from "./StepRenderer";
-import PaperGrain from "@/components/PaperGrain";
+import { stepVariants } from "./stepVariants";
 import PeonyEmboss from "/assets/art/bujorr.png";
 
 type Props = {
@@ -26,43 +26,48 @@ export default function RsvpLayerInline({ onComplete }: Props) {
 
   /* ---------------- SELECT GROUP ---------------- */
 
-  const handleSelectGroup = async (group: GuestGroup) => {
-    const rsvpRef = doc(db, "rsvps", group.id);
-    const rsvpSnap = await getDoc(rsvpRef);
-
-    if (rsvpSnap.exists()) {
-      const rsvp = rsvpSnap.data();
-
-      setForm({
-        groupId: group.id,
-        guests: (rsvp.guests || []).map((guest: any) => ({
-          ...guest,
-          id: guest.id || toGuestId(guest.name || ""),
-        })),
-        extraGuests: (rsvp.extraGuests || []).map((guest: any) => ({
-          ...guest,
-          id: guest.id || `extra-${toGuestId(guest.name || "")}`,
-        })),
-        maxGuests: group.maxGuests,
-        message: rsvp.message || "",
-        transport: rsvp.transport ?? { type: "none" },
-        name: "",
+  const handleSelectGroup = (group: GuestGroup) => {
+    // ✅ 1. INSTANT UI UPDATE (no await)
+    setForm((prev) => ({
+      ...prev,
+      groupId: group.id,
+      guests: group.members.map((member) => ({
+        id: getMemberId(member),
+        name: getMemberName(member),
         attending: true,
-      });
-    } else {
-      setForm((prev) => ({
-        ...prev,
-        groupId: group.id,
-        guests: group.members.map((member) => ({
-          id: getMemberId(member),
-          name: getMemberName(member),
-          attending: true,
-          dietary: "none",
-        })),
-        extraGuests: [],
-        maxGuests: group.maxGuests,
-      }));
-    }
+        dietary: "none",
+      })),
+      extraGuests: [],
+      maxGuests: group.maxGuests,
+    }));
+
+    // ✅ 2. ASYNC ENRICHMENT (non-blocking)
+    (async () => {
+      try {
+        const rsvpRef = doc(db, "rsvps", group.id);
+        const rsvpSnap = await getDoc(rsvpRef);
+
+        if (!rsvpSnap.exists()) return;
+
+        const rsvp = rsvpSnap.data();
+
+        setForm((prev) => ({
+          ...prev,
+          guests: (rsvp.guests || []).map((guest: any) => ({
+            ...guest,
+            id: guest.id || toGuestId(guest.name || ""),
+          })),
+          extraGuests: (rsvp.extraGuests || []).map((guest: any) => ({
+            ...guest,
+            id: guest.id || `extra-${toGuestId(guest.name || "")}`,
+          })),
+          message: rsvp.message || "",
+          transport: rsvp.transport ?? { type: "none" },
+        }));
+      } catch (err) {
+        console.error("Failed to fetch RSVP:", err);
+      }
+    })();
   };
 
   /* ---------------- NAVIGATION ---------------- */
