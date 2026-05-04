@@ -248,38 +248,25 @@ function exportExcel(rows: AdminRow[]) {
 
   // 🔥 flatten guests (important for future dietary data)
   const mealTransportData: ExportRow[] = rows.flatMap((r) => {
-    const baseGuests = r.guests || [];
-    const extraGuests = r.extraGuests || [];
-
-    // 🔥 NORMALIZE extraGuests → same shape as guests
-    const normalizedExtra = extraGuests.map((g) => ({
-      name: g.name || "Invitat +1",
-      attending: g.attending === true,
-      dietary: g.dietary || "—",
-    }));
-
-    const allGuests = [...baseGuests, ...normalizedExtra];
-
-    // fallback dacă nu există nimeni
-    if (allGuests.length === 0) {
-      return [
-        {
-          Family: r.familyLabel,
-          Name: "—",
-          Attending: r.attendingCount > 0 ? "yes" : "no",
-          Dietary: "—",
-          Transport: r.needsTransport ? "yes" : "no",
-        },
-      ];
-    }
-
-    return allGuests.map((g) => ({
+    const baseGuests = (r.guests || []).map((g) => ({
       Family: r.familyLabel,
       Name: g.name,
-      Attending: g.attending ? "yes" : "no",
+      Type: "main" as const,
+      Attending: (g.attending ? "yes" : "no") as "yes" | "no",
       Dietary: g.dietary || "—",
-      Transport: r.needsTransport ? "yes" : "no",
+      Transport: (r.needsTransport ? "yes" : "no") as "yes" | "no",
     }));
+
+    const extraGuests = (r.extraGuests || []).map((g) => ({
+      Family: r.familyLabel,
+      Name: g.name || "Invitat +1",
+      Type: "extra" as const,
+      Attending: (g.attending === true ? "yes" : "no") as "yes" | "no",
+      Dietary: g.dietary || "—",
+      Transport: (r.needsTransport ? "yes" : "no") as "yes" | "no",
+    }));
+
+    return [...baseGuests, ...extraGuests];
   });
 
   const mealTransportSheet = XLSX.utils.json_to_sheet(mealTransportData);

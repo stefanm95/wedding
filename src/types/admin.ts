@@ -60,6 +60,7 @@ export type AdminUpdatePayload = {
 export type ExportRow = {
   Family: string;
   Name: string;
+  Type: "main" | "extra";
   Attending: "yes" | "no";
   Dietary: string;
   Transport: "yes" | "no";
