@@ -10,16 +10,12 @@ export async function updateRsvpAdmin(data: AdminRow) {
   const guests = data.guests || [];
   const extraGuests = data.extraGuests || [];
 
-  const allGuests = [...guests, ...extraGuests];
+  const coreAttending = guests.filter((g) => g.attending).length;
 
-  const attendingCount = allGuests.filter((g) => g.attending).length;
+  const attendingCount = coreAttending + extraGuests.filter((g) => g.attending).length;
 
   const status =
-    attendingCount === 0
-      ? "declined"
-      : attendingCount === allGuests.length
-        ? "confirmed"
-        : "pending";
+    coreAttending === 0 ? "declined" : coreAttending === guests.length ? "confirmed" : "pending";
 
   const transport = data.transport ?? {
     type: data.needsTransport ? "bus" : "none",
