@@ -15,7 +15,7 @@ import { stepVariants } from "./stepVariants";
 import PeonyEmboss from "/assets/art/bujorr.png";
 
 type Props = {
-  onComplete?: () => void; // 🔥 înlocuiește onClose
+  onComplete?: () => void;
 };
 
 export default function RsvpLayerInline({ onComplete }: Props) {
@@ -27,7 +27,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
   /* ---------------- SELECT GROUP ---------------- */
 
   const handleSelectGroup = (group: GuestGroup) => {
-    // ✅ 1. INSTANT UI UPDATE (no await)
+    // ✅ 1. instant UI (source of truth: guestGroups)
     setForm((prev) => ({
       ...prev,
       groupId: group.id,
@@ -41,7 +41,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
       maxGuests: group.maxGuests,
     }));
 
-    // ✅ 2. ASYNC ENRICHMENT (non-blocking)
+    // ✅ 2. enrich from RSVP (merge, NOT overwrite)
     (async () => {
       try {
         const rsvpRef = doc(db, "rsvps", group.id);
@@ -51,19 +51,38 @@ export default function RsvpLayerInline({ onComplete }: Props) {
 
         const rsvp = rsvpSnap.data();
 
-        setForm((prev) => ({
-          ...prev,
-          guests: (rsvp.guests || []).map((guest: any) => ({
-            ...guest,
-            id: guest.id || toGuestId(guest.name || ""),
-          })),
-          extraGuests: (rsvp.extraGuests || []).map((guest: any) => ({
-            ...guest,
-            id: guest.id || `extra-${toGuestId(guest.name || "")}`,
-          })),
-          message: rsvp.message || "",
-          transport: rsvp.transport ?? { type: "none" },
-        }));
+        console.log("RSVP SNAPSHOT:", rsvp);
+
+        setForm((prev) => {
+          if (!prev) return prev;
+
+          const hasGuests = Array.isArray(rsvp.guests) && rsvp.guests.length > 0;
+
+          const hasExtraGuests = Array.isArray(rsvp.extraGuests) && rsvp.extraGuests.length > 0;
+
+          return {
+            ...prev,
+
+            // ✅ merge guests safely
+            guests: hasGuests
+              ? rsvp.guests.map((guest: any) => ({
+                  ...guest,
+                  id: guest.id || toGuestId(guest.name || ""),
+                }))
+              : prev.guests,
+
+            // ✅ merge extra guests safely (THIS FIXES YOUR BUG)
+            extraGuests: hasExtraGuests
+              ? rsvp.extraGuests.map((guest: any) => ({
+                  ...guest,
+                  id: guest.id || `extra-${toGuestId(guest.name || "")}`,
+                }))
+              : prev.extraGuests,
+
+            message: rsvp.message ?? prev.message,
+            transport: rsvp.transport ?? prev.transport ?? { type: "none" },
+          };
+        });
       } catch (err) {
         console.error("Failed to fetch RSVP:", err);
       }
@@ -82,7 +101,12 @@ export default function RsvpLayerInline({ onComplete }: Props) {
       const next = await transition(step, form, ctx);
 
       if (import.meta.env.DEV) {
-        console.log("RSVP transition:", { from: step, to: next, form, ctx });
+        console.log("RSVP transition:", {
+          from: step,
+          to: next,
+          form,
+          ctx,
+        });
       }
 
       setStep(next);
@@ -114,7 +138,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
 
   useEffect(() => {
     if (step === "done") {
-      onComplete?.(); // 🔥 nu mai închizi modal
+      onComplete?.();
     }
   }, [step]);
 
@@ -122,7 +146,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
 
   return (
     <section id="rsvp" className="relative flex w-full justify-center px-4 py-32">
-      {/* 🌸 PEONY EMBOSS (background decorative) */}
+      {/* 🌸 background */}
       <div className="pointer-events-none absolute right-[2%] z-0 opacity-40 md:-right-[10%] md:top-[20%] lg:right-[2%] lg:top-[2%]">
         <img
           src={PeonyEmboss}
@@ -159,6 +183,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
             </motion.div>
           )}
         </AnimatePresence>
+
         <PaperGrain />
       </motion.div>
     </section>
