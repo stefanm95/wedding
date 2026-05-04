@@ -49,44 +49,56 @@ export default function Admin() {
 
   /* ---------------- METRICS ---------------- */
 
-  const total = sourceRows.length;
-  const confirmed = sourceRows.filter((r) => r.status === "confirmed").length;
-  const declined = sourceRows.filter((r) => r.status === "declined").length;
-  const pending = sourceRows.filter((r) => r.status === "pending").length;
+  const totalGroups = sourceRows.length;
+
+  const totalMaxGuests = sourceRows.reduce((sum, r) => sum + (r.maxGuests ?? r.invitedCount), 0);
+
+  const confirmedGroups = sourceRows.filter((r) => r.status === "confirmed").length;
+
+  const declinedGroups = sourceRows.filter((r) => r.status === "declined").length;
+
+  const pendingGroups = sourceRows.filter((r) => r.status === "pending").length;
+
+  const respondedGroups = sourceRows.filter(
+    (r) => r.status === "confirmed" || r.status === "declined",
+  ).length;
+
+  // 🔥 IMPORTANT: persoane reale
+  const totalAttendingPeople = sourceRows.reduce((sum, r) => sum + r.attendingCount, 0);
 
   const needingTransport = sourceRows.filter((r) => r.needsTransport).length;
 
-  const totalAttending = sourceRows.reduce((sum, r) => sum + r.attendingCount, 0);
-
-  const attendanceRate = totalInvitedPeople
-    ? Math.round((totalAttending / totalInvitedPeople) * 100)
-    : 0;
-
-  const responseRate = total ? Math.round(((confirmed + declined) / total) * 100) : 0;
+  const occupancy = `${totalAttendingPeople} / ${totalMaxGuests}`;
 
   /* ---------------- UI ---------------- */
 
   return (
-    <div className="min-h-screen bg-[#f4f1ea] p-10">
-      <div className="mb-10 flex justify-between">
-        <h1 className="text-[32px] text-[#3d2b1f]">Admin Dashboard</h1>
+    <div className="min-h-screen bg-[#f7f4ef] px-6 py-10 md:px-12">
+      {/* HEADER */}
+      <div className="mb-10 flex items-center justify-between">
+        <div>
+          <h1 className="text-[34px] font-light tracking-tight text-[#2c1e18]">Admin Dashboard</h1>
+          <p className="text-sm text-black/40">Overview & RSVP management</p>
+        </div>
 
         <button
           onClick={() => exportCSV(sourceRows)}
-          className="border border-[#c9a46c] px-4 py-2 text-[12px]"
+          className="rounded-md border border-[#c9a46c] px-5 py-2 text-xs tracking-wide transition hover:bg-[#c9a46c]/10"
         >
           Export CSV
         </button>
       </div>
 
       {/* FILTER */}
-      <div className="mb-6 flex gap-2">
+      <div className="mb-8 flex gap-2">
         {["all", "confirmed", "declined", "pending"].map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f as any)}
-            className={`border px-3 py-1 text-xs ${
-              filter === f ? "border-[#c9a46c] bg-[#c9a46c]/20" : "border-black/10"
+            className={`rounded-full px-4 py-1.5 text-xs transition ${
+              filter === f
+                ? "bg-[#c9a46c] text-white"
+                : "bg-black/5 text-black/60 hover:bg-black/10"
             }`}
           >
             {f}
@@ -95,44 +107,54 @@ export default function Admin() {
       </div>
 
       {/* STATS */}
-      <div className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
-        <Stat label="Total" value={total} />
-        <Stat label="Confirmate" value={confirmed} />
-        <Stat label="Refuzuri" value={declined} />
-        <Stat label="Fără răspuns" value={pending} />
-        <Stat label="Invitați" value={totalInvitedPeople} />
-        <Stat label="Prezență %" value={attendanceRate} />
-        <Stat label="Răspuns %" value={responseRate} />
+      <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-8">
+        <Stat label="Total" value={totalGroups} />
+        <Stat label="Confirmate" value={confirmedGroups} />
+        <Stat label="Refuzuri" value={declinedGroups} />
+        <Stat label="Fără răspuns" value={pendingGroups} />
+        <Stat label="Invitați total" value={totalInvitedPeople} />
+        <Stat label="Persoane confirmate" value={totalAttendingPeople} />
+        <Stat label="Răspunsuri" value={respondedGroups} />
         <Stat label="Transport" value={needingTransport} />
+        <Stat label="Prezență" value={occupancy} />
       </div>
 
-      {/* TABLE */}
-      <div className="border bg-white/60">
-        <div className="grid grid-cols-5 px-4 py-3 text-xs uppercase text-[#6b1f2b]/60">
+      {/* TABLE CONTAINER */}
+      <div className="overflow-hidden rounded-xl border border-black/5 bg-white shadow-sm">
+        {/* HEADER */}
+        <div className="grid grid-cols-5 border-b bg-black/[0.02] px-6 py-3 text-[11px] uppercase tracking-wider text-black/40">
           <div>Familie</div>
           <div>Invitați</div>
-          <div>Confirmati</div>
+          <div>Confirmați</div>
           <div>Status</div>
           <div>Transport</div>
         </div>
 
-        {filteredRows.map((r) => (
-          <div
-            key={r.groupId}
-            onClick={() => setSelectedRow(r)}
-            className="grid cursor-pointer grid-cols-5 px-4 py-3 hover:bg-black/5"
-          >
-            <div>{r.familyLabel}</div>
-            <div>{r.invitedCount}</div>
-            <div>{r.attendingCount}</div>
-            <div>
-              <StatusBadge status={r.status} />
+        {/* ROWS */}
+        <div>
+          {filteredRows.map((r) => (
+            <div
+              key={r.groupId}
+              onClick={() => setSelectedRow(r)}
+              className="grid cursor-pointer grid-cols-5 items-center px-6 py-3 text-sm transition hover:bg-[#f4f1ea]"
+            >
+              <div className="font-medium text-[#2c1e18]">{r.familyLabel}</div>
+
+              <div className="text-black/70">{r.invitedCount}</div>
+
+              <div className="text-black/70">{r.attendingCount}</div>
+
+              <div>
+                <StatusBadge status={r.status} />
+              </div>
+
+              <div className="text-lg">{r.needsTransport ? "🚌" : "—"}</div>
             </div>
-            <div>{r.needsTransport ? "🚌" : "-"}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
+      {/* MODAL */}
       <EditRsvpModal
         key={selectedRow?.groupId}
         row={selectedRow}
@@ -145,35 +167,88 @@ export default function Admin() {
 
 /* ---------------- UI ---------------- */
 
-function Stat({ label, value }: { label: string; value: number }) {
+function Stat({ label, value }: { label: string; value: number | string }) {
   return (
-    <div className="border p-4 text-center">
-      <div className="text-xs">{label}</div>
-      <div className="text-xl">{value}</div>
+    <div className="rounded-lg border border-black/5 bg-white px-4 py-5 text-center shadow-sm transition hover:shadow-md">
+      <div className="text-[11px] uppercase tracking-wide text-black/40">{label}</div>
+      <div className="mt-1 text-2xl font-light text-[#2c1e18]">{value}</div>
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
   const styles = {
-    confirmed: "text-green-700",
-    declined: "text-red-600",
-    pending: "text-gray-500",
+    confirmed: "bg-green-100 text-green-700",
+    declined: "bg-red-100 text-red-600",
+    pending: "bg-gray-100 text-gray-500",
   };
 
-  return <span className={styles[status as keyof typeof styles]}>{status}</span>;
+  return (
+    <span
+      className={`rounded-full px-2.5 py-1 text-xs font-medium ${styles[status as keyof typeof styles]}`}
+    >
+      {status}
+    </span>
+  );
 }
 
 function exportCSV(rows: AdminRow[]) {
-  const csv = rows.map((r) =>
-    [r.familyLabel, r.invitedCount, r.attendingCount, r.status].join(","),
-  );
+  // ---------------- METRICS ----------------
+  const totalGroups = rows.length;
 
-  const blob = new Blob([csv.join("\n")]);
+  const totalMaxGuests = rows.reduce((sum, r) => sum + (r.maxGuests ?? r.invitedCount), 0);
+
+  const confirmedGroups = rows.filter((r) => r.status === "confirmed").length;
+  const declinedGroups = rows.filter((r) => r.status === "declined").length;
+  const pendingGroups = rows.filter((r) => r.status === "pending").length;
+
+  const respondedGroups = rows.filter(
+    (r) => r.status === "confirmed" || r.status === "declined",
+  ).length;
+
+  const totalAttendingPeople = rows.reduce((sum, r) => sum + r.attendingCount, 0);
+
+  const needingTransport = rows.filter((r) => r.needsTransport).length;
+
+  const occupancy = `${totalAttendingPeople} / ${totalMaxGuests}`;
+
+  // ---------------- SUMMARY ----------------
+  const summary = [
+    ["=== SUMMARY ==="],
+    ["Total Groups", totalGroups],
+    ["Confirmed Groups", confirmedGroups],
+    ["Declined Groups", declinedGroups],
+    ["Pending Groups", pendingGroups],
+    ["Responded Groups", respondedGroups],
+    ["Total Capacity", totalMaxGuests],
+    ["Attending People", totalAttendingPeople],
+    ["Occupancy", occupancy],
+    ["Transport Needed", needingTransport],
+    [], // empty row
+  ];
+
+  // ---------------- TABLE HEADER ----------------
+  const header = [["Family", "Invited", "Max Guests", "Attending", "Status", "Transport"]];
+
+  // ---------------- ROWS ----------------
+  const data = rows.map((r) => [
+    r.familyLabel,
+    r.invitedCount,
+    r.maxGuests ?? r.invitedCount,
+    r.attendingCount,
+    r.status,
+    r.needsTransport ? "yes" : "no",
+  ]);
+
+  // ---------------- COMBINE ----------------
+  const csvContent = [...summary, ...header, ...data].map((row) => row.join(",")).join("\n");
+
+  // ---------------- DOWNLOAD ----------------
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = "rsvp.csv";
+  a.download = "rsvp-report.csv";
   a.click();
 }
