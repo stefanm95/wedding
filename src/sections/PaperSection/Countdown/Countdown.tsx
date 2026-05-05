@@ -27,13 +27,13 @@ export default function Countdown({ months, days, hours, minutes, seconds }: Ext
     >
       {/* ✨ TITLE */}
       <motion.p
-        className="mb-6 text-sm tracking-[0.3em] text-[#6b1f2b]/80 md:text-base"
+        className="mb-12 text-sm tracking-[0.3em] text-[#6b1f2b]/80 md:text-base"
         variants={{
           hidden: { opacity: 0, y: 10 },
           show: { opacity: 1, y: 0 },
         }}
       >
-        FIECARE ZI NE ADUCE MAI APROAPE
+        NE-AM BCUURA SA FITI ALATURI DE NOI
       </motion.p>
 
       {/* ⏳ GRID RESPONSIVE */}

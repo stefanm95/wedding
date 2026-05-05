@@ -17,7 +17,7 @@ export function StepWelcome({ onNext }: Props) {
     >
       {/* ✨ INTRO (nu label de form) */}
       <div className="space-y-6">
-        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Denisa & Iuli</p>
+        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Denisa & Iulian</p>
 
         <h2 className="script-cormorant-display text-[36px] leading-tight text-[#3d2b1f]">
           Ne vei fi alături
@@ -39,7 +39,16 @@ export function StepWelcome({ onNext }: Props) {
 
       {/* 🎯 ACTIONS */}
       <div className="flex flex-col gap-4 pt-6">
-        <button onClick={onNext}>Vom fi acolo</button>
+        <button
+          onClick={onNext}
+          className="group relative mx-auto mt-6 inline-flex flex-col items-center text-[12px] uppercase tracking-[0.35em] text-[#6b1f2b]/60 transition-all duration-300 hover:text-[#6b1f2b]"
+        >
+          Începe confirmarea
+          {/* underline animat */}
+          <span className="mt-2 h-[1px] w-12 bg-[#c9a46c]/60 transition-all duration-300 group-hover:w-20 group-hover:bg-[#c9a46c]" />
+          {/* mic indicator ↓ */}
+          <span className="mt-1 text-[10px] opacity-50 transition group-hover:opacity-80">↓</span>
+        </button>
       </div>
     </motion.div>
   );
