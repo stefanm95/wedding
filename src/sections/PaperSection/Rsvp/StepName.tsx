@@ -158,9 +158,9 @@ export default function StepName({ value, onSelectGroup, onConfirm, onBack }: Pr
               <div className="mt-1 text-[13px] text-[#6b1f2b]/60">{group.representative}</div>
             )}
 
-            <div className="mt-1 text-[12px] text-[#6b1f2b]/45">
+            {/* <div className="mt-1 text-[12px] text-[#6b1f2b]/45">
               {group.members.slice(0, 2).map(getMemberName).join(", ")}
-            </div>
+            </div> */}
           </button>
         ))}
       </div>

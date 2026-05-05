@@ -1,7 +1,7 @@
+import { useDevice } from "@/hooks/useDevice";
 import { cn } from "@utils/cn";
 import { motion } from "framer-motion";
 import type { ProgramItemType } from "./programData";
-import { useDevice } from "@/hooks/useDevice";
 
 type Variant = "cinematic" | "mobile";
 
@@ -17,8 +17,8 @@ type LayoutPreset = {
 
 const presets: Record<"desktop" | "laptop" | "tablet", LayoutPreset> = {
   desktop: {
-    X: ["0%", "22%", "62%", "80%"],
-    Y: ["0%", "30%", "52%", "28%"],
+    X: ["0%", "20%", "52%", "80%"],
+    Y: ["0%", "30%", "0%", "30%"],
     content: "max-w-[320px]",
   },
 
