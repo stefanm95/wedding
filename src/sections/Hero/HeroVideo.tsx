@@ -112,7 +112,7 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
             </motion.h1>
 
             <motion.p
-              className="script-cormorant-display mt-12 text-lg tracking-[0.4em] text-white"
+              className="script-cormorant-body mt-12 text-lg tracking-[0.4em] text-white"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 show: { opacity: 1, y: 0 },
@@ -122,7 +122,7 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
             </motion.p>
 
             <motion.p
-              className="script-cormorant-display mt-1 text-lg tracking-[0.1em] text-white"
+              className="script-cormorant-body mt-1 text-lg tracking-[0.1em] text-white"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 show: { opacity: 1, y: 0 },

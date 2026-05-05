@@ -50,7 +50,7 @@ function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
         </p>
 
         <div className="border-y border-[#5a1e28]/15 py-8">
-          <h3 className="script-castlegar-title mb-5 text-[30px] leading-[1.25] text-[#5a1e28] md:text-[36px]">
+          <h3 className="script-gary-display mb-5 text-[30px] leading-[1.25] text-[#5a1e28] md:text-[36px]">
             {item.title}
           </h3>
 
@@ -88,7 +88,7 @@ function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean 
         {item.date && (
           <p className="mb-5 text-[12px] tracking-[0.45em] text-[#5a1e28]/60">{item.date}</p>
         )}
-        <h3 className="script-castlegar-title mb-5 text-[30px] leading-[1.3] text-[#5a1e28] md:text-[38px]">
+        <h3 className="script-gary-display mb-5 leading-[1.3] text-[#5a1e28] md:text-[38px]">
           {item.title}
         </h3>
 

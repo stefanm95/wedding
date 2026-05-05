@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import type { CountdownTime } from "@/types/countdown";
+import { motion } from "framer-motion";
 
 type ExtendedTime = CountdownTime & {
   months: number;
@@ -12,7 +12,7 @@ export default function Countdown({ months, days, hours, minutes, seconds }: Ext
 
   return (
     <motion.div
-      className="relative mt-10"
+      className="relative"
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}

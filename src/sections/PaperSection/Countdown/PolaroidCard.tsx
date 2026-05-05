@@ -29,7 +29,7 @@ export default function PolaroidCard() {
 
         {/* ✍️ HANDWRITTEN CAPTION */}
         <p
-          className="script-castlegar mt-5 text-center text-[22px] text-[#6b1f2b]/90 md:text-3xl"
+          className="script-gary-display mt-5 text-center text-[#6b1f2b]/90 md:text-3xl"
           style={{ transform: "rotate(-0.6deg)" }}
         >
           Prima amintire

@@ -7,7 +7,7 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
     <section
       id="story"
       data-paper-variant={variant}
-      className="relative bg-transparent pb-24 pt-20 opacity-90 md:pb-32 md:pt-32 lg:pb-40"
+      className="relative bg-transparent pb-24 pt-16 opacity-90 md:pb-32 md:pt-24 lg:pb-40"
     >
       {/* HEADER */}
       <div className="mx-auto mb-12 mt-[4em] h-[12vh] max-w-3xl px-6 text-center md:mb-14 lg:mb-16">
@@ -15,7 +15,7 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
           Povestea noastră
         </p>
 
-        <h2 className="script-castlegar text-4xl text-[#6b1f2b] md:text-5xl">
+        <h2 className="script-gary-display text-4xl text-[#6b1f2b] md:text-5xl">
           Cum a început totul
         </h2>
       </div>

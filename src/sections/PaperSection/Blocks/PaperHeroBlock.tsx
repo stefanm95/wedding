@@ -32,17 +32,17 @@ export default function PaperHeroBlock({ progress }: Props) {
           className="relative border border-black/5 px-6 py-16 md:px-12 md:py-20"
           style={{ transform: "rotate(-0.4deg)" }}
         >
-          {/* 📸 POLAROID (single source of truth) */}
-          <motion.div className="flex justify-center" style={{ y, rotate, scale }}>
-            <PolaroidCard />
-          </motion.div>
-
           {/* ⏳ COUNTDOWN */}
           <motion.div
-            className="mt-16 text-center"
+            className="mb-24 text-center"
             style={{ opacity: countdownOpacity, y: countdownY }}
           >
             <Countdown {...time} />
+          </motion.div>
+
+          {/* 📸 POLAROID (single source of truth) */}
+          <motion.div className="flex justify-center" style={{ y, rotate, scale }}>
+            <PolaroidCard />
           </motion.div>
         </div>
         {/* 🧻 TEXTURE */}
