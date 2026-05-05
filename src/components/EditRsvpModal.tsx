@@ -2,7 +2,7 @@
 import type { AdminGuest, AdminRow } from "@/types/admin";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const DIETARY = ["none", "vegetarian", "vegan", "gluten-free", "other"];
+const DIETARY = ["none", "vegetarian", "vegan", "menu-copii", "other"];
 
 export default function EditRsvpModal({ row, onClose, onSave }: any) {
   const [form, setForm] = useState<AdminRow | null>(null);

@@ -249,9 +249,9 @@ export default function StepGuests({
                     className={rsvpStyles.select}
                   >
                     <option value="none">Menu Clasic</option>
-                    <option value="vegetarian">Vegetarian</option>
-                    <option value="vegan">Vegan</option>
-                    <option value="gluten-free">Fără gluten</option>
+                    <option value="vegetarian">Menu Vegetarian</option>
+                    <option value="vegan">Menu Vegan</option>
+                    <option value="menu-copii">Menu Copii</option>
                     <option value="other">Alte restricții</option>
                   </select>
                 </motion.div>
@@ -294,9 +294,9 @@ export default function StepGuests({
                   className={rsvpStyles.select}
                 >
                   <option value="none">Menu Clasic</option>
-                  <option value="vegetarian">Vegetarian</option>
-                  <option value="vegan">Vegan</option>
-                  <option value="gluten-free">Fără gluten</option>
+                  <option value="vegetarian">Menu Vegetarian</option>
+                  <option value="vegan">Menu Vegan</option>
+                  <option value="menu-copii">Menu Copii</option>
                   <option value="other">Alte restricții</option>
                 </select>
 
