@@ -1,10 +1,10 @@
-import Program from "@paper/Program/Program";
-import type { PaperBlockProps } from "@/types/paper";
 import EmbossSeal from "@/components/EmbossSeal";
 import PaperGrain from "@/components/PaperGrain";
 import PaperLight from "@/components/PaperLight";
-import { MotionValue } from "framer-motion";
+import type { PaperBlockProps } from "@/types/paper";
 import type { PaperVariant } from "@/utils/paperThemes";
+import Program from "@paper/Program/Program";
+import { MotionValue } from "framer-motion";
 
 type Props = PaperBlockProps & {
   variant: PaperVariant;
@@ -23,7 +23,7 @@ export default function PaperProgramBlock({ variant, onOpenRsvp, progress }: Pro
       <div className="pointer-events-none absolute inset-0 z-0">
         <img
           alt="paper"
-          src="/assets/paper/paper-cards.jpg"
+          src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777958076/paper-cards_pa7rid.jpg"
           className="h-full w-full object-cover object-[center_30%] opacity-10 md:object-[center_35%] lg:object-[center_40%]"
         />
       </div>

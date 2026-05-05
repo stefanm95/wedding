@@ -12,7 +12,6 @@ import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
 import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
 import StepRenderer from "./StepRenderer";
 import { stepVariants } from "./stepVariants";
-import PeonyEmboss from "/assets/art/bujorr.png";
 
 type Props = {
   onComplete?: () => void;
@@ -149,7 +148,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
       {/* 🌸 background */}
       <div className="pointer-events-none absolute right-[2%] z-0 opacity-40 md:-right-[10%] md:top-[20%] lg:right-[2%] lg:top-[2%]">
         <img
-          src={PeonyEmboss}
+          src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777956827/bujorr_c7rt37.png"
           alt="peonyemboss"
           className="w-[360px] select-none object-contain md:w-[340px] lg:w-[520px]"
         />

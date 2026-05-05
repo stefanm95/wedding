@@ -1,6 +1,6 @@
-import Story from "@paper/Story/Story";
 import type { PaperBlockProps } from "@/types/paper";
 import { cn } from "@/utils/cn";
+import Story from "@paper/Story/Story";
 
 export default function PaperStoryBlock({ variant }: PaperBlockProps) {
   return (
@@ -23,7 +23,7 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
       <div className="pointer-events-none absolute inset-0 flex justify-center opacity-90">
         <img
           alt="paper"
-          src="/assets/paper/paper-split6.avif"
+          src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777958107/paper-split6_ufskgd.avif"
           className={cn(
             "w-full max-w-[1400px] mix-blend-multiply",
             variant === "day" && "opacity-20",

@@ -170,7 +170,7 @@ export default function StepGuests({
             />
 
             <motion.img
-              src="/assets/crest/crest-drop.png"
+              src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777957075/crest-drop_lyrdif.png"
               alt=""
               initial={{ opacity: 0 }}
               animate={guest.attending ? { opacity: 0.06 } : { opacity: 0 }}
@@ -207,7 +207,7 @@ export default function StepGuests({
                           <AnimatePresence>
                             {guest.attending && (
                               <motion.img
-                                src="/assets/crest/crest-drop.png"
+                                src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777957075/crest-drop_lyrdif.png"
                                 alt="confirmed"
                                 initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
                                 animate={{ opacity: 0.85, scale: 1, rotate: -4 }}

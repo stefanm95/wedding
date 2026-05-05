@@ -8,7 +8,8 @@ export default function PaperGrain() {
       transition={{ duration: 1 }}
       className="pointer-events-none absolute inset-0 z-[1]"
       style={{
-        backgroundImage: "url('/assets/base-grain/grain2.jpg')",
+        backgroundImage:
+          "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777956948/grain2_icfdek.jpg')",
         backgroundSize: "300px",
         mixBlendMode: "multiply",
       }}

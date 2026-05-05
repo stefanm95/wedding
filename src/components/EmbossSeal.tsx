@@ -1,7 +1,7 @@
-import { motion, useTransform, type MotionValue } from "framer-motion";
-import { cn } from "@utils/cn";
 import { useHeroLight } from "@/hooks/useHeroLight";
 import { useHeroLightDir } from "@/hooks/useHeroLightDir";
+import { cn } from "@utils/cn";
+import { motion, useTransform, type MotionValue } from "framer-motion";
 import { useState } from "react";
 
 type Props = {
@@ -16,7 +16,8 @@ export default function EmbossSeal({ className, progress }: Props) {
   const lightX = useTransform(progress, [0, 1], [-120, 120]);
   const lightOpacity = useTransform(progress, [0, 0.5, 1], [0.15, 0.3, 0.15]);
 
-  const mask = "[mask-image:url('/assets/crest/image-1.png')]";
+  const mask =
+    "[mask-image:url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777957168/image-1_wps7le.png')]";
 
   const light = useHeroLight();
   const dir = useHeroLightDir();
@@ -65,7 +66,8 @@ export default function EmbossSeal({ className, progress }: Props) {
           "bg-contain bg-center bg-no-repeat opacity-40",
         )}
         style={{
-          backgroundImage: "url('/assets/crest/image-1.png')",
+          backgroundImage:
+            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777957168/image-1_wps7le.png')",
           filter: "contrast(1.05) brightness(0.98)",
         }}
       />

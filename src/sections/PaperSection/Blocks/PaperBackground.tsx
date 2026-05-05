@@ -1,6 +1,6 @@
-import { motion, useTransform, type MotionValue } from "framer-motion";
-import { paperThemes, type PaperVariant } from "@utils/paperThemes";
 import { useHeroLight } from "@/hooks/useHeroLight";
+import { paperThemes, type PaperVariant } from "@utils/paperThemes";
+import { motion, useTransform, type MotionValue } from "framer-motion";
 
 type Props = {
   progress: MotionValue<number>;
@@ -39,7 +39,8 @@ const PaperBackgroundLayer = ({
         className="absolute inset-0"
         style={{
           backgroundColor: theme.baseColor,
-          backgroundImage: "url('/assets/paper/paper-white.avif')",
+          backgroundImage:
+            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777958000/paper-white_j5m3t2.avif')",
           backgroundSize: "600px auto",
           backgroundRepeat: "repeat",
           backgroundPosition: "0 0",

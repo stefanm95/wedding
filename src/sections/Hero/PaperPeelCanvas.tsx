@@ -1,7 +1,7 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useRef, useMemo } from "react";
-import * as THREE from "three";
 import { getImpact } from "@utils/animation";
+import { useMemo, useRef } from "react";
+import * as THREE from "three";
 
 type Props = {
   crestProgress: number;
@@ -38,14 +38,18 @@ function Scene({ crestProgress, peelProgress }: Props) {
 
   // 🎀 ribbon texture (NO repeat)
   const ribbonTex = useMemo<THREE.Texture>(() => {
-    const tex = new THREE.TextureLoader().load("/assets/ribbon/ribbon-vintage.png");
+    const tex = new THREE.TextureLoader().load(
+      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777957283/ribbon-vintage_bsicor.png",
+    );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
   }, [gl]);
 
   // 🔴 crest texture
   const crestTex = useMemo<THREE.Texture>(() => {
-    const tex = new THREE.TextureLoader().load("/assets/crest/logo-crest-vintage.png");
+    const tex = new THREE.TextureLoader().load(
+      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777957229/logo-crest-vintage_jh1nyq.png",
+    );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
   }, [gl]);

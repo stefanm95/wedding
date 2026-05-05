@@ -1,9 +1,9 @@
-import { motion, useTransform } from "framer-motion";
+import type { PaperBlockProps } from "@/types/paper";
 import { useCountdown } from "@hooks/useCountdown";
 import Countdown from "@paper/Countdown/Countdown";
 import PolaroidCard from "@paper/Countdown/PolaroidCard";
-import type { PaperBlockProps } from "@/types/paper";
 import type { MotionValue } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 
 type Props = PaperBlockProps & {
   progress: MotionValue<number>;
@@ -46,7 +46,7 @@ export default function PaperHeroBlock({ progress }: Props) {
           </motion.div>
         </div>
         {/* 🧻 TEXTURE */}
-        <div className="pointer-events-none absolute inset-0 bg-[url('/paper-texture.png')] opacity-[0.04]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.04]" />
 
         {/* divider */}
         <div className="mx-auto mt-20 h-16 w-[1px] bg-[#6b1f2b]/20" />
