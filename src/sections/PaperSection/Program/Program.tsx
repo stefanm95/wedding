@@ -20,7 +20,7 @@ export default function Program({ onOpenRsvp }: Props) {
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
             <h2 className="script-cormorant-display text-[30px] tracking-[0.08em] text-[#6b1f2b] sm:text-[34px] md:text-[40px]">
-              PROGRAMUL ZILEI
+              DETALII SUPLIMENTARE
             </h2>
 
             <div className="mt-3 flex items-center gap-3">

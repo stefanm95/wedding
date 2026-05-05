@@ -1,4 +1,4 @@
-import type { DietaryOption, RSVPGuest, RSVPStatus } from "@/types/rsvp";
+import type { DietaryOption, RSVPGuest } from "@/types/rsvp";
 import { cn } from "@utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { rsvpStyles } from "./rsvpStyles";
@@ -47,9 +47,16 @@ export default function StepGuests({
 }: Props) {
   /* ---------------- MEMBERS ---------------- */
 
-  const toggleAttending = (index: number, value: RSVPStatus) => {
+  const toggleAttending = (index: number) => {
     const updated = [...guests];
-    updated[index] = { ...updated[index], attending: value };
+
+    const current = Boolean(updated[index].attending);
+
+    updated[index] = {
+      ...updated[index],
+      attending: !current,
+    };
+
     onChange(updated, extraGuests);
   };
 
@@ -153,7 +160,7 @@ export default function StepGuests({
             variants={itemVariants}
             layout
             whileHover={{ scale: 1.01 }}
-            onClick={() => toggleAttending(index, !guest.attending)}
+            onClick={() => toggleAttending(index)}
             className={cn(
               "relative cursor-pointer rounded-sm border px-5 py-5 transition-all duration-500",
               guest.attending
@@ -188,7 +195,7 @@ export default function StepGuests({
               {/* RIGHT */}
               <div className="flex items-center gap-4">
                 <span className="text-[10px] uppercase tracking-[0.3em] text-[#6b1f2b]/40">
-                  {guest.attending ? "prezent" : "atinge"}
+                  {guest.attending ? "confirmat" : "apasă pentru confirmare"}
                 </span>
 
                 {/* CHECK */}
@@ -241,11 +248,11 @@ export default function StepGuests({
                     onChange={(e) => updateDietary(index, e.target.value as DietaryOption)}
                     className={rsvpStyles.select}
                   >
-                    <option value="none">Fără restricții</option>
+                    <option value="none">Menu Clasic</option>
                     <option value="vegetarian">Vegetarian</option>
                     <option value="vegan">Vegan</option>
                     <option value="gluten-free">Fără gluten</option>
-                    <option value="other">Altceva</option>
+                    <option value="other">Alte restricții</option>
                   </select>
                 </motion.div>
               )}
@@ -286,11 +293,11 @@ export default function StepGuests({
                   onChange={(e) => updateExtraGuest(index, "dietary", e.target.value)}
                   className={rsvpStyles.select}
                 >
-                  <option value="none">Fără restricții</option>
+                  <option value="none">Menu Clasic</option>
                   <option value="vegetarian">Vegetarian</option>
                   <option value="vegan">Vegan</option>
                   <option value="gluten-free">Fără gluten</option>
-                  <option value="other">Altceva</option>
+                  <option value="other">Alte restricții</option>
                 </select>
 
                 <button

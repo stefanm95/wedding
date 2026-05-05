@@ -2,8 +2,8 @@ import { db } from "@/lib/firebase";
 import { cn } from "@utils/cn";
 import { collection, getDocs } from "firebase/firestore";
 import { motion } from "framer-motion";
-import { rsvpStyles } from "./rsvpStyles";
 import { useEffect, useMemo, useState } from "react";
+import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 import type { GuestGroup } from "@/types/rsvp";
@@ -91,14 +91,14 @@ export default function StepName({ value, onSelectGroup, onConfirm, onBack }: Pr
 
       {/* ✨ HEADER */}
       <div className="space-y-6">
-        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Invitația ta</p>
+        <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Confrimare</p>
 
         <h2 className="script-cormorant-display text-[34px] leading-tight text-[#3d2b1f]">
           Cum te regăsim pe listă?
         </h2>
 
         <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-[#3d2b1f]/75">
-          Scrie numele tău sau al familiei, exact cum apare pe invitație.
+          Scrie numele tău sau al familiei si alege grupul corespunzător.
         </p>
       </div>
 

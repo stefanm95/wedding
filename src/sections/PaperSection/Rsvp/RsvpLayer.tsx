@@ -33,7 +33,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
       guests: group.members.map((member) => ({
         id: getMemberId(member),
         name: getMemberName(member),
-        attending: true,
+        attending: false,
         dietary: "none",
       })),
       extraGuests: [],
