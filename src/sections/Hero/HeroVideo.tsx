@@ -1,6 +1,6 @@
-import { motion, useTransform, useScroll } from "framer-motion";
-import { useEffect, useState } from "react";
 import type { HeroVideoProps } from "@/types/hero";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const [light, setLight] = useState(0);
@@ -49,10 +49,10 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const navItemOpacity = useTransform(revealProgress, [0, 1], [0, 1]);
 
   const navItems = [
-    { id: "paper-hero", label: "invitație", y: navItemY1 },
-    { id: "story", label: "poveste", y: navItemY2 },
-    { id: "program", label: "program", y: navItemY3 },
-    { id: "rsvp", label: "rsvp", y: navItemY4 },
+    { id: "paper-hero", label: "Invitație", y: navItemY1 },
+    { id: "story", label: "Poveste", y: navItemY2 },
+    { id: "program", label: "Program", y: navItemY3 },
+    { id: "rsvp", label: "Confirmare", y: navItemY4 },
   ];
 
   return (
@@ -76,7 +76,7 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
             }}
           >
             <motion.p
-              className="script-castlegar mb-12 text-8xl text-white/90"
+              className="script-castlegar mb-12 text-8xl text-white"
               variants={{
                 hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
                 show: {
@@ -108,27 +108,27 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
               `,
               }}
             >
-              Denisa & Iuli
+              Denisa & Iulian
             </motion.h1>
 
             <motion.p
-              className="mt-6 text-base tracking-[0.3em] text-white/80"
+              className="script-cormorant-display mt-12 text-lg tracking-[0.4em] text-white"
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                show: { opacity: 0.9, y: 0 },
+                show: { opacity: 1, y: 0 },
               }}
             >
               22 August 2026
             </motion.p>
 
             <motion.p
-              className="script-cormorant tracking-[0.125em] text-white/80"
+              className="script-cormorant-display mt-1 text-lg tracking-[0.1em] text-white"
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                show: { opacity: 0.9, y: 0 },
+                show: { opacity: 1, y: 0 },
               }}
             >
-              Padurile Regale
+              Pădurile Regale
             </motion.p>
           </motion.div>
         </div>

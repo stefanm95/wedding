@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
 
-import HeroVideo from "./HeroVideo";
 import HeroIntro from "./HeroIntro";
+import HeroVideo from "./HeroVideo";
 
 import CinematicOverlay from "@components/CinematicOverlay";
 
@@ -61,7 +61,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
       {/* ✨ TEXT + SCROLL */}
       <HeroVideo opened={opened} paperRef={paperRef} />
 
-      <CinematicOverlay intensity={1} />
+      <CinematicOverlay intensity={opened ? 0 : 1} />
 
       {/* 🎭 INTRO */}
       <motion.div

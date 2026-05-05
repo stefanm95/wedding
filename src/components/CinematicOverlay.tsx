@@ -26,7 +26,7 @@ export default function CinematicOverlay({ intensity = 3 }: Props) {
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777956948/grain2_icfdek.jpg')",
+            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777957004/grain3_sqtxx0.jpg')",
           mixBlendMode: "overlay",
           opacity: 0.06 * intensity,
         }}

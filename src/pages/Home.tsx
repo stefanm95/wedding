@@ -1,10 +1,10 @@
 import { useDevice } from "@/hooks/useDevice";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import FloatingNav from "@/components/FloatingNav";
 import ScrollProgress from "@/components/ScrollProgress";
+import PaperSection from "@paper/PaperSection";
 import Hero from "@sections/Hero/Hero";
-const PaperSection = lazy(() => import("@paper/PaperSection"));
 
 type Section = {
   id: string;
@@ -15,7 +15,7 @@ const sections: Section[] = [
   { id: "paper-hero", label: "Invitație" },
   { id: "story", label: "Poveste" },
   { id: "program", label: "Program" },
-  { id: "rsvp", label: "RSVP" },
+  { id: "rsvp", label: "Confirmare" },
 ];
 
 function Home() {
@@ -74,10 +74,8 @@ function Home() {
         {/* spacer */}
         <div className="h-screen" />
 
-        {/* paper - lazy loaded (STEP 7) */}
-        <Suspense fallback={<div className="h-screen" />}>
-          <PaperSection ref={paperRef} opened={opened} className="pointer-events-auto" />
-        </Suspense>
+        {/* paper */}
+        <PaperSection ref={paperRef} opened={opened} className="pointer-events-auto" />
       </div>
     </div>
   );
