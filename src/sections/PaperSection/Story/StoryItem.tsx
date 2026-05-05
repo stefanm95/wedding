@@ -85,9 +85,6 @@ function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean 
   return (
     <div className="mx-auto grid min-h-[26em] max-w-6xl items-start gap-12 md:gap-16 lg:grid-cols-2 lg:gap-40">
       <div className={cn("mx-auto w-full text-left", textClass, !isLeft && "lg:order-2")}>
-        {item.date && (
-          <p className="mb-5 text-[12px] tracking-[0.45em] text-[#5a1e28]/60">{item.date}</p>
-        )}
         <h3 className="script-gary-display mb-5 leading-[1.3] text-[#5a1e28] md:text-[38px]">
           {item.title}
         </h3>

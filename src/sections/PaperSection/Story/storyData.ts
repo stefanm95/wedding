@@ -16,23 +16,23 @@ export const storyData: StoryItemType[] = [
   {
     side: "left",
     title: "Totul a început...",
-    text: "fără să știm, nu a fost o întâlnire planificată. Nu a fost un moment spectaculos. Dar dintr-o întâmplare simplă, a început ceva ce avea să devină totul.",
+    text: "cu o invitație simplă, aproape banală, între două prietene: „Hai la film!”, iar uneori cele mai mici gesturi deschid cele mai mari povești. Într-o zi în care gândurile Denisei aveau nevoie de o pauză de la paginile de învățat, a înflorit dorința de a evada într-un film. Miruna, ca un mesager al întâmplării, i-a propus cinematograful din Plazza Mall și filmul Puss in Boots. În același timp, pe un fir paralel al destinului, dorința lui Iulian nu îi aparținea lui, ci prietenului său Dorico, care dorea să revadă un film vechi, premiat, revenit pe marile ecrane în același cinematograf. Două filme. Două începuturi. Un singur loc. Când filmul Denisei se terminase, iar al lui Iulian abia urma să înceapă, drumurile lor s-au intersectat pentru prima dată - nu într-un cadru grandios, ci pe o scară rulantă, undeva între „început” și „pentru totdeauna”. Ea cobora. El urca. În timp ce secundele pe scara rulantă se scurgeau, Iulian i-a recunoscut pe Miruna și iubitul ei George, iar Denisa… Denisa a observat altceva. Sau, mai bine spus, pe cineva, un băiat blond cu ochi albaștri.",
     image:
       "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder01_wuxuwc.jpg",
     date: "2021",
   },
   {
     side: "right",
-    title: "Într-o zi obisnuita...",
-    text: "timpul parcă s-a oprit, iar întrebarea aceea simplă a devenit începutul unui nou capitol.",
+    title: "Și uneori, o secundă e suficientă ca să rămână în gând o săptămână întreagă",
+    text: "Au urmat zile de dezbateri, de întrebări, de „cine era el?”. Apoi, o decizie: nu toate poveștile trebuie lăsate în voia întâmplării.A început o mică „misiune”: să fie găsit băiatul blond cu ochi albaștri.La o săptămână după Scara Rulantă, într-o duminică liniștită, destinul a mai făcut un pas.Un mesaj a ajuns la Iulian: simplu, dar încărcat de mister. George voia să știe cine mai fusese cu el la cinema, pentru că… o fată rămăsese cu gândul la unul dintre ei.Cu o ușoară ezitare, dar și cu un dram de curaj, Iulian a făcut ceea ce părea firesc — a trimis mai departe paginile prietenilor săi, ca și cum și-ar fi ascuns propria dorință printre ele.Dar destinul nu iubește jumătățile de măsură.„Îi dau și profilul tău… cine știe”, a venit răspunsul lui George o propoziție mică, dar suficient cât să aprindă o lumină.",
     image:
       "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder02_lb9ble.jpg",
     date: "2024",
   },
   {
     side: "left",
-    title: "O lume construita împreuna",
-    text: "Nu doar noi doi, ci toți cei care ne sunt alături. O familie, o poveste, o viață care crește în fiecare zi.",
+    title: "Și, uneori, „cine știe” e exact începutul.",
+    text: "Câteva momente mai târziu, un gest discret, dar plin de emoție: o cerere de follow. Nu era doar un click. Era o punte. Iulian a privit numele, a zâmbit ușor și, cu o sinceritate care nu avea nevoie de multe cuvinte, a spus: „E drăguță.” Pe 14 Februarie, la un story pe Instagram postat de Denisa cu un trandafir a apărut primul mesaj de la Iulian.„Roses are red, Violets are blueNice to meet you!”Și de acolo, povestea a început să respire:printre cafele la Origo,plimbări în Grădina Botanică,ceaiuri liniștite la Infiniteași momente care, încet, au transformat necunoscutul în „noi”.Pentru că uneori, dragostea nu începe cu un plan.Ci cu o scară rulantă, o privire și curajul de a spune… „Bună.”",
     image:
       "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder03_fa7w1l.jpg",
     date: "2026",
