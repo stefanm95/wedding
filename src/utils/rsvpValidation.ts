@@ -94,6 +94,23 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
     return { ok: false, message: "Ai depasit limita de invitati." };
   }
 
+  // 🔥 transport validation
+  if (form.transport?.type === "bus") {
+    if (!form.transport.seatsRequested || form.transport.seatsRequested < 1) {
+      return {
+        ok: false,
+        message: "Selectează câte persoane folosesc transportul.",
+      };
+    }
+
+    if (form.transport.seatsRequested > confirmedCount) {
+      return {
+        ok: false,
+        message: "Numărul de locuri depășește invitații confirmați.",
+      };
+    }
+  }
+
   return { ok: true };
 };
 

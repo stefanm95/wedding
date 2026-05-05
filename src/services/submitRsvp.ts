@@ -63,6 +63,16 @@ export async function submitRsvp({
 
     const needsTransport = transport?.type === "bus";
 
+    if (transport?.type === "bus") {
+      if (!transport.seatsRequested || transport.seatsRequested < 1) {
+        throw new Error("Transport invalid");
+      }
+
+      if (transport.seatsRequested > confirmedCount) {
+        throw new Error("Prea multe locuri solicitate");
+      }
+    }
+
     const data: FirestoreRsvp & {
       attendingCount: number;
       totalGuests: number;

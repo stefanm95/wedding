@@ -15,6 +15,7 @@ export type RSVPGuest = {
 export type RSVPTransport = {
   type: TransportType;
   pickupLocation?: string;
+  seatsRequested?: number;
 };
 
 export type RSVPFormData = {
