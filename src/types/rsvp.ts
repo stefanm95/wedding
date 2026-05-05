@@ -9,6 +9,7 @@ export type RSVPGuest = {
   name: string;
   attending: RSVPStatus;
   dietary?: DietaryOption;
+  dietaryNote?: string;
 };
 
 export type RSVPTransport = {

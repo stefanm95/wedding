@@ -62,7 +62,13 @@ export default function StepGuests({
 
   const updateDietary = (index: number, value: DietaryOption) => {
     const updated = [...guests];
-    updated[index] = { ...updated[index], dietary: value };
+
+    updated[index] = {
+      ...updated[index],
+      dietary: value,
+      dietaryNote: value === "other" ? updated[index].dietaryNote : "",
+    };
+
     onChange(updated, extraGuests);
   };
 
@@ -76,6 +82,7 @@ export default function StepGuests({
         name: "",
         attending: true,
         dietary: "none",
+        dietaryNote: "",
       },
     ]);
   };
@@ -93,6 +100,17 @@ export default function StepGuests({
       guests,
       extraGuests.filter((_, i) => i !== index),
     );
+  };
+
+  const updateGuestNote = (index: number, value: string) => {
+    const updated = [...guests];
+
+    updated[index] = {
+      ...updated[index],
+      dietaryNote: value,
+    };
+
+    onChange(updated, extraGuests);
   };
 
   /* ---------------- LOGIC ---------------- */
@@ -249,11 +267,28 @@ export default function StepGuests({
                     className={rsvpStyles.select}
                   >
                     <option value="none">Menu Clasic</option>
-                    <option value="vegetarian">Menu Vegetarian</option>
-                    <option value="vegan">Menu Vegan</option>
                     <option value="menu-copii">Menu Copii</option>
+                    <option value="vegan">Menu Vegan</option>
+                    <option value="vegetarian">Menu Vegetarian</option>
                     <option value="other">Alte restricții</option>
                   </select>
+
+                  {/* 🔥 CONDITIONAL TEXTBOX */}
+                  <AnimatePresence>
+                    {guest.dietary === "other" && (
+                      <motion.input
+                        key="dietary-note"
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        placeholder="Te rugăm să menționezi restricțiile..."
+                        value={guest.dietaryNote || ""}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => updateGuestNote(index, e.target.value)}
+                        className={cn(rsvpStyles.input, "text-center text-sm")}
+                      />
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -294,11 +329,20 @@ export default function StepGuests({
                   className={rsvpStyles.select}
                 >
                   <option value="none">Menu Clasic</option>
-                  <option value="vegetarian">Menu Vegetarian</option>
-                  <option value="vegan">Menu Vegan</option>
                   <option value="menu-copii">Menu Copii</option>
+                  <option value="vegan">Menu Vegan</option>
+                  <option value="vegetarian">Menu Vegetarian</option>
                   <option value="other">Alte restricții</option>
                 </select>
+
+                {guest.dietary === "other" && (
+                  <input
+                    placeholder="Restricții alimentare"
+                    value={guest.dietaryNote || ""}
+                    onChange={(e) => updateExtraGuest(index, "dietaryNote", e.target.value)}
+                    className={cn(rsvpStyles.input, "text-sm")}
+                  />
+                )}
 
                 <button
                   onClick={() => removeExtraGuest(index)}

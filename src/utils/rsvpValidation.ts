@@ -29,6 +29,9 @@ export const normalizeGuest = (guest: RSVPGuest): RSVPGuest => ({
   name: guest.name.trim(),
   attending: guest.attending,
   dietary: guest.attending ? guest.dietary || "none" : "none",
+
+  // 🔥 IMPORTANT
+  dietaryNote: guest.attending && guest.dietary === "other" ? guest.dietaryNote?.trim() || "" : "",
 });
 
 export const normalizeGuests = (guests: RSVPGuest[]) => guests.map(normalizeGuest);
@@ -58,6 +61,24 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
 
   if (cleanExtraGuests.some((guest) => guest.attending && !guest.name)) {
     return { ok: false, message: "Completeaza numele invitatilor suplimentari." };
+  }
+
+  // 🔥 dietary validation (members)
+  if (form.guests.some((g) => g.attending && g.dietary === "other" && !g.dietaryNote?.trim())) {
+    return {
+      ok: false,
+      message: "Te rugăm să specifici restricțiile alimentare.",
+    };
+  }
+
+  // 🔥 dietary validation (extra guests)
+  if (
+    cleanExtraGuests.some((g) => g.attending && g.dietary === "other" && !g.dietaryNote?.trim())
+  ) {
+    return {
+      ok: false,
+      message: "Completează restricțiile pentru invitații suplimentari.",
+    };
   }
 
   const confirmedCount =
