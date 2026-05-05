@@ -10,7 +10,7 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
       className="relative bg-transparent pb-24 pt-16 opacity-90 md:pb-32 md:pt-24 lg:pb-40"
     >
       {/* HEADER */}
-      <div className="mx-auto mb-12 mt-[4em] h-[12vh] max-w-3xl px-6 text-center md:mb-14 lg:mb-16">
+      <div className="mx-auto mb-8 mt-[4em] h-[12vh] max-w-3xl px-6 text-center md:mb-6 lg:mb-8">
         <p className="mb-4 font-[Castlegar_Caps] uppercase tracking-[0.4em] text-[#6b1f2b]/60">
           Povestea noastră
         </p>
@@ -34,7 +34,7 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
       </div>
 
       {/* 📄 CONTENT */}
-      <div className="relative z-10 mx-auto max-w-6xl px-6 md:px-12">
+      <div className="relative z-10 mx-auto max-w-6xl">
         <Story />
       </div>
     </section>

@@ -1,6 +1,6 @@
 import { storyData } from "./storyData";
-import StoryItem from "./StoryItem";
 import StoryFoldSafeArea from "./StoryFoldSafeArea";
+import StoryItem from "./StoryItem";
 
 export default function Story() {
   const firstGroup = storyData.slice(0, 1);
@@ -8,7 +8,7 @@ export default function Story() {
   const thirdGroup = storyData.slice(2);
 
   return (
-    <section className="relative pt-8 md:pt-12">
+    <section className="relative pt-2 md:pt-2">
       {/* FIRST PART */}
       <div>
         {firstGroup.map((item) => (
@@ -17,7 +17,7 @@ export default function Story() {
       </div>
 
       {/* 🔥 FOLD */}
-      <StoryFoldSafeArea size="lg" />
+      <StoryFoldSafeArea size="md" />
 
       {/* SECOND PART */}
       <div>
