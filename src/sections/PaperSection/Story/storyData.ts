@@ -4,7 +4,7 @@ export type StoryItemType = {
   type?: ItemType;
   side?: "left" | "right";
   title: string;
-  text: string;
+  content: StoryBlock[];
   image?: string;
   date?: string;
   time?: string;
@@ -12,11 +12,84 @@ export type StoryItemType = {
   mapLink?: string;
 };
 
+type StoryBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "highlight"; text: string }
+  | { type: "quote"; text: string }
+  | { type: "spacer" };
+
 export const storyData: StoryItemType[] = [
   {
     side: "left",
     title: "Totul a început...",
-    text: "cu o invitație simplă, aproape banală, între două prietene: „Hai la film!”, iar uneori cele mai mici gesturi deschid cele mai mari povești. Într-o zi în care gândurile Denisei aveau nevoie de o pauză de la paginile de învățat, a înflorit dorința de a evada într-un film. Miruna, ca un mesager al întâmplării, i-a propus cinematograful din Plazza Mall și filmul Puss in Boots. În același timp, pe un fir paralel al destinului, dorința lui Iulian nu îi aparținea lui, ci prietenului său Dorico, care dorea să revadă un film vechi, premiat, revenit pe marile ecrane în același cinematograf. Două filme. Două începuturi. Un singur loc. Când filmul Denisei se terminase, iar al lui Iulian abia urma să înceapă, drumurile lor s-au intersectat pentru prima dată - nu într-un cadru grandios, ci pe o scară rulantă, undeva între „început” și „pentru totdeauna”. Ea cobora. El urca. În timp ce secundele pe scara rulantă se scurgeau, Iulian i-a recunoscut pe Miruna și iubitul ei George, iar Denisa… Denisa a observat altceva. Sau, mai bine spus, pe cineva, un băiat blond cu ochi albaștri.",
+    content: [
+      {
+        type: "paragraph",
+        text: "Cu o invitație simplă, aproape banală, între două prietene:",
+      },
+      {
+        type: "quote",
+        text: "Hai la film!",
+      },
+      {
+        type: "paragraph",
+        text: "Iar uneori, cele mai mici gesturi deschid cele mai mari povești.",
+      },
+
+      {
+        type: "paragraph",
+        text: "Într-o zi în care gândurile Denisei aveau nevoie de o pauză de la paginile de învățat, a înflorit dorința de a evada într-un film.",
+      },
+      {
+        type: "paragraph",
+        text: "Miruna, ca un mesager al întâmplării, i-a propus cinematograful din Plazza Mall și filmul Puss in Boots.",
+      },
+
+      {
+        type: "paragraph",
+        text: "În același timp, pe un fir paralel al destinului, dorința lui Iulian nu îi aparținea lui.",
+      },
+      {
+        type: "paragraph",
+        text: "Ci prietenului său Dorico, care dorea să revadă un film vechi, premiat, revenit pe marile ecrane în același cinematograf.",
+      },
+
+      {
+        type: "highlight",
+        text: "Două filme. Două începuturi. Un singur loc.",
+      },
+
+      {
+        type: "paragraph",
+        text: "Când filmul Denisei se terminase, iar al lui Iulian abia urma să înceapă, drumurile lor s-au intersectat pentru prima dată.",
+      },
+      {
+        type: "paragraph",
+        text: "Nu într-un cadru grandios, ci pe o scară rulantă — undeva între „început” și „pentru totdeauna”.",
+      },
+
+      {
+        type: "highlight",
+        text: "Ea cobora. El urca.",
+      },
+
+      {
+        type: "paragraph",
+        text: "În timp ce secundele pe scara rulantă se scurgeau, Iulian i-a recunoscut pe Miruna și iubitul ei George.",
+      },
+      {
+        type: "paragraph",
+        text: "Iar Denisa… Denisa a observat altceva.",
+      },
+      {
+        type: "paragraph",
+        text: "Sau, mai bine spus, pe cineva:",
+      },
+      {
+        type: "highlight",
+        text: "un băiat blond cu ochi albaștri.",
+      },
+    ],
     image:
       "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder01_wuxuwc.jpg",
     date: "2021",
@@ -24,7 +97,48 @@ export const storyData: StoryItemType[] = [
   {
     side: "right",
     title: "Și uneori, o secundă e suficientă ca să rămână în gând o săptămână întreagă",
-    text: "Au urmat zile de dezbateri, de întrebări, de „cine era el?”. Apoi, o decizie: nu toate poveștile trebuie lăsate în voia întâmplării.A început o mică „misiune”: să fie găsit băiatul blond cu ochi albaștri.La o săptămână după Scara Rulantă, într-o duminică liniștită, destinul a mai făcut un pas.Un mesaj a ajuns la Iulian: simplu, dar încărcat de mister. George voia să știe cine mai fusese cu el la cinema, pentru că… o fată rămăsese cu gândul la unul dintre ei.Cu o ușoară ezitare, dar și cu un dram de curaj, Iulian a făcut ceea ce părea firesc — a trimis mai departe paginile prietenilor săi, ca și cum și-ar fi ascuns propria dorință printre ele.Dar destinul nu iubește jumătățile de măsură.„Îi dau și profilul tău… cine știe”, a venit răspunsul lui George o propoziție mică, dar suficient cât să aprindă o lumină.",
+    content: [
+      {
+        type: "paragraph",
+        text: "Au urmat zile de dezbateri, de întrebări, de „cine era el?”.",
+      },
+      {
+        type: "paragraph",
+        text: "Apoi, o decizie: nu toate poveștile trebuie lăsate în voia întâmplării.",
+      },
+      {
+        type: "paragraph",
+        text: "A început o mică „misiune”: să fie găsit băiatul blond cu ochi albaștri. ",
+      },
+      {
+        type: "paragraph",
+        text: "La o săptămână după Scara Rulantă, într-o duminică liniștită, destinul a mai făcut un pas.",
+      },
+      {
+        type: "paragraph",
+        text: "Un mesaj a ajuns la Iulian: simplu, dar încărcat de mister.",
+      },
+      {
+        type: "paragraph",
+        text: "George voia să știe cine mai fusese cu el la cinema, pentru că… o fată rămăsese cu gândul la unul dintre ei.",
+      },
+      {
+        type: "paragraph",
+        text: "Cu o ușoară ezitare, dar și cu un dram de curaj, Iulian a făcut ceea ce părea firesc — a trimis mai departe paginile prietenilor săi, ca și cum și-ar fi ascuns propria dorință printre ele.",
+      },
+      {
+        type: "highlight",
+        text: "Dar destinul nu iubește jumătățile de măsură.",
+      },
+      {
+        type: "quote",
+        text: "Îi dau și profilul tău… cine știe",
+      },
+      {
+        type: "paragraph",
+        text: "a venit răspunsul lui George — o propoziție mică, dar suficient cât să aprindă o lumină.",
+      },
+    ],
     image:
       "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder02_lb9ble.jpg",
     date: "2024",
@@ -32,7 +146,64 @@ export const storyData: StoryItemType[] = [
   {
     side: "left",
     title: "Și, uneori, „cine știe” e exact începutul.",
-    text: "Câteva momente mai târziu, un gest discret, dar plin de emoție: o cerere de follow. Nu era doar un click. Era o punte. Iulian a privit numele, a zâmbit ușor și, cu o sinceritate care nu avea nevoie de multe cuvinte, a spus: „E drăguță.” Pe 14 Februarie, la un story pe Instagram postat de Denisa cu un trandafir a apărut primul mesaj de la Iulian.„Roses are red, Violets are blueNice to meet you!”Și de acolo, povestea a început să respire:printre cafele la Origo,plimbări în Grădina Botanică,ceaiuri liniștite la Infiniteași momente care, încet, au transformat necunoscutul în „noi”.Pentru că uneori, dragostea nu începe cu un plan.Ci cu o scară rulantă, o privire și curajul de a spune… „Bună.”",
+    content: [
+      {
+        type: "paragraph",
+        text: "Câteva momente mai târziu, un gest discret, dar plin de emoție: o cerere de follow.",
+      },
+      {
+        type: "paragraph",
+        text: "Nu era doar un click. Era o punte.",
+      },
+      {
+        type: "paragraph",
+        text: "Iulian a privit numele, a zâmbit ușor și, cu o sinceritate care nu avea nevoie de multe cuvinte, a spus:",
+      },
+      {
+        type: "quote",
+        text: "E drăguță.",
+      },
+      {
+        type: "paragraph",
+        text: "Pe 14 Februarie, la un story pe Instagram postat de Denisa cu un trandafir, a apărut primul mesaj de la Iulian.",
+      },
+      {
+        type: "quote",
+        text: "Roses are red,\nViolets are blue,\nNice to meet you!",
+      },
+      {
+        type: "highlight",
+        text: "Și de acolo, povestea a început să respire:",
+      },
+      {
+        type: "paragraph",
+        text: "printre cafele la Origo,",
+      },
+      {
+        type: "paragraph",
+        text: "plimbări în Grădina Botanică,",
+      },
+      {
+        type: "paragraph",
+        text: "ceaiuri liniștite la Infinitea",
+      },
+      {
+        type: "paragraph",
+        text: "și momente care, încet, au transformat necunoscutul în „noi”.",
+      },
+      {
+        type: "highlight",
+        text: "Pentru că uneori, dragostea nu începe cu un plan.",
+      },
+      {
+        type: "paragraph",
+        text: "Ci cu o scară rulantă, o privire și curajul de a spune…",
+      },
+      {
+        type: "quote",
+        text: "Bună.",
+      },
+    ],
     image:
       "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder03_fa7w1l.jpg",
     date: "2026",
@@ -42,7 +213,12 @@ export const storyData: StoryItemType[] = [
     type: "event",
     side: "right",
     title: "Ceremonia religioasa",
-    text: "Vom spune „DA” în fața lui Dumnezeu, într-un loc plin de liniște și binecuvântare.",
+    content: [
+      {
+        type: "paragraph",
+        text: "Vom spune „DA” în fața lui Dumnezeu, într-un loc plin de liniște și binecuvântare.",
+      },
+    ],
     location: "Biserica „Sfinții Trei Ierarhi” Fundeni",
     date: "22 August 2026",
     time: "16:00",
@@ -56,7 +232,12 @@ export const storyData: StoryItemType[] = [
     type: "event",
     side: "left",
     title: "Petrecerea",
-    text: "Vom sărbători iubirea noastră într-un cadru natural de poveste.",
+    content: [
+      {
+        type: "paragraph",
+        text: "Vom sărbători iubirea noastră într-un cadru natural de poveste.",
+      },
+    ],
     location: "Pădurile Regale",
     date: "22 August 2026",
     time: "18:30",

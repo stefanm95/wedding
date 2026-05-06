@@ -20,6 +20,42 @@ const reveal: Pick<
 const textClass = "max-w-[480px]";
 const imageClass = "w-full max-w-[340px] sm:max-w-[380px] lg:max-w-[420px]";
 
+function renderContent(item: StoryItemType) {
+  if (!item.content) return null;
+
+  return item.content.map((block, i) => {
+    if (block.type === "spacer") {
+      return <div key={i} className="h-4" />;
+    }
+
+    if (block.type === "quote") {
+      return (
+        <p
+          key={i}
+          className="script-cormorant-display my-4 whitespace-pre-line text-[24px] italic text-[#5a1e28]"
+        >
+          „{block.text}”
+        </p>
+      );
+    }
+
+    if (block.type === "highlight") {
+      return (
+        <p key={i} className="my-3 text-[18px] font-medium tracking-wide text-[#5a1e28]">
+          {block.text}
+        </p>
+      );
+    }
+
+    // ✅ aici TypeScript știe că e paragraph
+    return (
+      <p key={i} className="script-cormorant-display text-[16px] leading-[1.9] text-[#5a1e28]/75">
+        {block.text}
+      </p>
+    );
+  });
+}
+
 function StoryImage({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
   if (!item.image) return null;
 
@@ -54,11 +90,9 @@ function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
             {item.title}
           </h3>
 
-          <p className="script-cormorant-display mb-7 text-[20px] leading-[1.8] text-[#5a1e28]/75">
-            {item.text}
-          </p>
+          <div className="space-y-3">{renderContent(item)}</div>
 
-          <div className="space-y-2 text-[15px] uppercase tracking-[0.18em] text-[#5a1e28]/70">
+          <div className="mt-6 space-y-2 text-[15px] uppercase tracking-[0.18em] text-[#5a1e28]/70">
             {item.time && <p>{item.time}</p>}
             {item.location && <p>{item.location}</p>}
           </div>
@@ -85,13 +119,11 @@ function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean 
   return (
     <div className="mx-auto grid min-h-[26em] max-w-6xl items-start gap-12 md:gap-16 lg:grid-cols-2 lg:gap-40">
       <div className={cn("mx-auto w-full text-left", textClass, !isLeft && "lg:order-2")}>
-        <h3 className="script-gary-display mb-5 leading-[1.3] text-[#5a1e28] md:text-[38px]">
+        <h3 className="script-gary-display mb-4 leading-[1.3] text-[#5a1e28] md:text-[24px]">
           {item.title}
         </h3>
 
-        <p className="script-cormorant-display text-[22px] leading-[1.8] text-[#5a1e28]/75 lg:text-[19px] lg:leading-[2]">
-          {item.text}
-        </p>
+        <div className="space-y-3">{renderContent(item)}</div>
       </div>
 
       <StoryImage item={item} isLeft={isLeft} />
