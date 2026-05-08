@@ -75,6 +75,9 @@ export default function EditRsvpModal({ row, onClose, onSave }: any) {
       name: "",
       attending: true,
       dietary: "none",
+      transport: {
+        type: "none",
+      },
     };
 
     setForm((p) =>

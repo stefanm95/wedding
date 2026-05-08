@@ -12,12 +12,6 @@ type Props = {
 export default function StepConfirm({ form, onNext, onBack }: Props) {
   const attendingGuests = [...form.guests, ...form.extraGuests].filter((g) => g.attending);
 
-  const transportLabel = {
-    none: "Nu este necesar transport",
-    bus: "Transport organizat",
-    personal: "Venim cu mașina",
-  }[form.transport?.type || "none"];
-
   return (
     <motion.div
       variants={stepVariants}
@@ -83,7 +77,27 @@ export default function StepConfirm({ form, onNext, onBack }: Props) {
         <div>
           <p className="text-[11px] uppercase tracking-[0.3em] text-[#6b1f2b]/50">Transport</p>
 
-          <p className="mt-2 text-[16px]">{transportLabel}</p>
+          <div className="mt-4 space-y-3">
+            {attendingGuests.map((guest) => (
+              <div
+                key={guest.id}
+                className="border border-[#c9a46c]/30 bg-white/30 px-4 py-3 text-left"
+              >
+                <p className="text-[15px] text-[#3d2b1f]">
+                  <strong>{guest.name}</strong>
+                </p>
+
+                <p className="mt-1 text-[14px] text-[#3d2b1f]/75">
+                  {guest.transport?.type === "bus" &&
+                    `Transport organizat (${guest.transport.locationId})`}
+
+                  {guest.transport?.type === "personal" && "Mașină personală"}
+
+                  {guest.transport?.type === "none" && "Fără transport"}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Divider */}

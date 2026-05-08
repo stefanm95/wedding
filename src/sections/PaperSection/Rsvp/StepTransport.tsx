@@ -1,31 +1,49 @@
-import type { RSVPTransport, TransportType } from "@/types/rsvp";
+import type { GuestTransport, RSVPGuest, TransportType } from "@/types/rsvp";
+
+import { TRANSPORT_LOCATIONS, type TransportLocationId } from "@/data/transportOptions";
+
 import { cn } from "@utils/cn";
 import { motion } from "framer-motion";
+
 import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
 
 type Props = {
-  value: RSVPTransport;
-  maxGuests: number;
-  onChange: (val: RSVPTransport) => void;
+  guests: RSVPGuest[];
+  extraGuests: RSVPGuest[];
+
+  onChange: (guests: RSVPGuest[], extraGuests: RSVPGuest[]) => void;
+
   onNext: () => void;
   onBack: () => void;
 };
 
-const OPTIONS: { label: string; value: TransportType }[] = [
-  { label: "Nu avem nevoie", value: "none" },
-  { label: "Transport organizat", value: "bus" },
-  { label: "Venim cu mașina", value: "personal" },
-];
+export default function StepTransport({ guests, extraGuests, onChange, onNext, onBack }: Props) {
+  const attendingGuests = [...guests, ...extraGuests].filter((g) => g.attending);
 
-export default function StepTransport({ value, maxGuests, onChange, onNext, onBack }: Props) {
-  const isSelected = (type: TransportType) => value?.type === type;
+  function updateGuestTransport(guestId: string, transport: GuestTransport) {
+    const updateList = (list: RSVPGuest[]) =>
+      list.map((guest) =>
+        guest.id === guestId
+          ? {
+              ...guest,
+              transport,
+            }
+          : guest,
+      );
 
-  const safeCount = Math.max(maxGuests, 1);
+    onChange(updateList(guests), updateList(extraGuests));
+  }
 
-  const hasSelection = value.seatsRequested !== undefined;
+  const isValid = attendingGuests.every((guest) => {
+    if (!guest.transport) return false;
 
-  const isValid = value.type !== "bus" || hasSelection;
+    if (guest.transport.type !== "bus") {
+      return true;
+    }
+
+    return Boolean(guest.transport.locationId);
+  });
 
   return (
     <motion.div
@@ -48,124 +66,87 @@ export default function StepTransport({ value, maxGuests, onChange, onNext, onBa
       <div className="space-y-6 text-center">
         <p className="text-[11px] uppercase tracking-[0.4em] text-[#6b1f2b]/50">Organizare</p>
 
-        <h2 className="script-cormorant-display text-[34px] text-[#3d2b1f]">
-          Cum ajungi la eveniment?
-        </h2>
+        <h2 className="script-cormorant-display text-[34px] text-[#3d2b1f]">Cum ajunge fiecare?</h2>
 
         <p className="mx-auto max-w-[420px] text-[15px] text-[#3d2b1f]/75">
-          Pentru a ne organiza mai bine, spune-ne cum plănuiești să ajungi.
+          Ajută-ne să organizăm transportul pentru fiecare invitat.
         </p>
       </div>
 
-      {/* OPTIONS */}
-      <div className="space-y-4 pt-6">
-        {OPTIONS.map((opt) => (
-          <div key={opt.value}>
-            <button
-              onClick={() => {
-                if (opt.value === "bus") {
-                  onChange({
-                    type: "bus",
-                    seatsRequested: undefined, // 🔥 user trebuie să aleagă
-                  });
-                } else {
-                  onChange({ type: opt.value });
+      {/* GUESTS */}
+      <div className="space-y-5 pt-8">
+        {attendingGuests.map((guest) => {
+          const transport = guest.transport;
+
+          const selectedLocation = TRANSPORT_LOCATIONS.find(
+            (location) => location.id === transport?.locationId,
+          );
+
+          return (
+            <div key={guest.id} className="rounded-sm border border-[#6b1f2b]/10 bg-white/10 p-5">
+              <h3 className="mb-4 text-[18px] text-[#3d2b1f]">{guest.name}</h3>
+
+              {/* TYPE */}
+              <select
+                title="tipul"
+                value={transport?.type || "none"}
+                onChange={(e) =>
+                  updateGuestTransport(guest.id, {
+                    type: e.target.value as TransportType,
+                  })
                 }
-              }}
-              className={cn(
-                rsvpStyles.option,
-                "text-center",
-                isSelected(opt.value)
-                  ? "border-[#c9a46c] bg-white/25 text-[#3d2b1f]"
-                  : "border-[#6b1f2b]/15",
-              )}
-            >
-              {opt.label}
-            </button>
-
-            {/* BUS INFO */}
-            {opt.value === "bus" && isSelected("bus") && (
-              <motion.div
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="overflow-hidden"
+                className={rsvpStyles.select}
               >
+                <option value="none">Nu are nevoie de transport</option>
+
+                <option value="personal">Vine cu mașina personală</option>
+
+                <option value="bus">Transport organizat</option>
+              </select>
+
+              {/* BUS */}
+              {transport?.type === "bus" && (
                 <div className="mt-4 space-y-4 border-l border-[#c9a46c] pl-4">
-                  {/* TEXT */}
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.25em] text-[#6b1f2b]/60">
-                      Detalii transport
-                    </p>
+                  <select
+                    title="location"
+                    value={transport.locationId || ""}
+                    onChange={(e) =>
+                      updateGuestTransport(guest.id, {
+                        type: "bus",
+                        locationId: e.target.value as TransportLocationId,
+                      })
+                    }
+                    className={rsvpStyles.select}
+                  >
+                    <option value="">Alege locația plecării</option>
 
-                    <p className="mt-2 text-[14px] text-[#3d2b1f]/80">
-                      Plecarea va avea loc din <strong>Piața Unirii</strong> la ora{" "}
-                      <strong>15:30</strong>.
-                    </p>
+                    {TRANSPORT_LOCATIONS.map((location) => (
+                      <option key={location.id} value={location.id}>
+                        {location.label}
+                      </option>
+                    ))}
+                  </select>
 
-                    <p className="mt-1 text-[14px] text-[#3d2b1f]/70">
-                      Te rugăm să fii acolo cu 10 minute înainte.
-                    </p>
-                  </div>
-
-                  {/* SELECTOR */}
-                  <div className="pt-3">
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-[#6b1f2b]/60">
-                      Câte persoane vor folosi transportul?
-                    </p>
-
-                    <p className="mt-1 text-[12px] text-[#3d2b1f]/60">
-                      Poți selecta până la {maxGuests} persoane
-                    </p>
-
-                    {/* 🔴 dacă NU e selectat nimic */}
-                    {value.seatsRequested === undefined && (
-                      <p className="mt-2 text-[12px] text-[#6b1f2b]/70">
-                        Alege numărul de persoane
+                  {selectedLocation && (
+                    <div className="space-y-2 text-[14px] text-[#3d2b1f]/80">
+                      <p>
+                        Plecare: <strong>{selectedLocation.departurePlace}</strong>
                       </p>
-                    )}
 
-                    {/* 🔥 SELECTOR REAL */}
-                    <div className="mt-3 grid grid-cols-4 gap-2 bg-red-200">
-                      {Array.from({ length: safeCount }, (_, i) => i + 1).map((n) => {
-                        const selected = value.seatsRequested === n;
+                      <p>
+                        Ora: <strong>{selectedLocation.departureTime}</strong>
+                      </p>
 
-                        return (
-                          <button
-                            key={n}
-                            onClick={() =>
-                              onChange({
-                                type: "bus",
-                                seatsRequested: n,
-                              })
-                            }
-                            className={cn(
-                              "rounded-sm border py-2 text-sm transition-all",
-
-                              selected
-                                ? "border-[#c9a46c] bg-[#fdf7ed] text-[#3d2b1f] shadow-sm"
-                                : "border-[#6b1f2b]/15 text-[#3d2b1f]/70 hover:bg-white/20",
-                            )}
-                          >
-                            {n}
-                          </button>
-                        );
-                      })}
+                      {selectedLocation.description && (
+                        <p className="text-[#3d2b1f]/65">{selectedLocation.description}</p>
+                      )}
                     </div>
-
-                    {/* 🔥 FEEDBACK */}
-                    {value.seatsRequested !== undefined && (
-                      <p className="mt-2 text-[12px] text-[#3d2b1f]/70">
-                        {value.seatsRequested}{" "}
-                        {value.seatsRequested === 1 ? "persoană va folosi" : "persoane vor folosi"}{" "}
-                        transportul
-                      </p>
-                    )}
-                  </div>
+                  )}
                 </div>
-              </motion.div>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* CTA */}

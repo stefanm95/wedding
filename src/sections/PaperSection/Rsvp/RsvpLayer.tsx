@@ -35,6 +35,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
         name: getMemberName(member),
         attending: false,
         dietary: "none",
+        transport: { type: "none" },
       })),
       extraGuests: [],
       maxGuests: group.maxGuests,
@@ -79,7 +80,6 @@ export default function RsvpLayerInline({ onComplete }: Props) {
               : prev.extraGuests,
 
             message: rsvp.message ?? prev.message,
-            transport: rsvp.transport ?? prev.transport ?? { type: "none" },
           };
         });
       } catch (err) {

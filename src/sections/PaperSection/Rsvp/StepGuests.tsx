@@ -83,6 +83,9 @@ export default function StepGuests({
         attending: true,
         dietary: "none",
         dietaryNote: "",
+        transport: {
+          type: "none",
+        },
       },
     ]);
   };

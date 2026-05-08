@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase";
-import type { FirestoreRsvp, RSVPGuest, RSVPTransport } from "@/types/rsvp";
+import type { FirestoreRsvp, RSVPGuest } from "@/types/rsvp";
 import { getMemberId, normalizeGuests } from "@/utils/rsvpValidation";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 
@@ -8,16 +8,9 @@ type SubmitRsvpParams = {
   guests: RSVPGuest[];
   extraGuests: RSVPGuest[];
   message?: string;
-  transport?: RSVPTransport;
 };
 
-export async function submitRsvp({
-  groupId,
-  guests,
-  extraGuests,
-  message,
-  transport,
-}: SubmitRsvpParams) {
+export async function submitRsvp({ groupId, guests, extraGuests, message }: SubmitRsvpParams) {
   const groupRef = doc(db, "guestGroups", groupId);
   const rsvpRef = doc(db, "rsvps", groupId);
 
@@ -61,17 +54,7 @@ export async function submitRsvp({
       throw new Error("Depasire limita invitati");
     }
 
-    const needsTransport = transport?.type === "bus";
-
-    if (transport?.type === "bus") {
-      if (!transport.seatsRequested || transport.seatsRequested < 1) {
-        throw new Error("Transport invalid");
-      }
-
-      if (transport.seatsRequested > confirmedCount) {
-        throw new Error("Prea multe locuri solicitate");
-      }
-    }
+    const needsTransport = confirmedGuests.some((guest) => guest.transport?.type === "bus");
 
     const data: FirestoreRsvp & {
       attendingCount: number;
@@ -86,13 +69,12 @@ export async function submitRsvp({
 
       attendingCount: confirmedCount,
       totalGuests,
-      needsTransport,
       status,
+      needsTransport,
       createdAt: serverTimestamp(),
       respondedAt: serverTimestamp(),
 
       message: message?.trim() || "",
-      transport: transport ?? null,
     };
 
     tx.set(rsvpRef, data, { merge: true });
@@ -101,7 +83,6 @@ export async function submitRsvp({
       hasResponded: true,
       attendingCount: confirmedCount,
       totalGuests,
-      needsTransport,
       respondedAt: serverTimestamp(),
     });
   });

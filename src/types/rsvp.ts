@@ -1,8 +1,15 @@
+import type { TransportLocationId } from "@/data/transportOptions";
+
 export type RSVPStatus = true | false;
 
 export type TransportType = "none" | "bus" | "personal";
 
 export type DietaryOption = "none" | "vegetarian" | "vegan" | "menu-copii" | "other";
+
+export type GuestTransport = {
+  type: TransportType;
+  locationId?: TransportLocationId;
+};
 
 export type RSVPGuest = {
   id: string;
@@ -10,12 +17,7 @@ export type RSVPGuest = {
   attending: RSVPStatus;
   dietary?: DietaryOption;
   dietaryNote?: string;
-};
-
-export type RSVPTransport = {
-  type: TransportType;
-  pickupLocation?: string;
-  seatsRequested?: number;
+  transport?: GuestTransport;
 };
 
 export type RSVPFormData = {
@@ -29,7 +31,6 @@ export type RSVPFormData = {
   maxGuests: number;
 
   message?: string;
-  transport?: RSVPTransport;
 
   createdAt?: number;
 };
@@ -49,12 +50,13 @@ export type GuestGroupMember =
       id?: string;
       name: string;
     };
+
 export type FirestoreRsvp = {
   groupId: string;
   guests: RSVPGuest[];
   extraGuests: RSVPGuest[];
   message?: string;
-  transport?: RSVPTransport | null;
+
   createdAt: any;
 };
 
@@ -66,7 +68,4 @@ export const defaultRSVP: RSVPFormData = {
   extraGuests: [],
   maxGuests: 0,
   message: "",
-  transport: {
-    type: "none",
-  },
 };

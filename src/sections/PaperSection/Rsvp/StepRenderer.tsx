@@ -48,12 +48,13 @@ export default function StepRenderer({ step, onBack, onNext, form, setForm, onSe
     case "transport":
       return (
         <StepTransport
-          value={form.transport}
-          maxGuests={form.maxGuests}
-          onChange={(transport) =>
+          guests={form.guests}
+          extraGuests={form.extraGuests}
+          onChange={(guests, extraGuests) =>
             setForm((prev: RSVPFormData) => ({
               ...prev,
-              transport,
+              guests,
+              extraGuests,
             }))
           }
           onNext={onNext}

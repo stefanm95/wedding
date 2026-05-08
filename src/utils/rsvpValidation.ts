@@ -29,7 +29,9 @@ export const normalizeGuest = (guest: RSVPGuest): RSVPGuest => ({
   name: guest.name.trim(),
   attending: guest.attending,
   dietary: guest.attending ? guest.dietary || "none" : "none",
-
+  transport: guest.transport || {
+    type: "none",
+  },
   // 🔥 IMPORTANT
   dietaryNote: guest.attending && guest.dietary === "other" ? guest.dietaryNote?.trim() || "" : "",
 });
@@ -95,20 +97,25 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
   }
 
   // 🔥 transport validation
-  if (form.transport?.type === "bus") {
-    if (!form.transport.seatsRequested || form.transport.seatsRequested < 1) {
-      return {
-        ok: false,
-        message: "Selectează câte persoane folosesc transportul.",
-      };
+  const attendingGuests = [...form.guests, ...cleanExtraGuests].filter((guest) => guest.attending);
+
+  const invalidTransport = attendingGuests.some((guest) => {
+    if (!guest.transport) {
+      return true;
     }
 
-    if (form.transport.seatsRequested > confirmedCount) {
-      return {
-        ok: false,
-        message: "Numărul de locuri depășește invitații confirmați.",
-      };
+    if (guest.transport.type !== "bus") {
+      return false;
     }
+
+    return !guest.transport.locationId;
+  });
+
+  if (invalidTransport) {
+    return {
+      ok: false,
+      message: "Completează transportul pentru invitați.",
+    };
   }
 
   return { ok: true };
