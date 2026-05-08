@@ -158,7 +158,7 @@ export const storyData: StoryItemType[] = [
     side: "left",
     title: "Și, uneori, „cine știe” e exact începutul.",
     offset: {
-      wrapper: "md:-mt-24 lg:-mt-24",
+      wrapper: "md:-mt-24 lg:-mt-12",
       text: "lg:-translate-y-44",
       image: "lg:translate-y-24",
     },

@@ -42,7 +42,7 @@ function renderContent(item: StoryItemType) {
       return (
         <p
           key={i}
-          className="text-[18px] font-medium leading-[1.5] tracking-[0.02em] text-[#5a1e28] sm:text-[20px] lg:text-[22px]"
+          className="script-gary-display text-[18px] font-medium leading-[1.5] tracking-[0.02em] text-[#5a1e28] sm:text-[20px] lg:text-[22px]"
         >
           {block.text}
         </p>
