@@ -25,7 +25,7 @@ export default function StoryFoldSafeArea({
     sm: "h-[clamp(100px,14vh,180px)] md:h-[clamp(140px,18vh,220px)] lg:h-[clamp(90px,10vh,140px)]",
 
     // 🔥 your tuned values
-    md: "h-[clamp(320px,34vh,420px)] md:h-[clamp(180px,21vh,280px)] lg:h-[clamp(100px,10vh,160px)]",
+    md: "h-[clamp(140px,18vh,220px)] md:h-[clamp(120px,14vh,180px)] lg:h-[80px]",
 
     lg: "h-[clamp(160px,20vh,260px)] md:h-[clamp(220px,24vh,320px)] lg:h-[clamp(280px,28vh,420px)]",
   };

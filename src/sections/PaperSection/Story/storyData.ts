@@ -10,6 +10,7 @@ export type StoryItemType = {
   time?: string;
   location?: string;
   mapLink?: string;
+  offset?: StoryOffset;
 };
 
 type StoryBlock =
@@ -18,10 +19,20 @@ type StoryBlock =
   | { type: "quote"; text: string }
   | { type: "spacer" };
 
+type StoryOffset = {
+  wrapper?: string;
+  text?: string;
+  image?: string;
+};
+
 export const storyData: StoryItemType[] = [
   {
     side: "left",
     title: "Totul a început...",
+    offset: {
+      wrapper: "lg:mt-24",
+      image: "lg:translate-y-32",
+    },
     content: [
       {
         type: "paragraph",
@@ -146,6 +157,11 @@ export const storyData: StoryItemType[] = [
   {
     side: "left",
     title: "Și, uneori, „cine știe” e exact începutul.",
+    offset: {
+      wrapper: "md:-mt-24 lg:-mt-24",
+      text: "lg:-translate-y-44",
+      image: "lg:translate-y-24",
+    },
     content: [
       {
         type: "paragraph",
@@ -213,6 +229,10 @@ export const storyData: StoryItemType[] = [
     type: "event",
     side: "right",
     title: "Ceremonia religioasa",
+    offset: {
+      text: "lg:-translate-y-32",
+      image: "lg:-translate-y-32",
+    },
     content: [
       {
         type: "paragraph",
@@ -232,6 +252,11 @@ export const storyData: StoryItemType[] = [
     type: "event",
     side: "left",
     title: "Petrecerea",
+    offset: {
+      wrapper: "lg:-mt-2",
+      text: "lg:-translate-y-32",
+      image: "lg:-translate-y-32",
+    },
     content: [
       {
         type: "paragraph",

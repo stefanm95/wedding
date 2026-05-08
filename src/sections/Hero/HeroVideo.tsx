@@ -134,7 +134,7 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
         </div>
       </div>
       <motion.div
-        className="pointer-events-auto absolute left-10 top-12 z-30 flex gap-6 text-[11px] tracking-[0.3em] text-white/70"
+        className="pointer-events-auto absolute left-6 top-12 z-30 flex gap-6 text-[11px] tracking-[0.3em] text-white/70"
         style={{
           opacity: opened ? navOpacity : 0,
           y: navY,

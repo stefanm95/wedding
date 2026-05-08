@@ -1,8 +1,11 @@
+import { useDevice } from "@/hooks/useDevice";
 import { storyData } from "./storyData";
 import StoryFoldSafeArea from "./StoryFoldSafeArea";
 import StoryItem from "./StoryItem";
 
 export default function Story() {
+  const { isMobile } = useDevice();
+
   const firstGroup = storyData.slice(0, 1);
   const secondGroup = storyData.slice(1, 2);
   const thirdGroup = storyData.slice(2);
@@ -16,8 +19,8 @@ export default function Story() {
         ))}
       </div>
 
-      {/* 🔥 FOLD */}
-      <StoryFoldSafeArea size="md" />
+      {/* 🔥 FOLD DESKTOP / TABLET ONLY */}
+      {!isMobile && <StoryFoldSafeArea size="lg" />}
 
       {/* SECOND PART */}
       <div>
@@ -25,9 +28,6 @@ export default function Story() {
           <StoryItem key={item.title} item={item} />
         ))}
       </div>
-
-      {/* 🔥 FOLD */}
-      <StoryFoldSafeArea size="sm" />
 
       {/* THIRD PART */}
       <div>
