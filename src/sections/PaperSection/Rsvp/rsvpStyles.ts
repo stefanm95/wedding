@@ -17,7 +17,7 @@ export const rsvpStyles = {
   input:
     "w-full border-b border-[#6b1f2b]/30 bg-transparent pb-2 text-[16px] text-[#3d2b1f] outline-none transition placeholder:text-[#6b1f2b]/35 focus:border-[#6b1f2b]",
   select:
-    "border-b border-[#6b1f2b]/25 bg-transparent pb-1 text-[14px] text-[#3d2b1f]/75 outline-none transition focus:border-[#6b1f2b]",
+    "w-[50%] appearance-none border border-[#6b1f2b]/15 bg-[#f8f4ee]/90 px-4 py-3 text-[14px] text-[#3d2b1f] outline-none transition focus:border-[#c9a46c] focus:bg-white",
   option:
-    "w-full border border-[#6b1f2b]/15 px-5 py-4 text-left text-[15px] text-[#3d2b1f]/80 transition hover:border-[#c9a46c] hover:bg-white/20",
+    "w-[50%] border border-[#6b1f2b]/15 px-5 py-4 text-left text-[15px] text-[#3d2b1f]/80 transition hover:border-[#c9a46c] hover:bg-white/20",
 };

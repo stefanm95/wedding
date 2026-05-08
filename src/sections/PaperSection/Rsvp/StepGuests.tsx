@@ -288,7 +288,7 @@ export default function StepGuests({
                         value={guest.dietaryNote || ""}
                         onClick={(e) => e.stopPropagation()}
                         onChange={(e) => updateGuestNote(index, e.target.value)}
-                        className={cn(rsvpStyles.input, "text-center text-sm")}
+                        className={cn(rsvpStyles.input, "mt-4 text-center text-sm")}
                       />
                     )}
                   </AnimatePresence>
@@ -343,7 +343,7 @@ export default function StepGuests({
                     placeholder="Restricții alimentare"
                     value={guest.dietaryNote || ""}
                     onChange={(e) => updateExtraGuest(index, "dietaryNote", e.target.value)}
-                    className={cn(rsvpStyles.input, "text-sm")}
+                    className={cn(rsvpStyles.input, "mt-4 text-sm")}
                   />
                 )}
 

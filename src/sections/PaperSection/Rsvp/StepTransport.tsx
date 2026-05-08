@@ -87,45 +87,71 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
               <h3 className="mb-4 text-[18px] text-[#3d2b1f]">{guest.name}</h3>
 
               {/* TYPE */}
-              <select
-                title="tipul"
-                value={transport?.type || "none"}
-                onChange={(e) =>
-                  updateGuestTransport(guest.id, {
-                    type: e.target.value as TransportType,
-                  })
-                }
-                className={rsvpStyles.select}
-              >
-                <option value="none">Nu are nevoie de transport</option>
+              <div className="relative">
+                <select
+                  title="tipul transportului"
+                  value={transport?.type || "none"}
+                  onChange={(e) =>
+                    updateGuestTransport(guest.id, {
+                      type: e.target.value as TransportType,
+                    })
+                  }
+                  className={cn(rsvpStyles.select, "w-full appearance-none pr-10")}
+                >
+                  <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="none">
+                    Nu are nevoie de transport
+                  </option>
 
-                <option value="personal">Vine cu mașina personală</option>
+                  <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="personal">
+                    Vine cu mașina personală
+                  </option>
 
-                <option value="bus">Transport organizat</option>
-              </select>
+                  <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="bus">
+                    Transport organizat
+                  </option>
+                </select>
+
+                {/* custom arrow */}
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#6b1f2b]/45">
+                  ↓
+                </div>
+              </div>
 
               {/* BUS */}
               {transport?.type === "bus" && (
                 <div className="mt-4 space-y-4 border-l border-[#c9a46c] pl-4">
-                  <select
-                    title="location"
-                    value={transport.locationId || ""}
-                    onChange={(e) =>
-                      updateGuestTransport(guest.id, {
-                        type: "bus",
-                        locationId: e.target.value as TransportLocationId,
-                      })
-                    }
-                    className={rsvpStyles.select}
-                  >
-                    <option value="">Alege locația plecării</option>
-
-                    {TRANSPORT_LOCATIONS.map((location) => (
-                      <option key={location.id} value={location.id}>
-                        {location.label}
+                  <div className="relative">
+                    <select
+                      title="locatie plecare"
+                      value={transport.locationId || ""}
+                      onChange={(e) =>
+                        updateGuestTransport(guest.id, {
+                          type: "bus",
+                          locationId: e.target.value as TransportLocationId,
+                        })
+                      }
+                      className={cn(rsvpStyles.select, "w-full appearance-none pr-10")}
+                    >
+                      <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="">
+                        Alege locația plecării
                       </option>
-                    ))}
-                  </select>
+
+                      {TRANSPORT_LOCATIONS.map((location) => (
+                        <option
+                          key={location.id}
+                          value={location.id}
+                          className="bg-[#f8f4ee] text-[#3d2b1f]"
+                        >
+                          {location.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* custom arrow */}
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#6b1f2b]/45">
+                      ↓
+                    </div>
+                  </div>
 
                   {selectedLocation && (
                     <div className="space-y-2 text-[14px] text-[#3d2b1f]/80">
