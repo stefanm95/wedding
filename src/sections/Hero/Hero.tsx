@@ -47,7 +47,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
             willChange: "filter, transform",
           }}
         >
-          <source src="/assets/video.hero_maxclim.mp4" type="video/mp4" />
+          <source src="/public/assets/video/hero_mxclim.mp4" type="video/mp4" />
         </motion.video>
       </motion.div>
       <div className="pointer-events-none absolute inset-0 bg-[#6b1f2b]/20 mix-blend-multiply" />
