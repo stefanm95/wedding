@@ -78,7 +78,6 @@ export const rsvpMachine: Record<Step, StateConfig> = {
         guests: form.guests,
         extraGuests: form.extraGuests,
         message: form.message,
-        transport: form.transport,
       });
     },
   },
@@ -110,7 +109,6 @@ export const rsvpMachine: Record<Step, StateConfig> = {
         guests,
         extraGuests: [],
         message: "declined",
-        transport: undefined,
       });
     },
   },

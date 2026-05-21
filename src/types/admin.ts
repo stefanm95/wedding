@@ -1,3 +1,5 @@
+import type { GuestTransport } from "@/types/rsvp";
+
 export type AdminUser = {
   uid: string;
   email: string;
@@ -9,6 +11,9 @@ export type AdminGuest = {
   name: string;
   attending: boolean;
   dietary?: string;
+  dietaryNote?: string;
+
+  transport?: GuestTransport;
 };
 
 export type TransportType = "none" | "bus" | "personal";
@@ -33,10 +38,6 @@ export type AdminRow = {
   status: "confirmed" | "declined" | "pending";
 
   needsTransport: boolean;
-
-  transport?: {
-    type: TransportType;
-  };
 
   guests?: AdminGuest[];
   extraGuests: AdminGuest[];

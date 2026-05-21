@@ -17,9 +17,11 @@ export async function updateRsvpAdmin(data: AdminRow) {
   const status =
     coreAttending === 0 ? "declined" : coreAttending === guests.length ? "confirmed" : "pending";
 
-  const transport = data.transport ?? {
-    type: data.needsTransport ? "bus" : "none",
-  };
+  const allGuests = [...guests, ...extraGuests];
+
+  const attendingGuests = allGuests.filter((g) => g.attending);
+
+  const needsTransport = attendingGuests.some((guest) => guest.transport?.type === "bus");
 
   /* ---------------- BUILD NEW HISTORY ENTRY ---------------- */
 
@@ -46,8 +48,7 @@ export async function updateRsvpAdmin(data: AdminRow) {
       attendingCount,
       status,
 
-      transport,
-      needsTransport: transport.type !== "none",
+      needsTransport,
 
       respondedAt: serverTimestamp(),
 
@@ -61,7 +62,7 @@ export async function updateRsvpAdmin(data: AdminRow) {
   await updateDoc(groupRef, {
     hasResponded: true,
     attendingCount,
-    needsTransport: transport.type !== "none",
+    needsTransport,
     respondedAt: serverTimestamp(),
   });
 }
