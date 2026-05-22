@@ -32,7 +32,7 @@ export default function PaperImage({ src, alt, className }: Props) {
         className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply"
         style={{
           backgroundImage:
-            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777956948/grain2_icfdek.jpg')",
+            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354916/wedding/grain/grain2_icfdek_ycvbqh.jpg')",
           backgroundSize: "220px",
         }}
       />

@@ -16,7 +16,7 @@ export default function PolaroidCard() {
           {/* image */}
           <img
             alt="prima amintire"
-            src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777520576/lavanda_zokn81.jpg"
+            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779354943/wedding/couple/lavanda_zokn81_apl1rp.jpg"
             className="/* 🔥 KEY: kill digital sharpness */ h-[240px] w-full object-cover brightness-[0.98] contrast-[0.92] saturate-[0.9] md:h-[420px]"
           />
 

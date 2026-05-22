@@ -148,7 +148,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
       {/* 🌸 background */}
       <div className="pointer-events-none absolute right-[2%] z-0 opacity-40 md:-right-[10%] md:top-[20%] lg:right-[2%] lg:top-[2%]">
         <img
-          src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777956827/bujorr_c7rt37.png"
+          src="https://res.cloudinary.com/djzw55eub/image/upload/v1779354978/wedding/art/bujorr_c7rt37_aufm4f.png"
           alt="peonyemboss"
           className="w-[360px] select-none object-contain md:w-[340px] lg:w-[520px]"
         />

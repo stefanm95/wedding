@@ -17,7 +17,7 @@ export default function EmbossSeal({ className, progress }: Props) {
   const lightOpacity = useTransform(progress, [0, 0.5, 1], [0.15, 0.3, 0.15]);
 
   const mask =
-    "[mask-image:url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777957168/image-1_wps7le.png')]";
+    "[mask-image:url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354994/wedding/art/crest/image-1_wps7le_efnupz.png')]";
 
   const light = useHeroLight();
   const dir = useHeroLightDir();
@@ -67,7 +67,7 @@ export default function EmbossSeal({ className, progress }: Props) {
         )}
         style={{
           backgroundImage:
-            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777957168/image-1_wps7le.png')",
+            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354994/wedding/art/crest/image-1_wps7le_efnupz.png')",
           filter: "contrast(1.05) brightness(0.98)",
         }}
       />

@@ -23,7 +23,7 @@ export default function PaperProgramBlock({ variant, onOpenRsvp, progress }: Pro
       <div className="pointer-events-none absolute inset-0 z-0">
         <img
           alt="paper"
-          src="https://res.cloudinary.com/dswwhzem5/image/upload/v1777958076/paper-cards_pa7rid.jpg"
+          src="https://res.cloudinary.com/djzw55eub/image/upload/v1779354888/wedding/paper/paper-cards_pa7rid_q6q8zq.jpg"
           className="h-full w-full object-cover object-[center_30%] opacity-10 md:object-[center_35%] lg:object-[center_40%]"
         />
       </div>

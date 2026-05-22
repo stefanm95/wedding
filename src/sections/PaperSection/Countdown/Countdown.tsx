@@ -33,7 +33,8 @@ export default function Countdown({ months, days, hours, minutes, seconds }: Ext
           show: { opacity: 1, y: 0 },
         }}
       >
-        NE-AM BCUURA SA FITI ALATURI DE NOI
+        Alături de nasii nostri, Daniela Alexandra & Radu Andrei Botezat-Antonescu vă invităm cu
+        drag să ne fiți aproape intr-una dintre cele mai frumoase zile ale vieții noastre
       </motion.p>
 
       {/* ⏳ GRID RESPONSIVE */}

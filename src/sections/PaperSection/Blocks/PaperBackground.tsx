@@ -40,7 +40,7 @@ const PaperBackgroundLayer = ({
         style={{
           backgroundColor: theme.baseColor,
           backgroundImage:
-            "url('https://res.cloudinary.com/dswwhzem5/image/upload/v1777958000/paper-white_j5m3t2.avif')",
+            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354887/wedding/paper/paper-white_j5m3t2_mpjo04.avif')",
           backgroundSize: "600px auto",
           backgroundRepeat: "repeat",
           backgroundPosition: "0 0",

@@ -102,7 +102,7 @@ export const storyData: StoryItemType[] = [
       },
     ],
     image:
-      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder01_wuxuwc.jpg",
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354942/wedding/couple/couple-placeholder01_wuxuwc_vtztlw.jpg",
     date: "2021",
   },
   {
@@ -151,7 +151,7 @@ export const storyData: StoryItemType[] = [
       },
     ],
     image:
-      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder02_lb9ble.jpg",
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354944/wedding/couple/couple-placeholder02_lb9ble_easpa9.jpg",
     date: "2024",
   },
   {
@@ -221,7 +221,7 @@ export const storyData: StoryItemType[] = [
       },
     ],
     image:
-      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777520563/couple-placeholder03_fa7w1l.jpg",
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354946/wedding/couple/couple-placeholder03_fa7w1l_j2mr6n.jpg",
     date: "2026",
   },
   // 📍 CEREMONIE
@@ -242,7 +242,8 @@ export const storyData: StoryItemType[] = [
     location: "Biserica „Sfinții Trei Ierarhi” Fundeni",
     date: "22 August 2026",
     time: "16:00",
-    image: "https://res.cloudinary.com/dswwhzem5/image/upload/v1777966368/biserica-3_ujfr6n.jpg",
+    image:
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354926/wedding/event/biserica-3_ujfr6n_blig0a.jpg",
     mapLink:
       "https://www.google.com/maps/place/Parohia+Sfin%C5%A3ii+Trei+Ierarhi/@44.4619434,26.1579387,16.5z/data=!4m14!1m7!3m6!1s0x40b1f8e3a6158889:0xd17402c5c5c643e5!2sParohia+Sfin%C5%A3ii+Trei+Ierarhi!8m2!3d44.4624468!4d26.1589631!16s%2Fg%2F1hc1cdgfh!3m5!1s0x40b1f8e3a6158889:0xd17402c5c5c643e5!8m2!3d44.4624468!4d26.1589631!16s%2Fg%2F1hc1cdgfh?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D",
   },
@@ -266,7 +267,8 @@ export const storyData: StoryItemType[] = [
     location: "Pădurile Regale",
     date: "22 August 2026",
     time: "18:30",
-    image: "https://res.cloudinary.com/dswwhzem5/image/upload/v1777536840/restaurant_dog2ak.jpg",
+    image:
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354928/wedding/event/restaurant_dog2ak_ns2qju.jpg",
     mapLink:
       "https://www.google.com/maps/place/P%C4%83durile+Regale/@44.7059572,26.3230083,14.25z/data=!4m6!3m5!1s0x40b21bab420f8689:0x6fe826cbb1c75235!8m2!3d44.7077006!4d26.3359205!16s%2Fg%2F11bw3dtk65?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D",
   },

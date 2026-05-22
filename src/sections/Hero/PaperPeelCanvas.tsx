@@ -39,7 +39,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
   // 🎀 ribbon texture (NO repeat)
   const ribbonTex = useMemo<THREE.Texture>(() => {
     const tex = new THREE.TextureLoader().load(
-      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777957283/ribbon-vintage_bsicor.png",
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354986/wedding/art/ribbon/ribbon-vintage_bsicor_gyisxw.png",
     );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
@@ -48,7 +48,7 @@ function Scene({ crestProgress, peelProgress }: Props) {
   // 🔴 crest texture
   const crestTex = useMemo<THREE.Texture>(() => {
     const tex = new THREE.TextureLoader().load(
-      "https://res.cloudinary.com/dswwhzem5/image/upload/v1777957229/logo-crest-vintage_jh1nyq.png",
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354993/wedding/art/crest/logo-crest-vintage_jh1nyq_cca8cm.png",
     );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
