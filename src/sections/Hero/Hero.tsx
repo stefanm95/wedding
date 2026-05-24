@@ -7,11 +7,16 @@ import type { HeroProps } from "@/types/hero";
 
 import HeroIntro from "./HeroIntro";
 import HeroVideo from "./HeroVideo";
+import { useDevice } from "@/hooks/useDevice";
 
 export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
   const [progress, setProgress] = useState(0);
 
   const [videoLoaded, setVideoLoaded] = useState(false);
+
+  const { width } = useDevice();
+
+  const isMobile = width < 768;
 
   const { scrollYProgress } = useScroll({
     target: paperRef,
@@ -75,7 +80,10 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
             transition: "opacity 1s ease",
           }}
         >
-          <source src="/assets/video/video.mp4" type="video/mp4" />
+          <source
+            src={isMobile ? "/assets/video/video-mobile.mp4" : "/assets/video/video-web.mp4"}
+            type="video/mp4"
+          />
         </motion.video>
       </motion.div>
 
