@@ -7,6 +7,7 @@ import type { GuestGroup, RSVPFormData, RSVPStatus } from "@/types/rsvp";
 import { defaultRSVP } from "@/types/rsvp";
 
 import PaperGrain from "@/components/PaperGrain";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 import { getPrevStep, transition, type Step } from "@utils/rsvpMachine";
 import { getMemberId, getMemberName, toGuestId } from "@utils/rsvpValidation";
 import StepRenderer from "./StepRenderer";
@@ -15,6 +16,11 @@ import { stepVariants } from "./stepVariants";
 type Props = {
   onComplete?: () => void;
 };
+
+const peonySrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779354978/wedding/art/bujorr_c7rt37_aufm4f.png",
+  640,
+);
 
 export default function RsvpLayerInline({ onComplete }: Props) {
   const [step, setStep] = useState<Step>("welcome");
@@ -138,8 +144,10 @@ export default function RsvpLayerInline({ onComplete }: Props) {
       {/* 🌸 background */}
       <div className="pointer-events-none absolute right-[2%] z-0 opacity-40 md:-right-[10%] md:top-[20%] lg:left-[2%] lg:top-[-20%]">
         <img
-          src="https://res.cloudinary.com/djzw55eub/image/upload/v1779354978/wedding/art/bujorr_c7rt37_aufm4f.png"
+          src={peonySrc}
           alt="peonyemboss"
+          loading="lazy"
+          decoding="async"
           className="w-[360px] select-none object-contain md:w-[340px] lg:w-[520px]"
         />
       </div>

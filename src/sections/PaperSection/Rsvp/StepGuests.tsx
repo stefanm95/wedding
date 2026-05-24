@@ -1,5 +1,6 @@
 import { getAttendingCount } from "@/domain/rsvp/selectors";
 import type { DietaryOption, RSVPGuest } from "@/types/rsvp";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 import { cn } from "@utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { rsvpStyles } from "./rsvpStyles";
@@ -37,6 +38,11 @@ const itemVariants = {
     },
   },
 };
+
+const crestDropSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779354992/wedding/art/crest/crest-drop_lyrdif_mjowyq.png",
+  160,
+);
 
 export default function StepGuests({
   guests,
@@ -196,8 +202,10 @@ export default function StepGuests({
             />
 
             <motion.img
-              src="https://res.cloudinary.com/djzw55eub/image/upload/v1779354992/wedding/art/crest/crest-drop_lyrdif_mjowyq.png"
+              src={crestDropSrc}
               alt=""
+              loading="lazy"
+              decoding="async"
               initial={{ opacity: 0 }}
               animate={guest.attending ? { opacity: 0.06 } : { opacity: 0 }}
               transition={{ duration: 0.6 }}
@@ -233,8 +241,10 @@ export default function StepGuests({
                           <AnimatePresence>
                             {guest.attending && (
                               <motion.img
-                                src="https://res.cloudinary.com/djzw55eub/image/upload/v1779354992/wedding/art/crest/crest-drop_lyrdif_mjowyq.png"
+                                src={crestDropSrc}
                                 alt="confirmed"
+                                loading="lazy"
+                                decoding="async"
                                 initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
                                 animate={{ opacity: 0.85, scale: 1, rotate: -4 }}
                                 exit={{ opacity: 0, scale: 0.6 }}

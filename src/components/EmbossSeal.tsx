@@ -1,6 +1,7 @@
 import { useDevice } from "@/hooks/useDevice";
 import { useHeroLight } from "@/hooks/useHeroLight";
 import { useHeroLightDir } from "@/hooks/useHeroLightDir";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 import { cn } from "@utils/cn";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { useState } from "react";
@@ -10,15 +11,17 @@ type Props = {
   progress: MotionValue<number>;
 };
 
+const crestTextureSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779354994/wedding/art/crest/image-1_wps7le_efnupz.png",
+  640,
+);
+
 export default function EmbossSeal({ className, progress }: Props) {
   const [hovered, setHovered] = useState(false);
   // const y = useTransform(progress, [0, 1], [40, -40]);
 
   const lightX = useTransform(progress, [0, 1], [-120, 120]);
   const lightOpacity = useTransform(progress, [0, 0.5, 1], [0.15, 0.3, 0.15]);
-
-  const mask =
-    "[mask-image:url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354994/wedding/art/crest/image-1_wps7le_efnupz.png')]";
 
   const light = useHeroLight();
   const dir = useHeroLightDir();
@@ -69,8 +72,7 @@ export default function EmbossSeal({ className, progress }: Props) {
           "bg-contain bg-center bg-no-repeat opacity-40",
         )}
         style={{
-          backgroundImage:
-            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354994/wedding/art/crest/image-1_wps7le_efnupz.png')",
+          backgroundImage: `url('${crestTextureSrc}')`,
           filter: "contrast(1.05) brightness(0.98)",
         }}
       />
@@ -91,11 +93,14 @@ export default function EmbossSeal({ className, progress }: Props) {
           isCompact ? "blur-[3px]" : "blur-[6px]",
           "opacity-40",
           "mix-blend-multiply",
-          mask,
           "[mask-position:center]",
           "[mask-repeat:no-repeat]",
           "[mask-size:contain]",
         )}
+        style={{
+          WebkitMaskImage: `url('${crestTextureSrc}')`,
+          maskImage: `url('${crestTextureSrc}')`,
+        }}
       />
 
       {/* ✨ HIGHLIGHT (shape-based) */}
@@ -114,11 +119,14 @@ export default function EmbossSeal({ className, progress }: Props) {
           isCompact ? "blur-[2px]" : "blur-[4px]",
           "opacity-30",
           "mix-blend-overlay",
-          mask,
           "[mask-position:center]",
           "[mask-repeat:no-repeat]",
           "[mask-size:contain]",
         )}
+        style={{
+          WebkitMaskImage: `url('${crestTextureSrc}')`,
+          maskImage: `url('${crestTextureSrc}')`,
+        }}
       />
 
       {/* 💡 MOVING LIGHT */}
@@ -126,6 +134,8 @@ export default function EmbossSeal({ className, progress }: Props) {
         style={{
           x: lightX,
           opacity: lightOpacity,
+          WebkitMaskImage: `url('${crestTextureSrc}')`,
+          maskImage: `url('${crestTextureSrc}')`,
         }}
         animate={{
           opacity: (lightOpacity.get() || 0.2) * pulseLight,
@@ -137,7 +147,6 @@ export default function EmbossSeal({ className, progress }: Props) {
           "bg-gradient-to-r from-white/40 via-white/10 to-transparent",
           isCompact ? "blur-[10px]" : "blur-[20px]",
           "mix-blend-soft-light",
-          mask,
           "[mask-position:center]",
           "[mask-repeat:no-repeat]",
           "[mask-size:contain]",

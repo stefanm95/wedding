@@ -1,5 +1,6 @@
 import type { CountdownTime } from "@/types/countdown";
 import type { MotionValue } from "framer-motion";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 
 import { motion } from "framer-motion";
 
@@ -10,6 +11,10 @@ type Props = CountdownTime & {
 };
 
 const labels = ["LUNI", "ZILE", "ORE", "MIN", "SEC"];
+const floralSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png",
+  480,
+);
 
 export default function Countdown({
   months,
@@ -45,9 +50,11 @@ export default function Countdown({
         {/* 🌺 MOBILE FLORAL */}
         {isMobile && (
           <motion.img
-            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png"
+            src={floralSrc}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none absolute left-1/2 top-1/3 z-0 w-[250px] -translate-x-1/2 -translate-y-1/2 select-none opacity-[0.15] mix-blend-multiply"
             style={{
               y: floralY,
@@ -59,9 +66,11 @@ export default function Countdown({
 
         {isMobile && (
           <motion.img
-            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png"
+            src={floralSrc}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none absolute left-[-40px] top-[750px] z-0 w-[180px] -scale-x-100 select-none opacity-[0.1] mix-blend-multiply"
             style={{
               y: floralY,

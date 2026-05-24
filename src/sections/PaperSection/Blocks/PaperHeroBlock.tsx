@@ -1,5 +1,6 @@
 import { useDevice } from "@/hooks/useDevice";
 import type { PaperBlockProps } from "@/types/paper";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 
 import { useCountdown } from "@hooks/useCountdown";
 
@@ -12,6 +13,11 @@ import { motion, useTransform } from "framer-motion";
 type Props = PaperBlockProps & {
   progress: MotionValue<number>;
 };
+
+const floralSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png",
+  640,
+);
 
 export default function PaperHeroBlock({ progress }: Props) {
   const time = useCountdown(new Date("2026-08-22T16:00:00"));
@@ -83,9 +89,11 @@ export default function PaperHeroBlock({ progress }: Props) {
 
         {isMediumLayout && (
           <motion.img
-            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png"
+            src={floralSrc}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none absolute right-[-40px] top-[20px] z-0 w-[260px] select-none opacity-[0.10] mix-blend-multiply lg:w-[320px]"
             style={{
               y: floatY,
@@ -97,9 +105,11 @@ export default function PaperHeroBlock({ progress }: Props) {
 
         {isMediumLayout && (
           <motion.img
-            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png"
+            src={floralSrc}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none absolute bottom-[40px] left-[-30px] z-0 w-[180px] -scale-x-100 select-none opacity-[0.1] mix-blend-multiply lg:w-[220px]"
             style={{
               y: floatY,
@@ -115,9 +125,11 @@ export default function PaperHeroBlock({ progress }: Props) {
 
         {isLargeDesktop && (
           <motion.img
-            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png"
+            src={floralSrc}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none absolute right-[-140px] top-[80px] z-0 w-[420px] select-none opacity-[0.16] mix-blend-multiply lg:w-[520px]"
             style={{
               y: floatY,
@@ -129,9 +141,11 @@ export default function PaperHeroBlock({ progress }: Props) {
 
         {isLargeDesktop && (
           <motion.img
-            src="https://res.cloudinary.com/djzw55eub/image/upload/v1779606572/wedding/art/story-peon_i5i2vf_e_background_removal_f_png_aaxypp.png"
+            src={floralSrc}
             alt=""
             aria-hidden
+            loading="lazy"
+            decoding="async"
             className="pointer-events-none absolute bottom-[20px] left-[-120px] z-0 w-[320px] -scale-x-100 select-none opacity-[0.1] mix-blend-multiply lg:w-[420px]"
             style={{
               y: floatY,

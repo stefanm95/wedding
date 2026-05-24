@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 
 type Props = {
   src: string;
@@ -7,6 +8,12 @@ type Props = {
 };
 
 export default function PaperImage({ src, alt, className }: Props) {
+  const imageSrc = optimizeCloudinaryUrl(src, 960);
+  const grainSrc = optimizeCloudinaryUrl(
+    "https://res.cloudinary.com/djzw55eub/image/upload/v1779354916/wedding/grain/grain2_icfdek_ycvbqh.jpg",
+    320,
+  );
+
   return (
     <div
       className={cn(
@@ -16,8 +23,11 @@ export default function PaperImage({ src, alt, className }: Props) {
     >
       {/* 🖼 IMAGE */}
       <img
-        src={src}
+        src={imageSrc}
         alt={alt}
+        loading="lazy"
+        decoding="async"
+        sizes="(min-width: 1024px) 480px, (min-width: 640px) 420px, 82vw"
         className="h-full w-full object-cover object-center brightness-[0.99] contrast-[0.96] saturate-[0.92]"
       />
 
@@ -31,8 +41,7 @@ export default function PaperImage({ src, alt, className }: Props) {
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply"
         style={{
-          backgroundImage:
-            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354916/wedding/grain/grain2_icfdek_ycvbqh.jpg')",
+          backgroundImage: `url('${grainSrc}')`,
           backgroundSize: "220px",
         }}
       />

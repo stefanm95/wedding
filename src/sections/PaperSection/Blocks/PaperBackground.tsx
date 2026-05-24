@@ -1,4 +1,5 @@
 import { useHeroLight } from "@/hooks/useHeroLight";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 import { paperThemes, type PaperVariant } from "@utils/paperThemes";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 
@@ -7,6 +8,10 @@ type Props = {
 };
 
 const variants: PaperVariant[] = ["day", "golden", "evening"];
+const paperTextureSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779354887/wedding/paper/paper-white_j5m3t2_mpjo04.avif",
+  900,
+);
 
 const PaperBackgroundLayer = ({
   variant,
@@ -40,8 +45,7 @@ const PaperBackgroundLayer = ({
         className="absolute inset-0"
         style={{
           backgroundColor: theme.baseColor,
-          backgroundImage:
-            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354887/wedding/paper/paper-white_j5m3t2_mpjo04.avif')",
+          backgroundImage: `url('${paperTextureSrc}')`,
           backgroundSize: "600px auto",
           backgroundRepeat: "repeat",
           backgroundPosition: "0 0",

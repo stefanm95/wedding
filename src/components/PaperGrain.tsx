@@ -1,4 +1,10 @@
 import { motion } from "framer-motion";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
+
+const grainSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779354916/wedding/grain/grain2_icfdek_ycvbqh.jpg",
+  320,
+);
 
 export default function PaperGrain() {
   return (
@@ -9,7 +15,7 @@ export default function PaperGrain() {
       className="pointer-events-none absolute inset-0 z-[1]"
       style={{
         backgroundImage:
-          "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354916/wedding/grain/grain2_icfdek_ycvbqh.jpg')",
+          `url('${grainSrc}')`,
         backgroundSize: "300px",
         mixBlendMode: "multiply",
       }}

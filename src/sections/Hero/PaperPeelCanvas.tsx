@@ -1,4 +1,5 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 import { getImpact } from "@utils/animation";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -37,9 +38,12 @@ function Scene({ crestProgress, peelProgress }: Props) {
   const { gl } = useThree();
 
   // 🎀 ribbon texture (NO repeat)
-  const ribbonTex = useMemo<THREE.Texture>(() => {
+const ribbonTex = useMemo<THREE.Texture>(() => {
     const tex = new THREE.TextureLoader().load(
-      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354986/wedding/art/ribbon/ribbon-vintage_bsicor_gyisxw.png",
+      optimizeCloudinaryUrl(
+        "https://res.cloudinary.com/djzw55eub/image/upload/v1779354986/wedding/art/ribbon/ribbon-vintage_bsicor_gyisxw.png",
+        1024,
+      ),
     );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;
@@ -48,7 +52,10 @@ function Scene({ crestProgress, peelProgress }: Props) {
   // 🔴 crest texture
   const crestTex = useMemo<THREE.Texture>(() => {
     const tex = new THREE.TextureLoader().load(
-      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354993/wedding/art/crest/logo-crest-vintage_jh1nyq_cca8cm.png",
+      optimizeCloudinaryUrl(
+        "https://res.cloudinary.com/djzw55eub/image/upload/v1779354993/wedding/art/crest/logo-crest-vintage_jh1nyq_cca8cm.png",
+        512,
+      ),
     );
     tex.anisotropy = gl.capabilities.getMaxAnisotropy();
     return tex;

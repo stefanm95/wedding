@@ -1,5 +1,11 @@
 import { useDevice } from "@/hooks/useDevice";
+import { optimizeCloudinaryUrl } from "@/utils/cloudinary";
 import { motion } from "framer-motion";
+
+const grainSrc = optimizeCloudinaryUrl(
+  "https://res.cloudinary.com/djzw55eub/image/upload/v1779354915/wedding/grain/grain3_sqtxx0_jbppsd.jpg",
+  320,
+);
 
 type Props = {
   intensity?: number;
@@ -29,8 +35,7 @@ export default function CinematicOverlay({ intensity = 3 }: Props) {
       <motion.div
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage:
-            "url('https://res.cloudinary.com/djzw55eub/image/upload/v1779354915/wedding/grain/grain3_sqtxx0_jbppsd.jpg')",
+          backgroundImage: `url('${grainSrc}')`,
           mixBlendMode: "overlay",
           opacity: 0.06 * intensity,
         }}
