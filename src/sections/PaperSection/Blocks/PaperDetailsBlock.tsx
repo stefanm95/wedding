@@ -1,6 +1,5 @@
 import EmbossSeal from "@/components/EmbossSeal";
 import PaperGrain from "@/components/PaperGrain";
-import PaperLight from "@/components/PaperLight";
 import type { PaperBlockProps } from "@/types/paper";
 import type { PaperVariant } from "@/utils/paperThemes";
 import { MotionValue } from "framer-motion";
@@ -16,7 +15,7 @@ export default function PaperDetailsBlock({ variant, progress }: Props) {
     <section
       id="details"
       data-paper-variant={variant}
-      className="relative z-20 overflow-visible pt-2 md:pt-4 lg:pt-4"
+      className="relative z-20 mb-32 overflow-visible pt-2 md:pt-4 lg:pt-4"
     >
       {/* 🧻 BACKGROUND TEXTURE */}
       <div className="pointer-events-none absolute inset-0 z-0">
@@ -30,14 +29,11 @@ export default function PaperDetailsBlock({ variant, progress }: Props) {
       {/* EMBOSS */}
       <EmbossSeal
         progress={progress}
-        className="absolute right-[55%] top-[50%] z-[5] -translate-x-1/2 -translate-y-1/2"
+        className="absolute left-[60%] top-[15%] z-[5] -translate-x-1/2 -translate-y-1/2"
       />
 
       {/* GRAIN */}
       <PaperGrain />
-
-      {/* LIGHT */}
-      <PaperLight />
 
       {/* 📄 CONTENT */}
       <div className="max-w-8xl relative z-30 mx-auto px-6 pb-2">

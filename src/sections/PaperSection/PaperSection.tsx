@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import PaperBackground from "@paper/Blocks/PaperBackground";
 import PaperHeroBlock from "@paper/Blocks/PaperHeroBlock";
-import PaperProgramBlock from "@paper/Blocks/PaperProgramBlock";
+// import PaperProgramBlock from "@paper/Blocks/PaperProgramBlock";
 import PaperStoryBlock from "@paper/Blocks/PaperStoryBlock";
 import PaperShell from "@paper/PaperShell";
 import PaperStack from "@paper/PaperStack";
@@ -75,7 +75,7 @@ const PaperSection = forwardRef<HTMLElement, { className?: string; opened?: bool
               <PaperStoryBlock variant={variant} progress={progress} />
               <PaperDetailsBlock variant={variant} progress={progress} />
 
-              <PaperProgramBlock variant={variant} progress={progress} />
+              {/* <PaperProgramBlock variant={variant} progress={progress} /> */}
             </PaperStack>
           </motion.div>
 
