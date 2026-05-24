@@ -1,5 +1,5 @@
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import CinematicOverlay from "@components/CinematicOverlay";
 
@@ -11,8 +11,12 @@ import { useDevice } from "@/hooks/useDevice";
 
 export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
   const [progress, setProgress] = useState(0);
-
   const [videoLoaded, setVideoLoaded] = useState(false);
+
+  const heroRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const visibilityStateRef = useRef<"playing" | "paused">("playing");
 
   const { width } = useDevice();
 
@@ -23,7 +27,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
     offset: ["start 0.85", "start 0.25"],
   });
 
-  const blur = useTransform(scrollYProgress, [0.5, 1], [0, isMobile ? 6 : 12]);
+  const blur = useTransform(scrollYProgress, [0.5, 1], [0, isMobile ? 4 : 8]);
 
   const scaleScroll = useTransform(scrollYProgress, [0, 1], [1.04, 1]);
 
@@ -34,8 +38,57 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
     saturate(1)
   `;
 
+  useEffect(() => {
+    const hero = heroRef.current;
+    const video = videoRef.current;
+
+    if (!hero || !video || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) {
+          return;
+        }
+
+        const ratio = entry.intersectionRatio;
+
+        /**
+         * 🎬 HYSTERESIS STABILIZATION
+         *
+         * Avoid rapid play/pause oscillation near threshold.
+         *
+         * play  -> >= 35%
+         * pause -> <= 15%
+         */
+
+        if (ratio <= 0.15 && visibilityStateRef.current !== "paused") {
+          video.pause();
+
+          visibilityStateRef.current = "paused";
+        }
+
+        if (ratio >= 0.35 && visibilityStateRef.current !== "playing") {
+          video.play().catch(() => {});
+
+          visibilityStateRef.current = "playing";
+        }
+      },
+      {
+        threshold: [0, 0.15, 0.35, 0.5, 1],
+      },
+    );
+
+    observer.observe(hero);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
-    <section id="hero" className="relative z-0 h-screen overflow-hidden bg-black">
+    <section ref={heroRef} id="hero" className="relative z-0 h-screen overflow-hidden bg-black">
       {/* ========================= */}
       {/* 🖼 FALLBACK IMAGE */}
       {/* ========================= */}
@@ -65,6 +118,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
         }}
       >
         <motion.video
+          ref={videoRef}
           autoPlay
           muted
           loop
@@ -75,7 +129,12 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
           style={{
             filter,
+
+            /**
+             * Avoid excessive compositing pressure on mobile.
+             */
             willChange: isMobile ? "transform" : "filter, transform",
+
             opacity: videoLoaded ? 1 : 0,
             transition: "opacity 1s ease",
           }}
@@ -87,17 +146,26 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
         </motion.video>
       </motion.div>
 
-      {/* OVERLAY */}
+      {/* ========================= */}
+      {/* 🎨 ATMOSPHERIC OVERLAYS */}
+      {/* ========================= */}
+
       <div className="pointer-events-none absolute inset-0 bg-[#6b1f2b]/20 mix-blend-multiply" />
 
       <div className="pointer-events-none absolute inset-0 bg-black/30" />
 
-      {/* CONTENT */}
+      {/* ========================= */}
+      {/* 🎬 HERO CONTENT */}
+      {/* ========================= */}
+
       <HeroVideo opened={opened} paperRef={paperRef} />
 
       <CinematicOverlay intensity={opened ? 0 : 1} />
 
-      {/* INTRO */}
+      {/* ========================= */}
+      {/* ✨ INTRO OVERLAY */}
+      {/* ========================= */}
+
       <motion.div
         className="absolute inset-0 z-[999]"
         animate={{
