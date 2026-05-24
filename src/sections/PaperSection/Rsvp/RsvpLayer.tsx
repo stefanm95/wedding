@@ -122,24 +122,15 @@ export default function RsvpLayerInline({ onComplete }: Props) {
     setStep(prev);
   };
 
-  /* ---------------- AUTO COMPLETE ---------------- */
-
   useEffect(() => {
-    if (step === "success") {
-      const t = setTimeout(async () => {
-        const next = await transition("success", form);
-        setStep(next);
-      }, 1200);
+    if (step !== "success") return;
 
-      return () => clearTimeout(t);
-    }
-  }, [step]);
-
-  useEffect(() => {
-    if (step === "done") {
+    const t = setTimeout(() => {
       onComplete?.();
-    }
-  }, [step]);
+    }, 1400);
+
+    return () => clearTimeout(t);
+  }, [step, onComplete]);
 
   /* ---------------- UI ---------------- */
 
@@ -162,25 +153,23 @@ export default function RsvpLayerInline({ onComplete }: Props) {
         className="w-full max-w-[640px] border border-black/5 bg-[#f4f1ea]/70 px-8 py-12 md:px-12 md:py-16"
       >
         <AnimatePresence mode="wait" custom={direction} initial={false}>
-          {step !== "done" && (
-            <motion.div
-              key={step}
-              variants={stepVariants}
-              custom={direction}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <StepRenderer
-                step={step}
-                onNext={handleNext}
-                onBack={handleBack}
-                form={form}
-                setForm={setForm}
-                onSelectGroup={handleSelectGroup}
-              />
-            </motion.div>
-          )}
+          <motion.div
+            key={step}
+            variants={stepVariants}
+            custom={direction}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <StepRenderer
+              step={step}
+              onNext={handleNext}
+              onBack={handleBack}
+              form={form}
+              setForm={setForm}
+              onSelectGroup={handleSelectGroup}
+            />
+          </motion.div>
         </AnimatePresence>
 
         <PaperGrain />
