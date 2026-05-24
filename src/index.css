@@ -13,12 +13,20 @@
   display: none;
 }
 
+html,
+body,
+#root {
+  background: #12070a;
+}
+
 /* Firefox */
 html {
   scrollbar-width: none;
+  overscroll-behavior: none;
 }
 
 /* IE / old Edge */
 body {
   -ms-overflow-style: none;
+  overscroll-behavior-y: none;
 }
