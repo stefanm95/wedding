@@ -208,6 +208,7 @@ export default function EditRsvpModal({ row, onClose, onSave }: Props) {
               updateGuest(list, index, {
                 ...guest,
                 dietary: e.target.value,
+                dietaryNote: e.target.value === "other" ? guest.dietaryNote || "" : "",
               })
             }
             className="border px-2 py-1 text-sm"
@@ -225,6 +226,20 @@ export default function EditRsvpModal({ row, onClose, onSave }: Props) {
             </button>
           )}
         </div>
+
+        {guest.dietary === "other" && (
+          <input
+            value={guest.dietaryNote || ""}
+            onChange={(e) =>
+              updateGuest(list, index, {
+                ...guest,
+                dietaryNote: e.target.value,
+              })
+            }
+            placeholder="Restricții alimentare"
+            className="w-full border px-2 py-1 text-sm"
+          />
+        )}
 
         {/* TRANSPORT */}
         <div className="flex gap-2">

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AnimatePresence, motion } from "framer-motion";
