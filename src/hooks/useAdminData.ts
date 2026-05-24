@@ -1,8 +1,11 @@
+import { normalizeGuests } from "@/domain/rsvp/normalizers";
+import { withDerivedAdminFields } from "@/domain/rsvp/selectors";
 import { db } from "@/lib/firebase";
+import type { AdminGuest, AdminRow } from "@/types/admin";
+import type { GuestGroupMember } from "@/types/rsvp";
+import { getMemberId, getMemberName } from "@/utils/rsvpValidation";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-import type { AdminGuest, AdminRow } from "@/types/admin";
 
 export function useAdminData() {
   const [rows, setRows] = useState<AdminRow[]>([]);
@@ -20,98 +23,78 @@ export function useAdminData() {
         const groupsMap = new Map<string, any>();
         let invitedPeopleCount = 0;
 
-        /* ---------------- GROUPS ---------------- */
-
         groupsSnap.forEach((doc) => {
-          const g = doc.data();
+          const group = doc.data();
+          const members = Array.isArray(group.members) ? group.members : [];
 
-          groupsMap.set(doc.id, g);
-          invitedPeopleCount += (g.members || []).length;
+          groupsMap.set(doc.id, group);
+          invitedPeopleCount += members.length;
         });
-
-        /* ---------------- RSVPS ---------------- */
 
         const data: AdminRow[] = [];
 
         rsvpSnap.forEach((doc) => {
-          const r = doc.data();
-          const g = groupsMap.get(doc.id);
+          const rsvp = doc.data();
+          const group = groupsMap.get(doc.id);
 
-          if (!g) return;
+          if (!group) {
+            return;
+          }
 
-          // ✅ normalize base guests
-          const guests: AdminGuest[] = (r.guests || []).map((guest: any, i: number) => ({
-            id: guest.id || `guest-${i}`,
-            name: guest.name,
-            attending: !!guest.attending,
-            dietary: guest.dietary || "",
-          }));
+          const members = Array.isArray(group.members) ? group.members : [];
+          const guests = normalizeGuests(rsvp.guests) as AdminGuest[];
+          const extraGuests = normalizeGuests(rsvp.extraGuests) as AdminGuest[];
 
-          // ✅ normalize extra guests
-          const extraGuests: AdminGuest[] = (r.extraGuests || []).map((guest: any, i: number) => ({
-            id: guest.id || `extra-${i}`,
-            name: guest.name,
-            attending: !!guest.attending,
-            dietary: guest.dietary || "",
-          }));
+          data.push(
+            withDerivedAdminFields({
+              groupId: doc.id,
+              familyLabel: group.familyLabel,
+              invitedCount: members.length || group.maxGuests,
+              attendingCount: 0,
+              status: "pending",
+              needsTransport: false,
+              hasResponded: true,
+              guests,
+              extraGuests,
+              maxGuests: group.maxGuests,
+              history: rsvp.history || [],
+            }),
+          );
 
-          const allGuests = [...guests, ...extraGuests];
-
-          data.push({
-            groupId: doc.id,
-            familyLabel: g.familyLabel,
-
-            invitedCount: g.members?.length || g.maxGuests,
-            attendingCount: allGuests.filter((g) => g.attending).length,
-
-            status: r.status || "pending",
-            needsTransport: r.needsTransport || false,
-
-            guests,
-            extraGuests,
-
-            maxGuests: g.maxGuests,
-
-            history: r.history || [],
-          });
-
-          // ✅ IMPORTANT: remove handled group
           groupsMap.delete(doc.id);
         });
 
-        /* ---------------- NON RESPONDED ---------------- */
-
-        groupsMap.forEach((g, id) => {
-          const guests: AdminGuest[] = (g.members || []).map((member: any, index: number) => ({
-            id: member?.id || `guest-${index}`,
-            name: typeof member === "string" ? member : member.name,
+        groupsMap.forEach((group, id) => {
+          const members = Array.isArray(group.members) ? group.members : [];
+          const guests: AdminGuest[] = (members as GuestGroupMember[]).map((member) => ({
+            id: getMemberId(member),
+            name: getMemberName(member),
             attending: false,
-            dietary: "",
+            dietary: "none",
+            transport: { type: "none" },
           }));
 
-          data.push({
-            groupId: id,
-            familyLabel: g.familyLabel,
-
-            invitedCount: g.members?.length || g.maxGuests,
-            attendingCount: 0,
-
-            status: "pending",
-            needsTransport: false,
-
-            guests,
-            extraGuests: [],
-
-            maxGuests: g.maxGuests,
-
-            history: [], // ✅ FIX HERE
-          });
+          data.push(
+            withDerivedAdminFields({
+              groupId: id,
+              familyLabel: group.familyLabel,
+              invitedCount: members.length || group.maxGuests,
+              attendingCount: 0,
+              status: "pending",
+              needsTransport: false,
+              hasResponded: false,
+              guests,
+              extraGuests: [],
+              maxGuests: group.maxGuests,
+              history: [],
+            }),
+          );
         });
 
         setRows(data);
         setTotalInvitedPeople(invitedPeopleCount);
       } catch (err) {
-        console.error("🔥 Admin fetch failed:", err);
+        console.error("Admin fetch failed:", err);
       } finally {
         setLoading(false);
       }

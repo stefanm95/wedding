@@ -1,6 +1,14 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 
 import { TRANSPORT_LOCATIONS, type TransportLocationId } from "@/data/transportOptions";
+import { normalizeGuests } from "@/domain/rsvp/normalizers";
+import {
+  getAllGuests,
+  getAttendingCount,
+  getStatus,
+  getTransportCount,
+  withDerivedAdminFields,
+} from "@/domain/rsvp/selectors";
 
 import type { AdminGuest, AdminRow } from "@/types/admin";
 
@@ -29,25 +37,8 @@ export default function EditRsvpModal({ row, onClose, onSave }: Props) {
     setForm({
       ...row,
 
-      guests: (row.guests || []).map((g: any) => ({
-        ...g,
-
-        attending: g.attending ?? true,
-
-        transport: g.transport ?? {
-          type: "none",
-        },
-      })),
-
-      extraGuests: (row.extraGuests || []).map((g: any) => ({
-        ...g,
-
-        attending: g.attending ?? true,
-
-        transport: g.transport ?? {
-          type: "none",
-        },
-      })),
+      guests: normalizeGuests(row.guests) as AdminGuest[],
+      extraGuests: normalizeGuests(row.extraGuests) as AdminGuest[],
     });
   }, [row]);
 
@@ -75,18 +66,11 @@ export default function EditRsvpModal({ row, onClose, onSave }: Props) {
 
   const maxGuests = form?.maxGuests ?? form?.invitedCount ?? 0;
 
-  const coreAttending = guests.filter((g) => g.attending).length;
-
-  const attendingCount = coreAttending + extraGuests.filter((g) => g.attending).length;
-
-  const totalGuests = guests.length + extraGuests.length;
-
-  const status =
-    coreAttending === 0 ? "declined" : coreAttending === guests.length ? "confirmed" : "pending";
-
-  const needsTransport = [...guests, ...extraGuests]
-    .filter((g) => g.attending)
-    .some((g: any) => g.transport?.type === "bus");
+  const currentRow = { guests, extraGuests };
+  const attendingCount = getAttendingCount(currentRow);
+  const totalGuests = getAllGuests(currentRow).length;
+  const status = getStatus(currentRow);
+  const needsTransport = getTransportCount(currentRow) > 0;
 
   if (!form) return null;
 
@@ -351,18 +335,14 @@ export default function EditRsvpModal({ row, onClose, onSave }: Props) {
 
             <button
               onClick={() =>
-                onSave({
-                  ...form,
-
-                  guests,
-                  extraGuests,
-
-                  attendingCount,
-
-                  status,
-
-                  needsTransport,
-                })
+                onSave(
+                  withDerivedAdminFields({
+                    ...form,
+                    hasResponded: true,
+                    guests,
+                    extraGuests,
+                  }),
+                )
               }
               className="rounded border px-4 py-1 text-sm hover:bg-black/5"
             >

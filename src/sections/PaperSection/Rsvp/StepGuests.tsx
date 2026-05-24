@@ -1,3 +1,4 @@
+import { getAttendingCount } from "@/domain/rsvp/selectors";
 import type { DietaryOption, RSVPGuest } from "@/types/rsvp";
 import { cn } from "@utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
@@ -118,10 +119,7 @@ export default function StepGuests({
 
   /* ---------------- LOGIC ---------------- */
 
-  const confirmedMembers = guests.filter((g) => g.attending).length;
-  const confirmedExtra = extraGuests.filter((g) => g.attending).length;
-
-  const confirmedCount = confirmedMembers + confirmedExtra;
+  const confirmedCount = getAttendingCount({ guests, extraGuests });
   const remaining = maxGuests - confirmedCount;
   const canAddMore = remaining > 0;
 

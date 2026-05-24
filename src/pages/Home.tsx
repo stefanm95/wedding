@@ -14,7 +14,8 @@ type Section = {
 const sections: Section[] = [
   { id: "paper-hero", label: "Invitație" },
   { id: "story", label: "Poveste" },
-  { id: "program", label: "Program" },
+  // { id: "program", label: "Program" },
+  { id: "details", label: "DETALII" },
   { id: "rsvp", label: "Confirmare" },
 ];
 

@@ -1,6 +1,8 @@
 import { db } from "@/lib/firebase";
 import type { FirestoreRsvp, RSVPGuest } from "@/types/rsvp";
-import { getMemberId, normalizeGuests } from "@/utils/rsvpValidation";
+import { normalizeSubmission } from "@/domain/rsvp/normalizers";
+import { getAttendingCount } from "@/domain/rsvp/selectors";
+import { getMemberId } from "@/utils/rsvpValidation";
 import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 
 type SubmitRsvpParams = {
@@ -23,8 +25,9 @@ export async function submitRsvp({ groupId, guests, extraGuests, message }: Subm
 
     const group = groupSnap.data();
 
-    const cleanGuests = normalizeGuests(guests);
-    const cleanExtraGuests = normalizeGuests(extraGuests).filter(
+    const submission = normalizeSubmission({ groupId, guests, extraGuests, message });
+    const cleanGuests = submission.guests;
+    const cleanExtraGuests = submission.extraGuests.filter(
       (guest) => guest.name || guest.attending,
     );
 
@@ -39,42 +42,25 @@ export async function submitRsvp({ groupId, guests, extraGuests, message }: Subm
       throw new Error("Invitati suplimentari incompleti");
     }
 
-    const confirmedGuests = [
-      ...cleanGuests.filter((g) => g.attending),
-      ...cleanExtraGuests.filter((g) => g.attending),
-    ];
+    const normalizedRow = {
+      guests: cleanGuests,
+      extraGuests: cleanExtraGuests,
+    };
 
-    const confirmedCount = confirmedGuests.length;
+    const confirmedCount = getAttendingCount(normalizedRow);
     const totalGuests = cleanGuests.length + cleanExtraGuests.length;
-
-    // 🔥 allow decline
-    const status = confirmedCount > 0 ? "confirmed" : "declined";
 
     if (confirmedCount > group.maxGuests) {
       throw new Error("Depasire limita invitati");
     }
 
-    const needsTransport = confirmedGuests.some((guest) => guest.transport?.type === "bus");
-
-    const data: FirestoreRsvp & {
-      attendingCount: number;
-      totalGuests: number;
-      needsTransport: boolean;
-      status: "confirmed" | "declined";
-      respondedAt: any;
-    } = {
+    const data: FirestoreRsvp = {
       groupId,
       guests: cleanGuests,
       extraGuests: cleanExtraGuests,
-
-      attendingCount: confirmedCount,
-      totalGuests,
-      status,
-      needsTransport,
       createdAt: serverTimestamp(),
-      respondedAt: serverTimestamp(),
 
-      message: message?.trim() || "",
+      message: submission.message,
     };
 
     tx.set(rsvpRef, data, { merge: true });

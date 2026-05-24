@@ -1,3 +1,4 @@
+import { getAttendingGuests } from "@/domain/rsvp/selectors";
 import type { GuestTransport, RSVPGuest, TransportType } from "@/types/rsvp";
 
 import { TRANSPORT_LOCATIONS, type TransportLocationId } from "@/data/transportOptions";
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export default function StepTransport({ guests, extraGuests, onChange, onNext, onBack }: Props) {
-  const attendingGuests = [...guests, ...extraGuests].filter((g) => g.attending);
+  const attendingGuests = getAttendingGuests({ guests, extraGuests }) as RSVPGuest[];
 
   function updateGuestTransport(guestId: string, transport: GuestTransport) {
     const updateList = (list: RSVPGuest[]) =>

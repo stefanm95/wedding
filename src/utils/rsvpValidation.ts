@@ -1,4 +1,8 @@
+import { normalizeGuests } from "@/domain/rsvp/normalizers";
+import { getAttendingCount, getAttendingGuests } from "@/domain/rsvp/selectors";
 import type { GuestGroupMember, RSVPFormData, RSVPGuest } from "@/types/rsvp";
+
+export { normalizeGuest, normalizeGuests } from "@/domain/rsvp/normalizers";
 
 export type ValidationResult =
   | {
@@ -24,26 +28,12 @@ export const getMemberName = (member: GuestGroupMember) =>
 export const getMemberId = (member: GuestGroupMember) =>
   typeof member === "string" ? toGuestId(member) : member.id || toGuestId(member.name);
 
-export const normalizeGuest = (guest: RSVPGuest): RSVPGuest => ({
-  id: guest.id || toGuestId(guest.name),
-  name: guest.name.trim(),
-  attending: guest.attending,
-  dietary: guest.attending ? guest.dietary || "none" : "none",
-  transport: guest.transport || {
-    type: "none",
-  },
-  // 🔥 IMPORTANT
-  dietaryNote: guest.attending && guest.dietary === "other" ? guest.dietaryNote?.trim() || "" : "",
-});
-
-export const normalizeGuests = (guests: RSVPGuest[]) => guests.map(normalizeGuest);
-
 export const validateSelectedGroup = (form: RSVPFormData): ValidationResult => {
   if (!form.groupId.trim()) {
     return { ok: false, message: "Selecteaza un grup valid." };
   }
 
-  if (form.guests.length === 0) {
+  if (!Array.isArray(form.guests) || form.guests.length === 0) {
     return { ok: false, message: "Grupul selectat nu are invitati." };
   }
 
@@ -51,29 +41,28 @@ export const validateSelectedGroup = (form: RSVPFormData): ValidationResult => {
 };
 
 export const validateGuests = (form: RSVPFormData): ValidationResult => {
-  if (!form.guests.every((guest) => guest.id && guest.name.trim())) {
+  const cleanGuests = normalizeGuests(form.guests);
+  const cleanExtraGuests = normalizeGuests(form.extraGuests);
+
+  if (!cleanGuests.every((guest) => guest.id && guest.name.trim())) {
     return { ok: false, message: "Lista de invitati este incompleta." };
   }
 
-  if (!form.guests.every((guest) => typeof guest.attending === "boolean")) {
+  if (!cleanGuests.every((guest) => typeof guest.attending === "boolean")) {
     return { ok: false, message: "Confirma raspunsul pentru fiecare invitat." };
   }
-
-  const cleanExtraGuests = form.extraGuests.map(normalizeGuest);
 
   if (cleanExtraGuests.some((guest) => guest.attending && !guest.name)) {
     return { ok: false, message: "Completeaza numele invitatilor suplimentari." };
   }
 
-  // 🔥 dietary validation (members)
-  if (form.guests.some((g) => g.attending && g.dietary === "other" && !g.dietaryNote?.trim())) {
+  if (cleanGuests.some((g) => g.attending && g.dietary === "other" && !g.dietaryNote?.trim())) {
     return {
       ok: false,
       message: "Te rugăm să specifici restricțiile alimentare.",
     };
   }
 
-  // 🔥 dietary validation (extra guests)
   if (
     cleanExtraGuests.some((g) => g.attending && g.dietary === "other" && !g.dietaryNote?.trim())
   ) {
@@ -83,11 +72,11 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
     };
   }
 
-  const confirmedCount =
-    form.guests.filter((guest) => guest.attending).length +
-    cleanExtraGuests.filter((guest) => guest.attending).length;
+  const confirmedCount = getAttendingCount({
+    guests: cleanGuests,
+    extraGuests: cleanExtraGuests,
+  });
 
-  // 🔥 allow decline ONLY if explicitly chosen
   if (confirmedCount === 0 && form.attending !== false) {
     return { ok: false, message: "Confirma cel putin un participant." };
   }
@@ -96,8 +85,10 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
     return { ok: false, message: "Ai depasit limita de invitati." };
   }
 
-  // 🔥 transport validation
-  const attendingGuests = [...form.guests, ...cleanExtraGuests].filter((guest) => guest.attending);
+  const attendingGuests = getAttendingGuests({
+    guests: cleanGuests,
+    extraGuests: cleanExtraGuests,
+  }) as RSVPGuest[];
 
   const invalidTransport = attendingGuests.some((guest) => {
     if (!guest.transport) {

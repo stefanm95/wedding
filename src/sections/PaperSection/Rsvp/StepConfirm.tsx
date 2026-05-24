@@ -1,4 +1,5 @@
-import type { RSVPFormData } from "@/types/rsvp";
+import { getAttendingGuests } from "@/domain/rsvp/selectors";
+import type { RSVPFormData, RSVPGuest } from "@/types/rsvp";
 import { motion } from "framer-motion";
 import { rsvpStyles } from "./rsvpStyles";
 import { stepVariants } from "./stepVariants";
@@ -10,7 +11,7 @@ type Props = {
 };
 
 export default function StepConfirm({ form, onNext, onBack }: Props) {
-  const attendingGuests = [...form.guests, ...form.extraGuests].filter((g) => g.attending);
+  const attendingGuests = getAttendingGuests(form) as RSVPGuest[];
 
   return (
     <motion.div

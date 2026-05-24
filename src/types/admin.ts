@@ -38,6 +38,7 @@ export type AdminRow = {
   status: "confirmed" | "declined" | "pending";
 
   needsTransport: boolean;
+  hasResponded?: boolean;
 
   guests?: AdminGuest[];
   extraGuests: AdminGuest[];

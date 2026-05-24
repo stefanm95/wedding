@@ -1,29 +1,20 @@
+import { normalizeGuests } from "@/domain/rsvp/normalizers";
+import { getAttendingCount, getStatus, getTransportCount } from "@/domain/rsvp/selectors";
 import { db } from "@/lib/firebase";
+import type { AdminGuest, AdminRow } from "@/types/admin";
 import { arrayUnion, doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
-
-import type { AdminRow } from "@/types/admin";
 
 export async function updateRsvpAdmin(data: AdminRow) {
   const rsvpRef = doc(db, "rsvps", data.groupId);
   const groupRef = doc(db, "guestGroups", data.groupId);
 
-  const guests = data.guests || [];
-  const extraGuests = data.extraGuests || [];
+  const guests = normalizeGuests(data.guests) as AdminGuest[];
+  const extraGuests = normalizeGuests(data.extraGuests) as AdminGuest[];
+  const normalizedRow = { guests, extraGuests };
 
-  const coreAttending = guests.filter((g) => g.attending).length;
-
-  const attendingCount = coreAttending + extraGuests.filter((g) => g.attending).length;
-
-  const status =
-    coreAttending === 0 ? "declined" : coreAttending === guests.length ? "confirmed" : "pending";
-
-  const allGuests = [...guests, ...extraGuests];
-
-  const attendingGuests = allGuests.filter((g) => g.attending);
-
-  const needsTransport = attendingGuests.some((guest) => guest.transport?.type === "bus");
-
-  /* ---------------- BUILD NEW HISTORY ENTRY ---------------- */
+  const attendingCount = getAttendingCount(normalizedRow);
+  const status = getStatus(normalizedRow);
+  const needsTransport = getTransportCount(normalizedRow) > 0;
 
   const newHistoryEntry = {
     editedAt: new Date(),
@@ -35,29 +26,16 @@ export async function updateRsvpAdmin(data: AdminRow) {
     },
   };
 
-  /* ---------------- RSVP WRITE ---------------- */
-
   await setDoc(
     rsvpRef,
     {
       groupId: data.groupId,
-
-      guests: guests || [],
-      extraGuests: extraGuests || [],
-
-      attendingCount,
-      status,
-
-      needsTransport,
-
-      respondedAt: serverTimestamp(),
-
+      guests,
+      extraGuests,
       history: arrayUnion(newHistoryEntry),
     },
     { merge: true },
   );
-
-  /* ---------------- GUEST GROUP ---------------- */
 
   await updateDoc(groupRef, {
     hasResponded: true,
