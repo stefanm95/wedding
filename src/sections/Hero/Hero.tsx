@@ -1,15 +1,17 @@
 import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useState } from "react";
 
-import HeroIntro from "./HeroIntro";
-import HeroVideo from "./HeroVideo";
-
 import CinematicOverlay from "@components/CinematicOverlay";
 
 import type { HeroProps } from "@/types/hero";
 
+import HeroIntro from "./HeroIntro";
+import HeroVideo from "./HeroVideo";
+
 export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
   const [progress, setProgress] = useState(0);
+
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: paperRef,
@@ -17,18 +19,40 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
   });
 
   const blur = useTransform(scrollYProgress, [0.5, 1], [0, 12]);
+
   const scaleScroll = useTransform(scrollYProgress, [0, 1], [1.04, 1]);
 
   const filter = useMotionTemplate`
-  blur(${blur}px)
-  brightness(0.9)
-  contrast(1.05)
-  saturate(1)
-`;
+    blur(${blur}px)
+    brightness(0.9)
+    contrast(1.05)
+    saturate(1)
+  `;
 
   return (
-    <section id="hero" className="relative z-0 h-screen overflow-hidden">
+    <section id="hero" className="relative z-0 h-screen overflow-hidden bg-black">
+      {/* ========================= */}
+      {/* 🖼 FALLBACK IMAGE */}
+      {/* ========================= */}
+
+      <motion.img
+        src="/assets/video-placeholder.png"
+        alt=""
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover"
+        animate={{
+          opacity: videoLoaded ? 0 : 1,
+        }}
+        transition={{
+          duration: 0.8,
+          ease: "easeOut",
+        }}
+      />
+
+      {/* ========================= */}
       {/* 🎬 VIDEO */}
+      {/* ========================= */}
+
       <motion.div
         className="absolute inset-0"
         style={{
@@ -40,27 +64,32 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
           muted
           loop
           playsInline
+          preload="auto"
           disablePictureInPicture
+          onCanPlayThrough={() => setVideoLoaded(true)}
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
           style={{
             filter,
             willChange: "filter, transform",
+            opacity: videoLoaded ? 1 : 0,
+            transition: "opacity 1s ease",
           }}
         >
           <source src="/assets/video/video.mp4" type="video/mp4" />
         </motion.video>
       </motion.div>
+
+      {/* OVERLAY */}
       <div className="pointer-events-none absolute inset-0 bg-[#6b1f2b]/20 mix-blend-multiply" />
 
-      {/* 🔥 IMPORTANT: elimină linia gri */}
       <div className="pointer-events-none absolute inset-0 bg-black/30" />
 
-      {/* ✨ TEXT + SCROLL */}
+      {/* CONTENT */}
       <HeroVideo opened={opened} paperRef={paperRef} />
 
       <CinematicOverlay intensity={opened ? 0 : 1} />
 
-      {/* 🎭 INTRO */}
+      {/* INTRO */}
       <motion.div
         className="absolute inset-0 z-[999]"
         animate={{
