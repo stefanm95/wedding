@@ -1,9 +1,9 @@
 import type { HeroVideoProps } from "@/types/hero";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useMotionTemplate, useMotionValue, useScroll, useTransform } from "framer-motion";
+import { useEffect } from "react";
 
 export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
-  const [light, setLight] = useState(0);
+  const light = useMotionValue(0);
 
   // 🔥 SINGLE SOURCE OF TRUTH
   const { scrollYProgress } = useScroll({
@@ -22,20 +22,30 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   // 🔥 păstrăm glow-ul tău
   useEffect(() => {
     let rafId: number;
+    let current = 0;
 
     const animate = () => {
       const target = typeof window.__heroLight === "number" ? window.__heroLight : 0;
 
-      setLight((prev) => prev + (target - prev) * 0.12);
+      current += (target - current) * 0.12;
+      light.set(current);
 
       rafId = requestAnimationFrame(animate);
     };
 
     rafId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafId);
-  }, []);
+  }, [light]);
 
-  const boosted = light + Math.pow(light, 3) * 0.5;
+  const boosted = useTransform(light, (value) => value + Math.pow(value, 3) * 0.5);
+  const shadowNear = useTransform(boosted, (value) => 30 + value * 80);
+  const shadowFar = useTransform(boosted, (value) => 80 + value * 160);
+  const shadowNearOpacity = useTransform(boosted, (value) => 0.2 + value * 0.5);
+  const shadowFarOpacity = useTransform(boosted, (value) => 0.1 + value * 0.35);
+  const titleTextShadow = useMotionTemplate`
+    0 0 ${shadowNear}px rgba(255,220,160,${shadowNearOpacity}),
+    0 0 ${shadowFar}px rgba(255,200,120,${shadowFarOpacity})
+  `;
 
   const revealProgress = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
   const navY = useTransform(revealProgress, [0, 1], [10, 0]);
@@ -102,10 +112,7 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
                 },
               }}
               style={{
-                textShadow: `
-                0 0 ${30 + boosted * 80}px rgba(255,220,160,${0.2 + boosted * 0.5}),
-                0 0 ${80 + boosted * 160}px rgba(255,200,120,${0.1 + boosted * 0.35})
-              `,
+                textShadow: titleTextShadow,
               }}
             >
               Denisa & Iulian

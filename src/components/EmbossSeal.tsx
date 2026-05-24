@@ -1,3 +1,4 @@
+import { useDevice } from "@/hooks/useDevice";
 import { useHeroLight } from "@/hooks/useHeroLight";
 import { useHeroLightDir } from "@/hooks/useHeroLightDir";
 import { cn } from "@utils/cn";
@@ -21,6 +22,8 @@ export default function EmbossSeal({ className, progress }: Props) {
 
   const light = useHeroLight();
   const dir = useHeroLightDir();
+  const { isMobile, isTablet } = useDevice();
+  const isCompact = isMobile || isTablet;
 
   // boost cinematic
   const boosted = light + Math.pow(light, 2) * 0.4;
@@ -85,7 +88,7 @@ export default function EmbossSeal({ className, progress }: Props) {
           "md:h-[520px] md:w-[520px]",
           "bg-black/25",
           "translate-x-[4px] translate-y-[4px]",
-          "blur-[6px]",
+          isCompact ? "blur-[3px]" : "blur-[6px]",
           "opacity-40",
           "mix-blend-multiply",
           mask,
@@ -108,7 +111,7 @@ export default function EmbossSeal({ className, progress }: Props) {
           "md:h-[520px] md:w-[520px]",
           "bg-white/40",
           "-translate-x-[3px] -translate-y-[3px]",
-          "blur-[4px]",
+          isCompact ? "blur-[2px]" : "blur-[4px]",
           "opacity-30",
           "mix-blend-overlay",
           mask,
@@ -132,7 +135,7 @@ export default function EmbossSeal({ className, progress }: Props) {
           "absolute h-[420px] w-[420px]",
           "md:h-[520px] md:w-[520px]",
           "bg-gradient-to-r from-white/40 via-white/10 to-transparent",
-          "blur-[20px]",
+          isCompact ? "blur-[10px]" : "blur-[20px]",
           "mix-blend-soft-light",
           mask,
           "[mask-position:center]",

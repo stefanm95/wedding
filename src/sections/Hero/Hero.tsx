@@ -23,7 +23,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
     offset: ["start 0.85", "start 0.25"],
   });
 
-  const blur = useTransform(scrollYProgress, [0.5, 1], [0, 12]);
+  const blur = useTransform(scrollYProgress, [0.5, 1], [0, isMobile ? 6 : 12]);
 
   const scaleScroll = useTransform(scrollYProgress, [0, 1], [1.04, 1]);
 
@@ -75,7 +75,7 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
           className="absolute inset-0 h-full w-full object-cover will-change-transform"
           style={{
             filter,
-            willChange: "filter, transform",
+            willChange: isMobile ? "transform" : "filter, transform",
             opacity: videoLoaded ? 1 : 0,
             transition: "opacity 1s ease",
           }}

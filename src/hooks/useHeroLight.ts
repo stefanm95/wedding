@@ -5,6 +5,8 @@ export function useHeroLight() {
 
   useEffect(() => {
     let rafId: number;
+    let current = 0;
+    let frame = 0;
 
     const animate = () => {
       const target =
@@ -12,7 +14,13 @@ export function useHeroLight() {
           ? window.__heroLight
           : 0;
 
-      setLight((prev) => prev + (target - prev) * 0.1);
+      current += (target - current) * 0.1;
+
+      if (frame % 2 === 0) {
+        setLight((prev) => (Math.abs(prev - current) > 0.01 ? current : prev));
+      }
+
+      frame += 1;
 
       rafId = requestAnimationFrame(animate);
     };

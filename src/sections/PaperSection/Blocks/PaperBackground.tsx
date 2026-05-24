@@ -11,13 +11,14 @@ const variants: PaperVariant[] = ["day", "golden", "evening"];
 const PaperBackgroundLayer = ({
   variant,
   opacity,
+  light,
 }: {
   variant: PaperVariant;
   opacity: MotionValue<number>;
+  light: number;
 }) => {
   const theme = paperThemes[variant];
 
-  const light = useHeroLight();
   const boosted = light + Math.pow(light, 2) * 0.4;
 
   // 🔥 clamp (foarte important)
@@ -74,6 +75,7 @@ const PaperBackgroundLayer = ({
 };
 
 const PaperBackground = ({ progress }: Props) => {
+  const light = useHeroLight();
   const dayOpacity = useTransform(progress, [0, 0.3, 0.5], [1, 0.4, 0]);
   const goldenOpacity = useTransform(progress, [0.2, 0.5, 0.8], [0, 1, 0]);
   const eveningOpacity = useTransform(progress, [0.6, 0.85, 1], [0, 0.6, 1]);
@@ -84,6 +86,7 @@ const PaperBackground = ({ progress }: Props) => {
         <PaperBackgroundLayer
           key={variant}
           variant={variant}
+          light={light}
           opacity={
             variant === "day" ? dayOpacity : variant === "golden" ? goldenOpacity : eveningOpacity
           }

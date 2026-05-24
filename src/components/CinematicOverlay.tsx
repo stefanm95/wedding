@@ -1,3 +1,4 @@
+import { useDevice } from "@/hooks/useDevice";
 import { motion } from "framer-motion";
 
 type Props = {
@@ -5,6 +6,9 @@ type Props = {
 };
 
 export default function CinematicOverlay({ intensity = 3 }: Props) {
+  const { isMobile, isTablet } = useDevice();
+  const shouldAnimateGrain = !isMobile && !isTablet;
+
   return (
     <>
       {/* 🎬 VIGNETTE */}
@@ -30,14 +34,16 @@ export default function CinematicOverlay({ intensity = 3 }: Props) {
           mixBlendMode: "overlay",
           opacity: 0.06 * intensity,
         }}
-        animate={{
-          opacity: [0.04, 0.07, 0.05],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={shouldAnimateGrain ? { opacity: [0.04, 0.07, 0.05] } : undefined}
+        transition={
+          shouldAnimateGrain
+            ? {
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }
+            : undefined
+        }
       />
     </>
   );
