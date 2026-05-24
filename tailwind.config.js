@@ -1,5 +1,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  screens: {
+    sm: "640px",
+    md: "768px",
+    lg: "1024px",
+
+    story: "1040px",
+
+    xl: "1280px",
+    "2xl": "1536px",
+  },
   theme: {
     extend: {
       colors: {

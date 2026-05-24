@@ -31,8 +31,8 @@ export const storyData: StoryItemType[] = [
     title: "Totul a început...",
     offset: {
       wrapper: "md:-mt-24 lg:-mt-24 md:px-6",
-      text: "md:-translate-y-8 lg:-translate-y-8 xl:translate-y-44",
-      image: "lg:translate-y-40 ",
+      text: "md:-translate-y-8 lg:-translate-y-8 story:translate-y-24 xl:translate-y-44",
+      image: "lg:translate-y-16 story:translate-y-28 xl:translate-y-40",
     },
     content: [
       {
@@ -111,8 +111,8 @@ export const storyData: StoryItemType[] = [
     title: "Și uneori, o secundă e suficientă ca să rămână în gând o săptămână întreagă",
     offset: {
       wrapper: "md:-mt-32 lg:-mt-32 md:px-6",
-      text: "md:-translate-y-32 lg:translate-y-24 xl:translate-y-32",
-      image: "md:-translate-y-32 lg:translate-y-12 xl:translate-y-32",
+      text: "md:-translate-y-32 lg:-translate-y-8 story:translate-y-24 xl:translate-y-32",
+      image: "md:-translate-y-32 lg:-translate-y-8 story:translate-y-16 xl:translate-y-32",
     },
     content: [
       {
@@ -164,9 +164,9 @@ export const storyData: StoryItemType[] = [
     side: "left",
     title: "Și, uneori, „cine știe” e exact începutul.",
     offset: {
-      wrapper: "md:-mt-16 lg:-mt-32 md:px-6 xl:-mt-24",
-      text: "md:-translate-y-24 lg:-translate-y-32 xl:translate-y-16",
-      image: "md:-translate-y-24 lg:translate-y-40 xl:translate-y-44",
+      wrapper: "md:-mt-16 story:-mt-24 lg:-mt-32 md:px-6 xl:-mt-24",
+      text: "md:-translate-y-24  story:translate-y-8 lg:-translate-y-32 xl:translate-y-16",
+      image: "md:-translate-y-24  story:translate-y-32 lg:translate-y-40 xl:translate-y-44",
     },
     content: [
       {
@@ -237,8 +237,8 @@ export const storyData: StoryItemType[] = [
     title: "Ceremonia religioasa",
     offset: {
       wrapper: "md:px-6",
-      text: "lg:-translate-y-16 xl:-translate-y-16",
-      image: "lg:-translate-y-16 xl:-translate-y-16",
+      text: "lg:-translate-y-8 story:-translate-y-16",
+      image: "lg:-translate-y-8 story:-translate-y-16",
     },
     content: [
       {
@@ -265,8 +265,8 @@ export const storyData: StoryItemType[] = [
     side: "left",
     title: "Petrecerea",
     offset: {
-      wrapper: "lg:-mt-2 mb-8 md:px-6",
-      text: "md:-translate-y-24 lg:-translate-y-32",
+      wrapper: "lg:-mt-2 mb-8 md:px-6 story:-mt-8",
+      text: "md:-translate-y-24 lg:-translate-y-32  story:-translate-y-32",
       image: "lg:-translate-y-32",
     },
     content: [
