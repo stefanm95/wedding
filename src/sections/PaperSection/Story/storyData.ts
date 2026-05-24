@@ -30,8 +30,9 @@ export const storyData: StoryItemType[] = [
     side: "left",
     title: "Totul a început...",
     offset: {
-      wrapper: "lg:mt-24",
-      image: "lg:translate-y-32",
+      wrapper: "md:-mt-24 lg:-mt-24 md:px-6",
+      text: "md:-translate-y-8 lg:-translate-y-8 xl:translate-y-44",
+      image: "lg:translate-y-40 ",
     },
     content: [
       {
@@ -108,6 +109,11 @@ export const storyData: StoryItemType[] = [
   {
     side: "right",
     title: "Și uneori, o secundă e suficientă ca să rămână în gând o săptămână întreagă",
+    offset: {
+      wrapper: "md:-mt-24 lg:-mt-32 md:px-6",
+      text: "md:-translate-y-8 lg:-translate-y-8 xl:translate-y-32",
+      image: "lg:-translate-y-8 xl:translate-y-32",
+    },
     content: [
       {
         type: "paragraph",
@@ -158,9 +164,9 @@ export const storyData: StoryItemType[] = [
     side: "left",
     title: "Și, uneori, „cine știe” e exact începutul.",
     offset: {
-      wrapper: "md:-mt-24 lg:-mt-12",
-      text: "lg:-translate-y-44",
-      image: "lg:translate-y-24",
+      wrapper: "md:-mt-24 lg:-mt-32 md:px-6 xl:-mt-24",
+      text: "md:-translate-y-8 lg:-translate-y-44 xl:translate-y-16",
+      image: "lg:translate-y-24 xl:translate-y-44",
     },
     content: [
       {
@@ -230,13 +236,18 @@ export const storyData: StoryItemType[] = [
     side: "right",
     title: "Ceremonia religioasa",
     offset: {
-      text: "lg:-translate-y-32",
-      image: "lg:-translate-y-32",
+      wrapper: "md:px-6",
+      text: "lg:-translate-y-44 xl:-translate-y-16",
+      image: "lg:-translate-y-44 xl:-translate-y-16",
     },
     content: [
       {
         type: "paragraph",
         text: "Vom spune „DA” în fața lui Dumnezeu, într-un loc plin de liniște și binecuvântare.",
+      },
+      {
+        type: "paragraph",
+        text: "Pentru confortul tuturor invitaților și desfășurarea liniștită a ceremoniei, apreciem sosirea cu aproximativ 15 minute înainte.",
       },
     ],
     location: "Biserica „Sfinții Trei Ierarhi” Fundeni",
@@ -254,7 +265,7 @@ export const storyData: StoryItemType[] = [
     side: "left",
     title: "Petrecerea",
     offset: {
-      wrapper: "lg:-mt-2",
+      wrapper: "lg:-mt-2 mb-8 md:px-6",
       text: "lg:-translate-y-32",
       image: "lg:-translate-y-32",
     },

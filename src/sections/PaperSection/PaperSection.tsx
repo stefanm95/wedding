@@ -12,6 +12,7 @@ import { useMergedRefs } from "@hooks/useMergedRefs";
 import { usePaperScroll } from "@hooks/usePaperScroll";
 import RsvpLayerInline from "@paper/Rsvp/RsvpLayer";
 import PaperGrain from "@/components/PaperGrain";
+import PaperDetailsBlock from "./Blocks/PaperDetailsBlock";
 
 const PaperSection = forwardRef<HTMLElement, { className?: string; opened?: boolean }>(
   ({ className, opened }, ref) => {
@@ -22,17 +23,6 @@ const PaperSection = forwardRef<HTMLElement, { className?: string; opened?: bool
     const rsvpRef = useRef<HTMLDivElement | null>(null);
 
     const { progress, variant, y, scale, shadow } = usePaperScroll(sectionRef);
-
-    const handleOpenRsvp = () => {
-      rsvpRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-
-      setTimeout(() => {
-        setShowRsvp(true);
-      }, 300);
-    };
 
     return (
       <motion.div
@@ -83,11 +73,9 @@ const PaperSection = forwardRef<HTMLElement, { className?: string; opened?: bool
               {/* 🔥 pass progress down (this is the key change) */}
               <PaperHeroBlock variant={variant} progress={progress} />
               <PaperStoryBlock variant={variant} progress={progress} />
-              <PaperProgramBlock
-                variant={variant}
-                progress={progress}
-                onOpenRsvp={handleOpenRsvp}
-              />
+              <PaperDetailsBlock variant={variant} progress={progress} />
+
+              <PaperProgramBlock variant={variant} progress={progress} />
             </PaperStack>
           </motion.div>
 

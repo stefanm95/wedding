@@ -29,6 +29,8 @@ export default function Story() {
         ))}
       </div>
 
+      {/* 🔥 FOLD DESKTOP / TABLET ONLY */}
+
       {/* THIRD PART */}
       <div>
         {thirdGroup.map((item) => (

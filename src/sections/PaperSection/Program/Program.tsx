@@ -3,11 +3,7 @@ import { useDevice } from "@hooks/useDevice";
 import { programData } from "./programData";
 import ProgramItem from "./ProgramItem";
 
-type Props = {
-  onOpenRsvp: () => void;
-};
-
-export default function Program({ onOpenRsvp }: Props) {
+export default function Program() {
   const { width } = useDevice();
 
   // ✅ cinematic starts at tablet landscape / small desktop
@@ -20,7 +16,7 @@ export default function Program({ onOpenRsvp }: Props) {
         <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
             <h2 className="script-cormorant-display text-[30px] tracking-[0.08em] text-[#6b1f2b] sm:text-[34px] md:text-[40px]">
-              DETALII SUPLIMENTARE
+              PROGRAM
             </h2>
 
             <div className="mt-3 flex items-center gap-3">
@@ -29,13 +25,6 @@ export default function Program({ onOpenRsvp }: Props) {
               <div className="h-[1px] w-10 bg-[#c9a46c]" />
             </div>
           </div>
-
-          <button
-            onClick={onOpenRsvp}
-            className="self-start border border-[#c9a46c] px-6 py-3 text-[10px] uppercase tracking-[0.2em] text-[#6b1f2b] transition hover:bg-[#6b1f2b] hover:text-white sm:text-[11px]"
-          >
-            Confirmă prezența
-          </button>
         </div>
 
         {/* 🎬 CINEMATIC (1024+) */}

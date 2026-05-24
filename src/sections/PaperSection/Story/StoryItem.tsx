@@ -97,7 +97,7 @@ function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
   return (
     <div
       className={cn(
-        "mx-auto grid max-w-6xl items-center gap-8 sm:gap-10 md:gap-16 lg:grid-cols-2 lg:gap-28",
+        "mx-auto grid max-w-6xl items-center gap-8 sm:gap-10 md:gap-16 lg:grid-cols-2 lg:gap-14 xl:gap-28",
 
         item.offset?.wrapper,
       )}
@@ -151,10 +151,10 @@ function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean 
     <div
       className={cn(
         // MOBILE
-        "mx-auto flex flex-col items-center gap-10",
+        "mx-auto flex flex-col items-center gap-10 md:px-6",
 
         // DESKTOP
-        "lg:grid lg:max-w-6xl lg:grid-cols-2 lg:items-start lg:gap-28",
+        "lg:grid lg:max-w-6xl lg:grid-cols-2 lg:items-start lg:gap-12 xl:gap-28",
 
         item.side === "left" ? "lg:-mt-0" : "lg:-mt-4",
 
@@ -171,11 +171,11 @@ function NarrativeItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean 
           item.offset?.text,
         )}
       >
-        <h3 className="script-gary-display mb-5 text-center text-[28px] leading-[1.2] text-[#5a1e28] sm:text-[32px] lg:mb-4 lg:text-left lg:text-[24px]">
+        <h3 className="script-gary-display mb-5 text-center text-[28px] leading-[1.2] text-[#5a1e28] sm:text-[32px] lg:mb-2 lg:text-left lg:text-[24px]">
           {item.title}
         </h3>
 
-        <div className="space-y-4 lg:space-y-3">{renderContent(item)}</div>
+        <div className="space-y-2 lg:space-y-1">{renderContent(item)}</div>
       </div>
 
       <StoryImage item={item} isLeft={isLeft} />
@@ -202,7 +202,7 @@ export default function StoryItem({ item }: Props) {
         // DESKTOP
         "lg:mt-16",
 
-        isEvent && "mt-32 md:mt-40 lg:mt-56",
+        isEvent && "mt-20 md:mt-24 lg:mt-24 xl:mt-56",
       )}
     >
       {isEvent ? (

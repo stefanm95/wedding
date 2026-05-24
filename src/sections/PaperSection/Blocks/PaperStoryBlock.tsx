@@ -7,7 +7,7 @@ export default function PaperStoryBlock({ variant }: PaperBlockProps) {
     <section
       id="story"
       data-paper-variant={variant}
-      className="relative bg-transparent pb-24 pt-16 opacity-90 md:pb-32 md:pt-24 lg:pb-40"
+      className="relative bg-transparent pt-16 opacity-90 md:pt-24"
     >
       {/* HEADER */}
       <div className="mx-auto mb-8 mt-[4em] h-[12vh] max-w-3xl px-6 text-center md:mb-6 lg:mb-8">

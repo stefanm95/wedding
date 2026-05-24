@@ -1,17 +1,20 @@
+import EmbossSeal from "@/components/EmbossSeal";
 import PaperGrain from "@/components/PaperGrain";
 import PaperLight from "@/components/PaperLight";
 import type { PaperBlockProps } from "@/types/paper";
 import type { PaperVariant } from "@/utils/paperThemes";
-import Program from "@paper/Program/Program";
+import { MotionValue } from "framer-motion";
+import Details from "../Details/Details";
 
 type Props = PaperBlockProps & {
   variant: PaperVariant;
+  progress: MotionValue<number>;
 };
 
-export default function PaperProgramBlock({ variant }: Props) {
+export default function PaperDetailsBlock({ variant, progress }: Props) {
   return (
     <section
-      id="program"
+      id="details"
       data-paper-variant={variant}
       className="relative z-20 overflow-visible pt-2 md:pt-4 lg:pt-4"
     >
@@ -24,6 +27,12 @@ export default function PaperProgramBlock({ variant }: Props) {
         />
       </div>
 
+      {/* EMBOSS */}
+      <EmbossSeal
+        progress={progress}
+        className="absolute right-[55%] top-[50%] z-[5] -translate-x-1/2 -translate-y-1/2"
+      />
+
       {/* GRAIN */}
       <PaperGrain />
 
@@ -32,7 +41,7 @@ export default function PaperProgramBlock({ variant }: Props) {
 
       {/* 📄 CONTENT */}
       <div className="max-w-8xl relative z-30 mx-auto px-6 pb-2">
-        <Program />
+        <Details />
       </div>
     </section>
   );
