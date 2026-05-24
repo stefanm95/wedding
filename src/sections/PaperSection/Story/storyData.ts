@@ -165,7 +165,7 @@ export const storyData: StoryItemType[] = [
     title: "Și, uneori, „cine știe” e exact începutul.",
     offset: {
       wrapper: "md:-mt-24 lg:-mt-32 md:px-6 xl:-mt-24",
-      text: "md:-translate-y-8 lg:-translate-y-44 xl:translate-y-16",
+      text: "md:-translate-y-8 lg:-translate-y-32 xl:translate-y-16",
       image: "lg:translate-y-24 xl:translate-y-44",
     },
     content: [
@@ -237,8 +237,8 @@ export const storyData: StoryItemType[] = [
     title: "Ceremonia religioasa",
     offset: {
       wrapper: "md:px-6",
-      text: "lg:-translate-y-44 xl:-translate-y-16",
-      image: "lg:-translate-y-44 xl:-translate-y-16",
+      text: "lg:-translate-y-16 xl:-translate-y-16",
+      image: "lg:-translate-y-16 xl:-translate-y-16",
     },
     content: [
       {
