@@ -16,17 +16,23 @@
 html,
 body,
 #root {
+  min-height: 100%;
   background: #12070a;
 }
 
-/* Firefox */
 html {
   scrollbar-width: none;
   overscroll-behavior: none;
 }
 
-/* IE / old Edge */
 body {
+  margin: 0;
   -ms-overflow-style: none;
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+#root {
+  min-height: 100%;
 }

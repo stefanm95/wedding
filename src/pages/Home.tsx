@@ -73,7 +73,7 @@ function Home() {
       {/* 📄 CONTENT FLOW */}
       <div className="content-flow pointer-events-none relative z-20 -mt-[40vh]">
         {/* spacer */}
-        <div className="h-screen" />
+        <div className="h-[100dvh]" />
 
         {/* paper */}
         <PaperSection ref={paperRef} opened={opened} className="pointer-events-auto" />

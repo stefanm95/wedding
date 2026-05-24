@@ -88,7 +88,11 @@ export default function Hero({ opened, setOpened, paperRef }: HeroProps) {
   }, []);
 
   return (
-    <section ref={heroRef} id="hero" className="relative z-0 h-screen overflow-hidden bg-black">
+    <section
+      ref={heroRef}
+      id="hero"
+      className="relative z-0 min-h-[100dvh] overflow-hidden bg-black"
+    >
       {/* ========================= */}
       {/* 🖼 FALLBACK IMAGE */}
       {/* ========================= */}
