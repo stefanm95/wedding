@@ -31,9 +31,7 @@ export default function PolaroidCard() {
         <p
           className="script-gary-display mt-5 text-center text-[#6b1f2b]/90 md:text-3xl"
           style={{ transform: "rotate(-0.6deg)" }}
-        >
-          Prima amintire
-        </p>
+        ></p>
       </div>
     </motion.div>
   );
