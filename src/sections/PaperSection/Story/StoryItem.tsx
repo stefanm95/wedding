@@ -33,7 +33,7 @@ function renderContent(item: StoryItemType) {
           key={i}
           className="script-cormorant-display whitespace-pre-line text-[21px] italic leading-[1.4] text-[#5a1e28] sm:text-[24px] lg:text-[26px]"
         >
-          “{block.text}”
+          „{block.text}”
         </p>
       );
     }

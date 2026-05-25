@@ -61,7 +61,8 @@ export default function HeroVideo({ opened, paperRef }: HeroVideoProps) {
   const navItems = [
     { id: "paper-hero", label: "Invitație", y: navItemY1 },
     { id: "story", label: "Poveste", y: navItemY2 },
-    { id: "program", label: "Program", y: navItemY3 },
+    // { id: "program", label: "Program", y: navItemY3 },
+    { id: "details", label: "Detalii", y: navItemY3 },
     { id: "rsvp", label: "Confirmare", y: navItemY4 },
   ];
 

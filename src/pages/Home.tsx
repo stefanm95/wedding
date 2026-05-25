@@ -15,7 +15,7 @@ const sections: Section[] = [
   { id: "paper-hero", label: "Invitație" },
   { id: "story", label: "Poveste" },
   // { id: "program", label: "Program" },
-  { id: "details", label: "DETALII" },
+  { id: "details", label: "Detalii" },
   { id: "rsvp", label: "Confirmare" },
 ];
 
