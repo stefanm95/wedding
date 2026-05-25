@@ -15,8 +15,16 @@ export const detailsData = {
 
       items: [
         {
-          label: "Locație de plecare",
+          label: "Locație de plecare 1",
           value: "Biserica",
+        },
+        {
+          label: "Ora de plecare",
+          value: "începând cu ora 17:30",
+        },
+        {
+          label: "Locație de plecare 2",
+          value: "Obor",
         },
 
         {
@@ -43,6 +51,10 @@ export const detailsData = {
         {
           label: "Ora de plecare",
           value: "02:00 sau 03:00",
+        },
+        {
+          label: "Transport retur",
+          value: "Pentru transportul de întoarcere, invitații pot opta în seara evenimentului.",
         },
 
         {

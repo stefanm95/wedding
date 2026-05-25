@@ -156,9 +156,17 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
 
                   {selectedLocation && (
                     <div className="space-y-2 text-[14px] text-[#3d2b1f]/80">
-                      <p>
-                        Plecare: <strong>{selectedLocation.departurePlace}</strong>
-                      </p>
+                      <a
+                        href={selectedLocation.departurePlace}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-[#5a1e28] underline-offset-4 transition-opacity hover:opacity-70"
+                      >
+                        <span>Plecare:</span>
+                        <strong>Către locație</strong>
+
+                        <span className="text-[12px]">↗</span>
+                      </a>
 
                       <p>
                         Ora: <strong>{selectedLocation.departureTime}</strong>
