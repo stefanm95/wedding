@@ -19,7 +19,7 @@ export const detailsData = {
           value: "Biserica",
         },
         {
-          label: "Ora de plecare",
+          label: "Ora de plecare 1",
           value: "începând cu ora 17:30",
         },
         {
@@ -28,7 +28,7 @@ export const detailsData = {
         },
 
         {
-          label: "Ora de plecare",
+          label: "Ora de plecare 2",
           value: "începând cu ora 17:30",
         },
 

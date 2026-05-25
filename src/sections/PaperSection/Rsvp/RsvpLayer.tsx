@@ -40,7 +40,7 @@ export default function RsvpLayerInline({ onComplete }: Props) {
         name: getMemberName(member),
         attending: false,
         dietary: "none",
-        transport: { type: "none" },
+        transport: { type: "personal" },
       })),
       extraGuests: [],
       maxGuests: group.maxGuests,

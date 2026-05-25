@@ -91,7 +91,7 @@ export default function StepGuests({
         dietary: "none",
         dietaryNote: "",
         transport: {
-          type: "none",
+          type: "personal",
         },
       },
     ]);

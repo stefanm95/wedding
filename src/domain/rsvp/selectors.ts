@@ -29,7 +29,7 @@ export const isBusGuest = (guest: RsvpGuestLike) =>
   guest.attending === true && guest.transport?.type === "bus";
 
 export const hasTransport = (guest: RsvpGuestLike) =>
-  guest.attending === true && Boolean(guest.transport?.type) && guest.transport?.type !== "none";
+  guest.attending === true && Boolean(guest.transport?.type) && guest.transport?.type !== "bus";
 
 export const getPickupLocation = (guest: RsvpGuestLike) =>
   guest.transport?.type === "bus" ? guest.transport.locationId : undefined;

@@ -91,15 +91,13 @@ export const validateGuests = (form: RSVPFormData): ValidationResult => {
   }) as RSVPGuest[];
 
   const invalidTransport = attendingGuests.some((guest) => {
-    if (!guest.transport) {
-      return true;
-    }
+    const type = guest.transport?.type ?? "personal";
 
-    if (guest.transport.type !== "bus") {
+    if (type !== "bus") {
       return false;
     }
 
-    return !guest.transport.locationId;
+    return !guest.transport?.locationId;
   });
 
   if (invalidTransport) {

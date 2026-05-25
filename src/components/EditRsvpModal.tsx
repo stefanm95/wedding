@@ -129,7 +129,7 @@ export default function EditRsvpModal({ row, onClose, onSave }: Props) {
       dietary: "none",
 
       transport: {
-        type: "none",
+        type: "personal",
       },
     };
 

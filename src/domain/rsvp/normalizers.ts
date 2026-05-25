@@ -40,11 +40,7 @@ const toGuestId = (name: string) =>
     .replace(/^-+|-+$/g, "");
 
 const normalizeTransport = (transport?: Partial<GuestTransport>): GuestTransport => {
-  if (!transport?.type || transport.type === "none") {
-    return { type: "none" };
-  }
-
-  if (transport.type === "personal") {
+  if (!transport?.type || transport.type === "personal" || transport.type === "none") {
     return { type: "personal" };
   }
 

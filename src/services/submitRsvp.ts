@@ -1,9 +1,10 @@
-import { db } from "@/lib/firebase";
-import type { FirestoreRsvp, RSVPGuest } from "@/types/rsvp";
 import { normalizeSubmission } from "@/domain/rsvp/normalizers";
 import { getAttendingCount } from "@/domain/rsvp/selectors";
+import { db } from "@/lib/firebase";
+import type { FirestoreRsvp, RSVPGuest } from "@/types/rsvp";
 import { getMemberId } from "@/utils/rsvpValidation";
-import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
+
+import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 
 type SubmitRsvpParams = {
   groupId: string;
@@ -16,60 +17,68 @@ export async function submitRsvp({ groupId, guests, extraGuests, message }: Subm
   const groupRef = doc(db, "guestGroups", groupId);
   const rsvpRef = doc(db, "rsvps", groupId);
 
-  await runTransaction(db, async (tx) => {
-    const groupSnap = await tx.get(groupRef);
+  const groupSnap = await getDoc(groupRef);
 
-    if (!groupSnap.exists()) {
-      throw new Error("Grup inexistent");
-    }
+  if (!groupSnap.exists()) {
+    throw new Error("Grup inexistent");
+  }
 
-    const group = groupSnap.data();
+  const group = groupSnap.data();
 
-    const submission = normalizeSubmission({ groupId, guests, extraGuests, message });
-    const cleanGuests = submission.guests;
-    const cleanExtraGuests = submission.extraGuests.filter(
-      (guest) => guest.name || guest.attending,
-    );
+  const submission = normalizeSubmission({
+    groupId,
+    guests,
+    extraGuests,
+    message,
+  });
 
-    const validMemberIds = new Set((group.members || []).map(getMemberId));
-    const invalidGuests = cleanGuests.filter((guest) => !validMemberIds.has(guest.id));
+  const cleanGuests = submission.guests;
 
-    if (invalidGuests.length > 0) {
-      throw new Error("Invitati invalizi");
-    }
+  const cleanExtraGuests = submission.extraGuests.filter((guest) => guest.name || guest.attending);
 
-    if (cleanExtraGuests.some((guest) => guest.attending && !guest.name)) {
-      throw new Error("Invitati suplimentari incompleti");
-    }
+  const validMemberIds = new Set((group.members || []).map(getMemberId));
 
-    const normalizedRow = {
-      guests: cleanGuests,
-      extraGuests: cleanExtraGuests,
-    };
+  const invalidGuests = cleanGuests.filter((guest) => !validMemberIds.has(guest.id));
 
-    const confirmedCount = getAttendingCount(normalizedRow);
-    const totalGuests = cleanGuests.length + cleanExtraGuests.length;
+  if (invalidGuests.length > 0) {
+    throw new Error("Invitati invalizi");
+  }
 
-    if (confirmedCount > group.maxGuests) {
-      throw new Error("Depasire limita invitati");
-    }
+  if (cleanExtraGuests.some((guest) => guest.attending && !guest.name)) {
+    throw new Error("Invitati suplimentari incompleti");
+  }
 
-    const data: FirestoreRsvp = {
-      groupId,
-      guests: cleanGuests,
-      extraGuests: cleanExtraGuests,
-      createdAt: serverTimestamp(),
+  const normalizedRow = {
+    guests: cleanGuests,
+    extraGuests: cleanExtraGuests,
+  };
 
-      message: submission.message,
-    };
+  const confirmedCount = getAttendingCount(normalizedRow);
 
-    tx.set(rsvpRef, data, { merge: true });
+  const totalGuests = cleanGuests.length + cleanExtraGuests.length;
 
-    tx.update(groupRef, {
-      hasResponded: true,
-      attendingCount: confirmedCount,
-      totalGuests,
-      respondedAt: serverTimestamp(),
-    });
+  if (confirmedCount > group.maxGuests) {
+    throw new Error("Depasire limita invitati");
+  }
+
+  const data: FirestoreRsvp = {
+    groupId,
+    guests: cleanGuests,
+    extraGuests: cleanExtraGuests,
+    createdAt: serverTimestamp(),
+    message: submission.message,
+  };
+
+  // RSVP document
+  await setDoc(rsvpRef, data, {
+    merge: true,
+  });
+
+  // Guest group metadata
+  await updateDoc(groupRef, {
+    hasResponded: true,
+    attendingCount: confirmedCount,
+    totalGuests,
+    respondedAt: serverTimestamp(),
   });
 }

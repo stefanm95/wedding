@@ -37,13 +37,13 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
   }
 
   const isValid = attendingGuests.every((guest) => {
-    if (!guest.transport) return false;
+    const type = guest.transport?.type ?? "personal";
 
-    if (guest.transport.type !== "bus") {
+    if (type !== "bus") {
       return true;
     }
 
-    return Boolean(guest.transport.locationId);
+    return Boolean(guest.transport?.locationId);
   });
 
   return (
@@ -91,7 +91,7 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
               <div className="relative">
                 <select
                   title="tipul transportului"
-                  value={transport?.type || "none"}
+                  value={transport?.type || "personal"}
                   onChange={(e) =>
                     updateGuestTransport(guest.id, {
                       type: e.target.value as TransportType,
@@ -99,7 +99,7 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
                   }
                   className={cn(rsvpStyles.select, "w-full appearance-none pr-10")}
                 >
-                  <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="none">
+                  <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="personal">
                     Nu are nevoie de transport
                   </option>
 
@@ -149,6 +149,16 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
                       ↓
                     </div>
                   </div>
+
+                  {!transport.locationId && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-[13px] text-[#8a2a2a]"
+                    >
+                      Te rugăm să alegi locația de plecare pentru transport.
+                    </motion.p>
+                  )}
 
                   {selectedLocation && (
                     <div className="space-y-2 text-[14px] text-[#3d2b1f]/80">

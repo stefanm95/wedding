@@ -71,7 +71,7 @@ export function useAdminData() {
             name: getMemberName(member),
             attending: false,
             dietary: "none",
-            transport: { type: "none" },
+            transport: { type: "personal" },
           }));
 
           data.push(
