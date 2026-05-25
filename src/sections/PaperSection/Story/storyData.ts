@@ -59,11 +59,11 @@ export const storyData: StoryItemType[] = [
 
       {
         type: "paragraph",
-        text: "În același timp, pe un fir paralel al destinului, dorința lui Iulian nu îi aparținea lui.",
+        text: "În același timp, pe un fir paralel al destinului, dorința nu îi aparținea lui Iulian...",
       },
       {
         type: "paragraph",
-        text: "Ci prietenului său Dorico, care dorea să revadă un film vechi, premiat, revenit pe marile ecrane în același cinematograf.",
+        text: "ci prietenului său Dorico, care dorea să revadă un film vechi, premiat, revenit pe marile ecrane în același cinematograf.",
       },
 
       {
@@ -77,7 +77,7 @@ export const storyData: StoryItemType[] = [
       },
       {
         type: "paragraph",
-        text: "Nu într-un cadru grandios, ci pe o scară rulantă — undeva între „început” și „pentru totdeauna”.",
+        text: "Nu într-un cadru grandios, ci pe o scară rulantă, undeva între „început” și „pentru totdeauna”.",
       },
 
       {
@@ -87,7 +87,7 @@ export const storyData: StoryItemType[] = [
 
       {
         type: "paragraph",
-        text: "În timp ce secundele pe scara rulantă se scurgeau, Iulian i-a recunoscut pe Miruna și iubitul ei George.",
+        text: "În timp ce secundele pe scara rulantă se scurgeau, Iulian i-a recunoscut pe Miruna și iubitul ei, George.",
       },
       {
         type: "paragraph",
@@ -141,7 +141,7 @@ export const storyData: StoryItemType[] = [
       },
       {
         type: "paragraph",
-        text: "Cu o ușoară ezitare, dar și cu un dram de curaj, Iulian a făcut ceea ce părea firesc — a trimis mai departe paginile prietenilor săi, ca și cum și-ar fi ascuns propria dorință printre ele.",
+        text: "Cu o ușoară ezitare, dar și cu un dram de curaj, Iulian a făcut ceea ce părea firesc. a trimis mai departe paginile prietenilor săi, ca și cum și-ar fi ascuns propria dorință printre ele.",
       },
       {
         type: "highlight",
@@ -153,7 +153,7 @@ export const storyData: StoryItemType[] = [
       },
       {
         type: "paragraph",
-        text: "a venit răspunsul lui George — o propoziție mică, dar suficient cât să aprindă o lumină.",
+        text: "a venit răspunsul lui George, o propoziție mică, dar suficient cât să aprindă o lumină.",
       },
     ],
     image:
@@ -234,7 +234,7 @@ export const storyData: StoryItemType[] = [
   {
     type: "event",
     side: "right",
-    title: "Ceremonia religioasa",
+    title: "Ceremonia religioasă",
     offset: {
       wrapper: "md:px-6",
       text: "lg:-translate-y-8 story:-translate-y-16",
