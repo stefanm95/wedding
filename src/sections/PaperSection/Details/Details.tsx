@@ -45,9 +45,7 @@ export default function Details() {
         <div className="mt-32">
           {/* transport header */}
           <div className="mb-16 text-center">
-            <p className="text-[10px] uppercase tracking-[0.38em] text-[#6b1f2b]/40">
-              Organizare transport
-            </p>
+            <p className="text-[10px] uppercase tracking-[0.38em] text-[#6b1f2b]/40"></p>
 
             <h3 className="mt-4 text-[32px] text-[#6b1f2b] md:text-[42px]">Transport</h3>
           </div>

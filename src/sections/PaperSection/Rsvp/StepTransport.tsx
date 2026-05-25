@@ -103,10 +103,6 @@ export default function StepTransport({ guests, extraGuests, onChange, onNext, o
                     Nu are nevoie de transport
                   </option>
 
-                  <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="personal">
-                    Vine cu mașina personală
-                  </option>
-
                   <option className="bg-[#f8f4ee] text-[#3d2b1f]" value="bus">
                     Transport organizat
                   </option>
