@@ -28,6 +28,10 @@ export function StepWelcome({ onNext }: Props) {
         <p className="mx-auto max-w-[420px] text-[15px] leading-relaxed text-[#3d2b1f]/75">
           Pentru noi, prezența ta înseamnă mai mult decât putem pune în cuvinte.
         </p>
+
+        <p className="mx-auto max-w-[520px] text-[15px] font-bold leading-relaxed text-[#3d2b1f]/75">
+          Vă rugăm să confirmați prezența până la data de 01 august 2026
+        </p>
       </div>
 
       {/* ✨ DIVIDER (foarte important pentru vibe) */}

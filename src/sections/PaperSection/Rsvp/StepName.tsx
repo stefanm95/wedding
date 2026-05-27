@@ -38,6 +38,17 @@ export default function StepName({ value, onSelectGroup, onConfirm, onBack }: Pr
 
   const debouncedQuery = useDebounce(query, 300);
 
+  function normalizeText(value: string) {
+    return value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/ț/g, "t")
+      .replace(/Ț/g, "T")
+      .replace(/ș/g, "s")
+      .replace(/Ș/g, "S")
+      .toLowerCase();
+  }
+
   useEffect(() => {
     const fetchGroups = async () => {
       const snap = await getDocs(collection(db, "guestGroups"));
@@ -55,16 +66,16 @@ export default function StepName({ value, onSelectGroup, onConfirm, onBack }: Pr
   }, []);
 
   const results = useMemo(() => {
-    const q = debouncedQuery.trim().toLowerCase();
+    const q = normalizeText(debouncedQuery.trim());
 
     if (q.length < 2) return [];
 
     return groups
       .filter((group) => {
         return (
-          group.familyLabel.toLowerCase().includes(q) ||
-          group.representative?.toLowerCase().includes(q) ||
-          group.members.some((m) => getMemberName(m).toLowerCase().includes(q))
+          normalizeText(group.familyLabel).includes(q) ||
+          normalizeText(group.representative ?? "").includes(q) ||
+          group.members.some((m) => normalizeText(getMemberName(m)).includes(q))
         );
       })
       .slice(0, 6);

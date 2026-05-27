@@ -1,4 +1,4 @@
-export type TransportLocationId = "bucuresti" | "biserica";
+export type TransportLocationId = "Obor" | "Biserica";
 
 export type TransportLocation = {
   id: TransportLocationId;
@@ -10,7 +10,7 @@ export type TransportLocation = {
 
 export const TRANSPORT_LOCATIONS: TransportLocation[] = [
   {
-    id: "bucuresti",
+    id: "Obor",
     label: "Transport de la Obor",
     departureTime: "17:30",
     departurePlace:
@@ -19,7 +19,7 @@ export const TRANSPORT_LOCATIONS: TransportLocation[] = [
   },
 
   {
-    id: "biserica",
+    id: "Biserica",
     label: "Transport de la Biserică",
     departureTime: "17:30",
     departurePlace:

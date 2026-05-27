@@ -140,8 +140,9 @@ function EventItem({ item, isLeft }: { item: StoryItemType; isLeft: boolean }) {
           )}
         </div>
       </div>
-
-      <StoryImage item={item} isLeft={isLeft} />
+      <div className="aspect-[5/6] overflow-hidden lg:aspect-[3/4]">
+        <StoryImage item={item} isLeft={isLeft} />
+      </div>
     </div>
   );
 }

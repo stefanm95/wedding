@@ -279,7 +279,7 @@ export const storyData: StoryItemType[] = [
     date: "22 August 2026",
     time: "18:30",
     image:
-      "https://res.cloudinary.com/djzw55eub/image/upload/v1779354928/wedding/event/restaurant_dog2ak_ns2qju.jpg",
+      "https://res.cloudinary.com/djzw55eub/image/upload/v1779883770/wedding/event/venue_kf5mxt.jpg",
     mapLink:
       "https://www.google.com/maps/place/P%C4%83durile+Regale/@44.7059572,26.3230083,14.25z/data=!4m6!3m5!1s0x40b21bab420f8689:0x6fe826cbb1c75235!8m2!3d44.7077006!4d26.3359205!16s%2Fg%2F11bw3dtk65?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D",
   },
