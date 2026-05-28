@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 /* ---------------- GLOBAL AUDIO ---------------- */
 
-const audio = new Audio("/public/assets/audio/melody.mp3");
+const audio = new Audio("/assets/audio/melody.mp3");
 
 audio.loop = true;
 audio.preload = "auto";
