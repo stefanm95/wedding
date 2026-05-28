@@ -1,19 +1,25 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
-import PaperPeelCanvas from "./PaperPeelCanvas";
+import { useAudio } from "@/hooks/useAudio";
 import { getImpact } from "@utils/animation";
 import { cinematicEase } from "@utils/cinematic-ease";
+import PaperPeelCanvas from "./PaperPeelCanvas";
 
 import type { HeroIntroProps } from "@/types/hero";
 
 export default function HeroIntro({ onOpen, progress, setProgress }: HeroIntroProps) {
   const [started, setStarted] = useState(false);
+  const { fadeIn } = useAudio();
 
   const handleClick = () => {
     if (started) return;
 
     setStarted(true);
+
+    setTimeout(() => {
+      fadeIn();
+    }, 120);
 
     let rafId: number;
     const duration = 1200; // total animation time in ms (≈ your 1.2)

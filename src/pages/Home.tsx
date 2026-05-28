@@ -1,6 +1,7 @@
 import { useDevice } from "@/hooks/useDevice";
 import { useEffect, useRef, useState } from "react";
 
+import AudioPlayer from "@/components/AudioPlayer";
 import FloatingNav from "@/components/FloatingNav";
 import ScrollProgress from "@/components/ScrollProgress";
 import PaperSection from "@paper/PaperSection";
@@ -57,6 +58,7 @@ function Home() {
 
   return (
     <div className="relative">
+      <AudioPlayer />
       {/* 🧭 DESKTOP ONLY NAV */}
       {!isCompact && <FloatingNav sections={sections} />}
 
