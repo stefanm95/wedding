@@ -1,3 +1,5 @@
+import { TRANSPORT_LOCATIONS } from "@/data/transportOptions";
+
 export const detailsData = {
   introduction: [
     "Petrecerea de nuntă se va desfășura în aer liber, într-o atmosferă relaxată și festivă.",
@@ -17,6 +19,7 @@ export const detailsData = {
         {
           label: "Locație de plecare 1",
           value: "Biserica",
+          href: TRANSPORT_LOCATIONS.find((l) => l.id === "Biserica")?.departurePlace,
         },
         {
           label: "Ora de plecare 1",
@@ -25,6 +28,7 @@ export const detailsData = {
         {
           label: "Locație de plecare 2",
           value: "Obor",
+          href: TRANSPORT_LOCATIONS.find((l) => l.id === "Obor")?.departurePlace,
         },
 
         {

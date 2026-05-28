@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { detailsData } from "./detailsData";
 
 export default function Details() {
@@ -71,6 +72,7 @@ export default function Details() {
 type TransportItem = {
   label: string;
   value: string;
+  href?: string;
 };
 
 type TransportBlockProps = {
@@ -101,7 +103,26 @@ function TransportBlock({ title, items }: TransportBlockProps) {
             </span>
 
             {/* value */}
-            <span className="text-right text-[15px] text-[#6b1f2b]/80">{item.value}</span>
+            {item.href ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#6b1f2b]/82 group inline-flex items-center gap-1.5 text-right text-[15px] transition-colors duration-300 hover:text-[#c9a46c]"
+              >
+                <span className="border-b border-[#c9a46c]/20 transition-colors duration-300 group-hover:border-[#c9a46c]/60">
+                  {item.value}
+                </span>
+
+                <ArrowUpRight
+                  size={14}
+                  strokeWidth={1.7}
+                  className="text-[#c9a46c]/90 transition-all duration-300 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+                />
+              </a>
+            ) : (
+              <span className="text-right text-[15px] text-[#6b1f2b]/80">{item.value}</span>
+            )}
           </div>
         ))}
       </div>

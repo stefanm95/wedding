@@ -12,7 +12,7 @@ export default function AudioPlayer() {
       transition={{ delay: 2 }}
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.96 }}
-      className="fixed bottom-6 right-6 z-[999] flex items-center gap-3 rounded-full border border-white/10 bg-black/30 px-4 py-3 text-white backdrop-blur-md"
+      className="fixed bottom-10 right-6 z-[999] flex items-center gap-3 rounded-full border border-white/10 bg-black/30 px-4 py-3 text-white backdrop-blur-md"
     >
       <motion.div
         animate={{
